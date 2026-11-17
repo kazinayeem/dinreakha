@@ -28,8 +28,8 @@ title bars (7 screens), sun card dark in light mode, 165 uses of 11 sp text, 32 
 
 ## Still wrong or risky (not fixed)
 
-1. **No version control.** The project folder is not a git repository, and two AI tools have been
-   editing it. One bad edit cannot be rolled back. Fix: `git init` and commit after each working build.
+1. ~~No version control~~ — **fixed:** git set up on 17 Nov (branch `main`). Two AI tools still edit
+   the same folder, so commit after each working build and check `git status` before starting work.
 2. **115 hard-coded colours.** Some (amber/yellow text, light tints) are likely below the 4.5:1
    contrast minimum in light mode. Needs a measured pass, screen by screen.
 3. **Facebook / YouTube reel counting is unverified on the phone.** The new detection (full-screen
