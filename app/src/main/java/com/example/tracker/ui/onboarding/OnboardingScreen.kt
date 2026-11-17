@@ -1,5 +1,6 @@
 package com.example.tracker.ui.onboarding
 
+import com.example.tracker.ui.theme.readable
 import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -321,7 +322,7 @@ private fun FeaturePill(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = iconTint,
+                tint = iconTint.readable(3f),
                 modifier = Modifier.size(20.dp),
             )
         }

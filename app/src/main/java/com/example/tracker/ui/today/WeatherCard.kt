@@ -1,5 +1,6 @@
 package com.example.tracker.ui.today
 
+import com.example.tracker.ui.theme.readable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -276,7 +277,7 @@ fun WeatherCard(
                                     Icon(
                                         Icons.Rounded.Air,
                                         contentDescription = null,
-                                        tint = level.color,
+                                        tint = level.color.readable(3f),
                                         modifier = Modifier.size(18.dp),
                                     )
                                     Spacer(Modifier.width(6.dp))
@@ -284,14 +285,14 @@ fun WeatherCard(
                                         text = "AQI $aqi",
                                         fontWeight = FontWeight.Bold,
                                         style = MaterialTheme.typography.titleSmall,
-                                        color = level.color,
+                                        color = level.color.readable(),
                                     )
                                     Spacer(Modifier.width(8.dp))
                                     Text(
                                         text = "• ${level.labelEn} / ${level.labelBn}",
                                         style = MaterialTheme.typography.labelSmall,
                                         fontWeight = FontWeight.SemiBold,
-                                        color = level.color,
+                                        color = level.color.readable(),
                                     )
                                 }
                             }

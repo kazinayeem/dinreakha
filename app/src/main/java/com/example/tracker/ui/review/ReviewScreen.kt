@@ -1,5 +1,6 @@
 package com.example.tracker.ui.review
 
+import com.example.tracker.ui.theme.readable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -330,7 +331,7 @@ private fun ReviewStatCard(
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        tint = iconTint,
+                        tint = iconTint.readable(3f),
                         modifier = Modifier.size(16.dp),
                     )
                 }
@@ -379,7 +380,7 @@ private fun ReflectionCard(
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        tint = iconTint,
+                        tint = iconTint.readable(3f),
                         modifier = Modifier.size(18.dp),
                     )
                 }

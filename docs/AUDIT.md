@@ -30,8 +30,9 @@ title bars (7 screens), sun card dark in light mode, 165 uses of 11 sp text, 32 
 
 1. ~~No version control~~ — **fixed:** git set up on 17 Nov (branch `main`). Two AI tools still edit
    the same folder, so commit after each working build and check `git status` before starting work.
-2. **115 hard-coded colours.** Some (amber/yellow text, light tints) are likely below the 4.5:1
-   contrast minimum in light mode. Needs a measured pass, screen by screen.
+2. ~~Low-contrast colours~~ — **fixed 18 Nov:** 18 failing text/icon colours (down to 1.5:1) now pass
+   4.5:1 (text) / 3:1 (icons) on light and dark cards via `Color.readable()`; tested in ContrastTest.
+   Not covered: colours drawn on their own backgrounds (bank cards, photo viewer, share-card images).
 3. **Facebook / YouTube reel counting is unverified on the phone.** The new detection (full-screen
    pager, one item per swipe) is built and installed, but nobody has watched reels with it yet.
 4. **Backups don't contain the photo files**, only their paths. Restoring on a new phone keeps the

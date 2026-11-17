@@ -1,5 +1,6 @@
 package com.example.tracker.ui.more
 
+import com.example.tracker.ui.theme.readable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -119,7 +120,7 @@ fun MoreScreen(nav: (String) -> Unit) {
                             Modifier.clip(RoundedCornerShape(50)).background(cs.surface.copy(alpha = 0.5f)).padding(horizontal = 12.dp, vertical = 6.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Icon(Icons.Rounded.LocalFireDepartment, null, tint = Color(0xFFF2A93B), modifier = Modifier.size(20.dp))
+                            Icon(Icons.Rounded.LocalFireDepartment, null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(20.dp))
                             Spacer(Modifier.width(4.dp))
                             Text("$streak", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold), color = cs.onSurface)
                         }
@@ -176,7 +177,7 @@ private fun FeatureTile(t: Tile, modifier: Modifier, onClick: () -> Unit) {
     Surface(onClick = onClick, shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.surfaceContainerLow, modifier = modifier) {
         Column(Modifier.fillMaxWidth().heightIn(min = 120.dp).padding(16.dp)) {
             Box(Modifier.size(44.dp).clip(CircleShape).background(t.tint.copy(alpha = 0.16f)), contentAlignment = Alignment.Center) {
-                Icon(t.icon, null, tint = t.tint, modifier = Modifier.size(24.dp))
+                Icon(t.icon, null, tint = t.tint.readable(3f), modifier = Modifier.size(24.dp))
             }
             Spacer(Modifier.height(14.dp))
             Text(t.title, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold), maxLines = 1, overflow = TextOverflow.Ellipsis)

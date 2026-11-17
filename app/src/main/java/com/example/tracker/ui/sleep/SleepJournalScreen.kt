@@ -1,5 +1,6 @@
 package com.example.tracker.ui.sleep
 
+import com.example.tracker.ui.theme.readable
 import android.content.Intent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -166,7 +167,7 @@ private fun SleepTab(sleep: List<SleepLogEntity>, today: LocalDate, onEdit: (Loc
                 Column(Modifier.fillMaxWidth().padding(20.dp)) {
                     if (lastNight == null) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.NightsStay, null, tint = Color(0xFF818CF8), modifier = Modifier.size(32.dp))
+                            Icon(Icons.Rounded.NightsStay, null, tint = Color(0xFF818CF8).readable(), modifier = Modifier.size(32.dp))
                             Spacer(Modifier.width(12.dp))
                             Text("How did you sleep?", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
                         }
@@ -227,7 +228,7 @@ private fun SleepTab(sleep: List<SleepLogEntity>, today: LocalDate, onEdit: (Loc
                         }
                         e.quality?.let { QualityMoons(it); Spacer(Modifier.width(12.dp)) }
                         Text(SleepMath.formatDuration(e.minutes), style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = if (e.minutes >= 7 * 60) cs.primary else Color(0xFFF0883E))
+                            color = if (e.minutes >= 7 * 60) cs.primary else Color(0xFFF0883E).readable())
                     }
                 }
             }
@@ -289,7 +290,7 @@ private fun QualityMoons(q: Int) {
     Row(Modifier.semantics(mergeDescendants = true) { contentDescription = "Quality $q of 5" }) {
         repeat(5) { i ->
             Icon(Icons.Rounded.NightsStay, null, Modifier.size(14.dp),
-                tint = if (i < q) Color(0xFF818CF8) else MaterialTheme.colorScheme.outlineVariant)
+                tint = if (i < q) Color(0xFF818CF8).readable() else MaterialTheme.colorScheme.outlineVariant)
         }
     }
 }
@@ -328,7 +329,7 @@ private fun SleepEditor(night: LocalDate, existing: SleepLogEntity?, onSave: (Sl
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(Icons.Rounded.NightsStay, null,
-                                tint = if ((quality ?: 0) >= q) Color(0xFF818CF8) else MaterialTheme.colorScheme.outlineVariant)
+                                tint = if ((quality ?: 0) >= q) Color(0xFF818CF8).readable() else MaterialTheme.colorScheme.outlineVariant)
                         }
                     }
                 }

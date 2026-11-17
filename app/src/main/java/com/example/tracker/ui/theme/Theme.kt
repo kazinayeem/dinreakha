@@ -23,9 +23,13 @@ val BrandNight = Color(0xFF101633)
 val BrandIndigo = Color(0xFF1B2463)
 val BrandTeal = Color(0xFF0E7C7B)
 val BrandMint = Color(0xFF7CF5C8)
-val Income = Color(0xFF2FA46B)
-val Expense = Color(0xFFE0605E)
-val Warn = Color(0xFFF2A93B)
+/** Base hues; use [Income], [Expense], [Warn] in UI — they're adjusted for readable contrast per theme. */
+val IncomeBase = Color(0xFF2FA46B)
+val ExpenseBase = Color(0xFFE0605E)
+val WarnBase = Color(0xFFF2A93B)
+val Income: Color @androidx.compose.runtime.Composable @androidx.compose.runtime.ReadOnlyComposable get() = IncomeBase.readable()
+val Expense: Color @androidx.compose.runtime.Composable @androidx.compose.runtime.ReadOnlyComposable get() = ExpenseBase.readable()
+val Warn: Color @androidx.compose.runtime.Composable @androidx.compose.runtime.ReadOnlyComposable get() = WarnBase.readable()
 
 /**
  * A selectable colour theme. Popular choices: Material You (from your wallpaper, Android 12+),

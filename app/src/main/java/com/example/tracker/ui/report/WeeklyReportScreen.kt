@@ -1,5 +1,6 @@
 package com.example.tracker.ui.report
 
+import com.example.tracker.ui.theme.readable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -256,7 +257,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                     Text(
                         text = "$fArrow${kotlin.math.abs(report.focusDiffPercent)}% vs last week",
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                        color = if (report.focusDiffPercent >= 0) Color(0xFF10B981) else Color(0xFFF2A93B),
+                        color = if (report.focusDiffPercent >= 0) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
                     )
                 }
             }
@@ -274,7 +275,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                     Text(
                         text = "$hArrow${kotlin.math.abs(report.habitDiffPercent)}% vs last week",
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                        color = if (report.habitDiffPercent >= 0) Color(0xFF10B981) else Color(0xFFF2A93B),
+                        color = if (report.habitDiffPercent >= 0) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
                     )
                 }
             }
@@ -320,7 +321,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                     Text(
                         text = "$sArrow${kotlin.math.abs(report.screenTimeDiffPercent)}% vs last week",
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                        color = if (report.screenTimeDiffPercent <= 0) Color(0xFF10B981) else Color(0xFFF2A93B),
+                        color = if (report.screenTimeDiffPercent <= 0) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
                     )
                 }
             }
@@ -408,7 +409,7 @@ private fun WeeklySleepTrendCard(report: WeeklyReport) {
                 Text(
                     text = "Avg: ${"%.1f".format(report.thisWeekAvgSleepHours)}h / night",
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                    color = Color(0xFF6366F1),
+                    color = Color(0xFF6366F1).readable(),
                 )
             }
 
@@ -437,7 +438,7 @@ private fun WeeklySleepTrendCard(report: WeeklyReport) {
                                 text = "${hours.toInt()}h",
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 fontSize = 12.sp,
-                                color = if (isHealthy) Color(0xFF10B981) else Color(0xFFF2A93B),
+                                color = if (isHealthy) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
                             )
                         }
                         Spacer(Modifier.height(4.dp))
@@ -541,7 +542,7 @@ private fun WeeklyStreaksCard(report: WeeklyReport) {
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.Star, null, tint = Color(0xFFF2A93B), modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.Star, null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(4.dp))
                             Text("Best Day", style = MaterialTheme.typography.labelSmall)
                         }
@@ -566,7 +567,7 @@ private fun WeeklyStreaksCard(report: WeeklyReport) {
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.LocalFireDepartment, null, tint = Color(0xFFE53935), modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.LocalFireDepartment, null, tint = Color(0xFFE53935).readable(), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(4.dp))
                             Text("Longest Streaks", style = MaterialTheme.typography.labelSmall)
                         }

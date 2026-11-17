@@ -1,5 +1,6 @@
 package com.example.tracker.ui.report
 
+import com.example.tracker.ui.theme.readable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -324,7 +325,7 @@ private fun DailyRhythmCard(report: DailyReport) {
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.WbSunny, null, tint = Color(0xFFF2A93B), modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.WbSunny, null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
                             Text("Wake Target", style = MaterialTheme.typography.labelSmall)
                         }
@@ -336,7 +337,7 @@ private fun DailyRhythmCard(report: DailyReport) {
                         Text(
                             text = if (report.wokeOnTime) "On time ✓" else "Late by ${report.wakeLateMinutes}m",
                             style = MaterialTheme.typography.labelSmall,
-                            color = if (report.wokeOnTime) Color(0xFF10B981) else Color(0xFFE53935),
+                            color = if (report.wokeOnTime) Color(0xFF10B981).readable() else Color(0xFFE53935).readable(),
                         )
                     }
                 }
@@ -349,7 +350,7 @@ private fun DailyRhythmCard(report: DailyReport) {
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.NightsStay, null, tint = Color(0xFF6366F1), modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.NightsStay, null, tint = Color(0xFF6366F1).readable(), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
                             Text("Bedtime", style = MaterialTheme.typography.labelSmall)
                         }
@@ -443,7 +444,7 @@ private fun DailyHabitsPrayersRow(report: DailyReport) {
                 Text(
                     text = "${report.habitPercent}%",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = Color(0xFF10B981),
+                    color = Color(0xFF10B981).readable(),
                 )
                 Text(
                     text = "${report.habitsCompleted} of ${report.habitsTotal} items",
@@ -465,7 +466,7 @@ private fun DailyHabitsPrayersRow(report: DailyReport) {
                 Text(
                     text = "${report.prayersCompleted}/5",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = Color(0xFFD97706),
+                    color = Color(0xFFD97706).readable(),
                 )
                 Text(
                     text = if (report.prayersCompleted == 5) "Full consistency ✓" else "Keep offering",
@@ -515,7 +516,7 @@ private fun DailyScreenTimeCard(report: DailyReport) {
             Text(
                 text = diffText,
                 style = MaterialTheme.typography.bodySmall,
-                color = if (report.screenTimeDiffMinutes <= 0) Color(0xFF10B981) else Color(0xFFF2A93B),
+                color = if (report.screenTimeDiffMinutes <= 0) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
             )
 
             Spacer(Modifier.height(10.dp))

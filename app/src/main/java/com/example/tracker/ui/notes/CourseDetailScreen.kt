@@ -1,5 +1,6 @@
 package com.example.tracker.ui.notes
 
+import com.example.tracker.ui.theme.readable
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -384,7 +385,7 @@ private fun NoteCardItem(
                         Icon(
                             Icons.Rounded.Star,
                             contentDescription = "Important",
-                            tint = Color(0xFFFFB300),
+                            tint = Color(0xFFFFB300).readable(),
                             modifier = Modifier.size(18.dp),
                         )
                         Spacer(Modifier.width(4.dp))

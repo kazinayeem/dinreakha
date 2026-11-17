@@ -1,5 +1,6 @@
 package com.example.tracker.ui.blocker
 
+import com.example.tracker.ui.theme.readable
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
@@ -200,11 +201,11 @@ fun BlockerScreen(
                             modifier = Modifier.padding(14.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Icon(Icons.Rounded.LockOpen, contentDescription = null, tint = Color(0xFFF2A93B), modifier = Modifier.size(24.dp))
+                            Icon(Icons.Rounded.LockOpen, contentDescription = null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(24.dp))
                             Spacer(Modifier.width(12.dp))
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Emergency Unlock Active", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = Color(0xFFF2A93B))
-                                Text("All app rules are bypassed for ~$remainingEmergencyMin more min.", style = MaterialTheme.typography.labelSmall, color = Color(0xFFF2A93B))
+                                Text("Emergency Unlock Active", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = Color(0xFFF2A93B).readable())
+                                Text("All app rules are bypassed for ~$remainingEmergencyMin more min.", style = MaterialTheme.typography.labelSmall, color = Color(0xFFF2A93B).readable())
                             }
                         }
                     }
@@ -241,7 +242,7 @@ fun BlockerScreen(
                             Text(
                                 text = "$blockCountToday times",
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                                color = if (blockCountToday > 0) Color(0xFFE53935) else MaterialTheme.colorScheme.primary,
+                                color = if (blockCountToday > 0) Color(0xFFE53935).readable() else MaterialTheme.colorScheme.primary,
                             )
                         }
                     }
@@ -461,7 +462,7 @@ private fun RuleCard(
                         Icon(
                             imageVector = Icons.Rounded.Lock,
                             contentDescription = "Strict mode",
-                            tint = Color(0xFFF2A93B),
+                            tint = Color(0xFFF2A93B).readable(),
                             modifier = Modifier.size(14.dp),
                         )
                     }
@@ -570,7 +571,7 @@ private fun PermissionRow(
             Text(subtitle, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         if (isGranted) {
-            Icon(Icons.Rounded.CheckCircle, contentDescription = "Granted", tint = Color(0xFF4CAF50), modifier = Modifier.size(20.dp))
+            Icon(Icons.Rounded.CheckCircle, contentDescription = "Granted", tint = Color(0xFF4CAF50).readable(), modifier = Modifier.size(20.dp))
         } else {
             Button(
                 onClick = onGrant,
@@ -639,7 +640,7 @@ private fun ReelsCounterCard(
                         Icon(
                             imageVector = Icons.Rounded.PlayArrow,
                             contentDescription = null,
-                            tint = Color(0xFFE1306C),
+                            tint = Color(0xFFE1306C).readable(),
                             modifier = Modifier.size(22.dp),
                         )
                     }
@@ -684,7 +685,7 @@ private fun ReelsCounterCard(
                             Text(
                                 text = "$totalCount",
                                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
-                                color = if (isOverLimit) Color(0xFFE53935) else MaterialTheme.colorScheme.onSurface,
+                                color = if (isOverLimit) Color(0xFFE53935).readable() else MaterialTheme.colorScheme.onSurface,
                             )
                             Spacer(Modifier.width(6.dp))
                             Text(
@@ -719,19 +720,19 @@ private fun ReelsCounterCard(
                     PlatformChip(
                         name = "Instagram",
                         count = "$instaCount",
-                        color = Color(0xFFE1306C),
+                        color = Color(0xFFE1306C).readable(),
                         modifier = Modifier.weight(1f),
                     )
                     PlatformChip(
                         name = "YouTube",
                         count = "$ytCount",
-                        color = Color(0xFFFF0000),
+                        color = Color(0xFFFF0000).readable(),
                         modifier = Modifier.weight(1f),
                     )
                     PlatformChip(
                         name = "Facebook",
                         count = "$fbCount",
-                        color = Color(0xFF1877F2),
+                        color = Color(0xFF1877F2).readable(),
                         modifier = Modifier.weight(1f),
                     )
                 }

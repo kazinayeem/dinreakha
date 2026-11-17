@@ -1,5 +1,6 @@
 package com.example.tracker.ui.report
 
+import com.example.tracker.ui.theme.readable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -148,7 +149,7 @@ fun ThirtyDayReportScreen(
                                     Text(
                                         text = "${r.day30Score} pts",
                                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                                        color = Color(0xFF10B981),
+                                        color = Color(0xFF10B981).readable(),
                                     )
                                 }
                             }
@@ -158,7 +159,7 @@ fun ThirtyDayReportScreen(
                             Text(
                                 text = "$sign${r.scoreGrowthPercent} points improvement score growth 🚀",
                                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                                color = Color(0xFF10B981),
+                                color = Color(0xFF10B981).readable(),
                             )
                         }
                     }
@@ -238,7 +239,7 @@ fun ThirtyDayReportScreen(
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
                                         Text("Prayers Offered", style = MaterialTheme.typography.labelSmall)
-                                        Text("${r.totalPrayersCompleted}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = Color(0xFFD97706))
+                                        Text("${r.totalPrayersCompleted}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = Color(0xFFD97706).readable())
                                     }
                                 }
                                 Surface(
@@ -248,7 +249,7 @@ fun ThirtyDayReportScreen(
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
                                         Text("Class Notes", style = MaterialTheme.typography.labelSmall)
-                                        Text("${r.totalNotesCaptured}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = Color(0xFF10B981))
+                                        Text("${r.totalNotesCaptured}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = Color(0xFF10B981).readable())
                                     }
                                 }
                             }
@@ -330,7 +331,7 @@ private fun ComparisonRow(title: String, day1: String, day30: String) {
             Spacer(Modifier.width(10.dp))
             Text("→", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.width(10.dp))
-            Text(day30, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold), color = Color(0xFF10B981))
+            Text(day30, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold), color = Color(0xFF10B981).readable())
         }
     }
 }

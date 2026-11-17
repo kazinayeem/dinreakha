@@ -1,5 +1,6 @@
 package com.example.tracker.ui.today
 
+import com.example.tracker.ui.theme.readable
 import android.Manifest
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -181,9 +182,9 @@ fun AmbientDaylineCard(
                                     .semantics(mergeDescendants = true) { contentDescription = "Air quality $aqi, ${level.labelEn}" },
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Icon(Icons.Rounded.Air, null, tint = level.color, modifier = Modifier.size(15.dp))
+                                Icon(Icons.Rounded.Air, null, tint = level.color.readable(3f), modifier = Modifier.size(15.dp))
                                 Spacer(Modifier.width(4.dp))
-                                Text("$aqi", color = level.color, style = MaterialTheme.typography.labelLarge)
+                                Text("$aqi", color = level.color.readable(), style = MaterialTheme.typography.labelLarge)
                             }
                         }
                     }
@@ -301,7 +302,7 @@ fun AmbientDaylineCard(
                 val level = data.aqiLevel
                 if (level != null && level.ordinal >= AirQualityLevel.SENSITIVE.ordinal) {
                     Spacer(Modifier.height(8.dp))
-                    Text(level.adviceEn, style = MaterialTheme.typography.labelMedium, color = level.color)
+                    Text(level.adviceEn, style = MaterialTheme.typography.labelMedium, color = level.color.readable())
                 }
             }
         }

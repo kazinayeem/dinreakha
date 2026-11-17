@@ -1,5 +1,6 @@
 package com.example.tracker.ui.blocker
 
+import com.example.tracker.ui.theme.readable
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -93,7 +94,7 @@ fun EmergencyUnlockDialog(
                 Icon(
                     imageVector = Icons.Rounded.Warning,
                     contentDescription = null,
-                    tint = Color(0xFFF2A93B),
+                    tint = Color(0xFFF2A93B).readable(),
                     modifier = Modifier.size(24.dp),
                 )
                 Spacer(Modifier.width(8.dp))
@@ -115,7 +116,7 @@ fun EmergencyUnlockDialog(
                         Text(
                             text = "Daily limit reached: you have already used your 2 emergency unlocks for today.",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Color(0xFFFF8A80),
+                            color = Color(0xFFFF8A80).readable(),
                             modifier = Modifier.padding(14.dp),
                         )
                     }
@@ -146,7 +147,7 @@ fun EmergencyUnlockDialog(
                         Text(
                             text = if (secondsLeft > 0) "${secondsLeft}s" else "Ready ✓",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = if (secondsLeft > 0) Color(0xFFF2A93B) else Color(0xFF4CAF50),
+                            color = if (secondsLeft > 0) Color(0xFFF2A93B).readable() else Color(0xFF4CAF50).readable(),
                         )
                     }
 

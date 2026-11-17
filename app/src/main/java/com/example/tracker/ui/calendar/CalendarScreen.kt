@@ -1,5 +1,6 @@
 package com.example.tracker.ui.calendar
 
+import com.example.tracker.ui.theme.readable
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -319,7 +320,7 @@ private fun MonthGrid(vm: CalendarViewModel, s: CalState, month: YearMonth, firs
                                 fontWeight = if (day == today) FontWeight.Bold else FontWeight.Normal,
                                 color = when {
                                     day == today -> MaterialTheme.colorScheme.onPrimary
-                                    holiday -> HOLIDAY_COLOR
+                                    holiday -> HOLIDAY_COLOR.readable()
                                     !inMonth -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                                     else -> MaterialTheme.colorScheme.onSurface
                                 })

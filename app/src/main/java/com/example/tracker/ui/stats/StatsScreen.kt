@@ -1,5 +1,6 @@
 package com.example.tracker.ui.stats
 
+import com.example.tracker.ui.theme.readable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -308,7 +309,7 @@ private fun StatCard(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = iconTint,
+                    tint = iconTint.readable(3f),
                     modifier = Modifier.size(15.dp),
                 )
             }
