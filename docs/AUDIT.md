@@ -1,0 +1,63 @@
+# Dinrekha — full app audit (17 Nov 2026)
+
+How it was checked: Android lint on the release build, 133 unit tests, the live state of the phone
+(Honor ELI-NX9, Android 16: permissions, alarms, notification channels, background jobs, logs, memory),
+and a code review of every flow — start-up, reminders, habits, sleep/journal, wallet, focus, calendar,
+class notes, app blocker, widgets, backup/reset, language.
+
+Phone snapshot: 20 alarms scheduled, 23 notification channels all allowed, accessibility service on,
+usage access and overlay allowed, battery optimisation off, 67 MB memory, no crashes.
+
+## Fixed during this audit
+
+| # | Severity | Problem | Effect before the fix |
+|---|---|---|---|
+| 1 | Critical | Release optimiser (R8) stripped WorkManager's `OverwritingInputMerger` constructor | Every home-screen widget update failed with `InstantiationException`; widgets would never refresh |
+| 2 | High | Notification channel clean-up deleted every `c_…` channel it didn't own, including the App Blocker's `c_limit_warnings` | After changing any notification setting, "50% / 80% / 1 min left" limit warnings silently stopped |
+| 3 | High | Class notes and photo references were not in the JSON backup | Export → restore lost every class note |
+| 4 | High | 24 database queries on 9 screens were re-created on every redraw | Lists flashed empty/zero and reloaded on Today, App limits, More, Calendar…; extra jank and DB work |
+| 5 | High | Accessibility service ran the block-rule DB check and a ~10-keyword screen search on every event (many per second) | Battery drain and possible stutter inside Facebook / YouTube |
+| 6 | Medium | Widgets redrew on every settings-table write (caches too) | Bursts of 14+ background jobs in under a second |
+| 7 | Medium | Side-counter switch created state without `remember` (lint error) | Switch state could reset on redraw |
+| 8 | Low | Class-note capture used the phone's timezone instead of Asia/Dhaka | Wrong default date if the phone's timezone ever differs |
+| 9 | Low | Decorative icons in the status notification were announced by screen readers | Noise for TalkBack users |
+
+Earlier passes today also fixed: Focus pause/stop buttons clipped, FB/YT reels not counted, double
+title bars (7 screens), sun card dark in light mode, 165 uses of 11 sp text, 32 all-caps labels,
+18 tap targets under 48 dp, blocker back-gesture bypass, API 29 crash, 66 MB → 23 MB APK.
+
+## Still wrong or risky (not fixed)
+
+1. **No version control.** The project folder is not a git repository, and two AI tools have been
+   editing it. One bad edit cannot be rolled back. Fix: `git init` and commit after each working build.
+2. **115 hard-coded colours.** Some (amber/yellow text, light tints) are likely below the 4.5:1
+   contrast minimum in light mode. Needs a measured pass, screen by screen.
+3. **Facebook / YouTube reel counting is unverified on the phone.** The new detection (full-screen
+   pager, one item per swipe) is built and installed, but nobody has watched reels with it yet.
+4. **Backups don't contain the photo files**, only their paths. Restoring on a new phone keeps the
+   notes but not the pictures.
+5. **The app is not "100% offline".** Weather sends approximate coordinates to Open-Meteo (accepted
+   by you; stated in the privacy policy).
+6. **Play Store blockers** (fine for a personal app): signed with the debug key; uses
+   QUERY_ALL_PACKAGES, an accessibility service for blocking, overlay and device-admin permissions.
+7. **Translation gaps:** ~5% of fixed text, some report sentences built from pieces, and
+   screen-reader labels stay English.
+8. **Widget picker shows the app icon**, not a real preview of each widget.
+9. **Only unit tests.** No automated UI tests, so screen regressions are caught only by hand.
+10. **Library updates available** (Compose BOM 2026.09, Kotlin 2.4.21, Gradle 9.9.1). Not updated;
+    worth doing on a quiet day with a full re-test.
+11. **62 lint style hints** (`toUri()` KTX etc.) — cosmetic.
+
+## Features from your specs that are not built
+
+Deadline tracker · step counter · water & meals · connection reminder · stand-alone Insights screen ·
+import from the phone's calendar · drag-to-move calendar events · in-app multi-photo camera for
+class notes · CSV import into Wallet · website blocking (built by the other tool, not verified).
+
+## What works well
+
+- Reminders: every trigger is covered (boot, time/timezone change, app update, exact-alarm permission
+  change, app open), only the next occurrence per slot is scheduled, quiet hours and mute respected.
+- Data: Room v1 → v10 with explicit migrations and exported schemas; all money in paisa.
+- Speed: release build with R8, 7 ms median frame time, ~1% janky frames.
+- Privacy: no accounts, no analytics, wallet lock respected by widgets.

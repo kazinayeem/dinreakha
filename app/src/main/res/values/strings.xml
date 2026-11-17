@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Dinrekha</string>
+    <string name="accessibility_service_desc">Dinrekha uses this service to detect when distracting or blocked apps are opened during sleep, class, focus time, or when your daily limits are reached, and to enforce your chosen app limits.</string>
+    <!-- Home-screen widgets -->
+    <string name="widget_next_up_label">Next up</string>
+    <string name="widget_next_up_desc">What\'s next and how long until it</string>
+    <string name="widget_checklist_label">Today\'s checklist</string>
+    <string name="widget_checklist_desc">Tick habits right from your home screen</string>
+    <string name="widget_dayline_label">Dayline</string>
+    <string name="widget_dayline_desc">How much of your waking day has passed</string>
+    <string name="widget_wallet_label">Wallet</string>
+    <string name="widget_wallet_desc">Today\'s spending with a quick add button</string>
+    <string name="widget_focus_label">Focus</string>
+    <string name="widget_focus_desc">Start a 25 or 45 minute focus, or pause and stop</string>
+    <string name="widget_streak_label">Streak</string>
+    <string name="widget_streak_desc">Your streak and plan day</string>
+    <string name="widget_sleep_mood_label">Sleep and mood</string>
+    <string name="widget_sleep_mood_desc">Last night\'s sleep and a one-tap mood</string>
+    <string name="widget_screen_time_label">Screen time</string>
+    <string name="widget_screen_time_desc">Reels today and your top apps</string>
+    <string name="widget_quick_actions_label">Quick actions</string>
+    <string name="widget_quick_actions_desc">Expense, focus, sleep and class note</string>
+</resources>

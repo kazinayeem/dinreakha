@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Status notification (dark shade) -->
+    <color name="notif_accent">#FF7CF5C8</color>
+    <color name="notif_track">#33FFFFFF</color>
+    <color name="notif_muted">#99FFFFFF</color>
+</resources>

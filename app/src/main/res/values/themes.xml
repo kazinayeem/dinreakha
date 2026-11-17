@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Tracker" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/brand_night</item>
+    </style>
+
+    <!-- Launch theme: brand background + mark; MainActivity hands over to an animated Compose intro. -->
+    <style name="Theme.Tracker.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/brand_night</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.Tracker</item>
+    </style>
+</resources>

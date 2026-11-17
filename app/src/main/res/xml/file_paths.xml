@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <files-path name="notes" path="notes/" />
+    <cache-path name="camera" path="camera/" />
+    <cache-path name="exports" path="notes_export/" />
+    <cache-path name="shares" path="shares/" />
+</paths>
+

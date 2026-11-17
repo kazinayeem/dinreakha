@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_night">#FF101633</color>
+    <color name="brand_mint">#FF7CF5C8</color>
+    <!-- Status notification (light shade) -->
+    <color name="notif_accent">#FF0F7A5C</color>
+    <color name="notif_track">#1F000000</color>
+    <color name="notif_muted">#99000000</color>
+</resources>

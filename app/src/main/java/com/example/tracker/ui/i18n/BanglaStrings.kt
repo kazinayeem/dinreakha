@@ -1,0 +1,523 @@
+package com.example.tracker.ui.i18n
+
+/**
+ * English → Bangla dictionary. Everyday Bangla as people in Bangladesh actually speak it; common
+ * loanwords (অ্যাপ, রিলস, ফোকাস, ব্যাকআপ) are kept as used. Keys are the exact English shown on screen.
+ */
+object BanglaStrings {
+
+    private val base: Map<String, String> = mapOf(
+        // ---------------- Tabs & navigation
+        "Today" to "আজ", "Calendar" to "ক্যালেন্ডার", "Focus" to "ফোকাস", "Wallet" to "ওয়ালেট", "More" to "আরও",
+        "Settings" to "সেটিংস", "Stats" to "পরিসংখ্যান", "About" to "সম্পর্কে", "Back" to "পেছনে",
+        "Next" to "পরবর্তী", "Previous" to "আগের", "Go to today" to "আজকে যান", "More options" to "আরও অপশন",
+        "Dinrekha" to "দিনরেখা", "line of the day" to "দিনের রেখা",
+
+        // ---------------- Common actions
+        "Save" to "সেভ", "Cancel" to "বাতিল", "Delete" to "মুছুন", "Done" to "সম্পন্ন", "OK" to "ঠিক আছে",
+        "Edit" to "এডিট", "Add" to "যোগ করুন", "Undo" to "ফিরিয়ে আনুন", "Clear" to "মুছে ফেলুন", "Reset" to "রিসেট",
+        "Replace" to "প্রতিস্থাপন", "Allow" to "অনুমতি দিন", "Enable" to "চালু করুন", "Grant" to "অনুমতি দিন",
+        "Fix" to "ঠিক করুন", "Manage" to "পরিচালনা", "See all" to "সব দেখুন", "View" to "দেখুন", "All" to "সব",
+        "On" to "চালু", "Off" to "বন্ধ", "None" to "কিছু না", "Never" to "কখনো না", "No" to "না", "Set" to "সেট করুন",
+        "Pay" to "পরিশোধ", "Save Changes" to "পরিবর্তন সেভ করুন", "Save note" to "নোট সেভ করুন", "Save Note" to "নোট সেভ করুন",
+        "Remove note" to "নোট মুছুন", "Saved" to "সেভ হয়েছে", "Deleted" to "মুছে ফেলা হয়েছে", "Ready" to "প্রস্তুত",
+        "Shuffle" to "এলোমেলো", "Search apps…" to "অ্যাপ খুঁজুন…", "Type here…" to "এখানে লিখুন…",
+        "Just now" to "এইমাত্র", "Active" to "সক্রিয়", "Unlock" to "আনলক", "Get Started" to "শুরু করুন",
+        "Open App Settings" to "অ্যাপ সেটিংস খুলুন", "Delete…" to "মুছুন…", "Add ✓" to "যোগ ✓", "Recorded" to "রেকর্ড হয়েছে",
+
+        // ---------------- Time words
+        "Yesterday" to "গতকাল", "Morning" to "সকাল", "Midday" to "দুপুর", "Evening" to "সন্ধ্যা",
+        "Day" to "দিন", "Week" to "সপ্তাহ", "Month" to "মাস", "Agenda" to "তালিকা", "Time" to "সময়", "Date" to "তারিখ",
+        "Daily" to "প্রতিদিন", "Weekly" to "সাপ্তাহিক", "Monthly" to "মাসিক", "Yearly" to "বার্ষিক", "Every day" to "প্রতিদিন",
+        "Every" to "প্রতি", "Times" to "বার", "All day" to "সারাদিন", "Any time" to "যেকোনো সময়", "This Week" to "এই সপ্তাহ",
+        "This month" to "এই মাস", "Last month" to "গত মাস", "90 days" to "৯০ দিন", "12 weeks" to "১২ সপ্তাহ",
+        "Whole day" to "সারাদিন", "Upcoming only" to "শুধু আসন্ন", "Starts tomorrow" to "আগামীকাল শুরু",
+        "From" to "থেকে", "Until" to "পর্যন্ত", "To" to "প্রাপক", "First day" to "প্রথম দিন", "Last day" to "শেষ দিন",
+        "Day 1" to "দিন ১", "Wake" to "ঘুম থেকে ওঠা", "Bed" to "ঘুম", "Bed by" to "ঘুমাতে যাবেন", "Bedtime" to "ঘুমের সময়",
+        "Wake time" to "ওঠার সময়", "Wake Target" to "ওঠার লক্ষ্য", "Day done" to "দিন শেষ হয়েছে",
+
+        // ---------------- Today / Home
+        "Up Next" to "এরপর", "Today's schedule" to "আজকের সময়সূচি", "Today's Rhythm" to "আজকের ছন্দ", "NOW" to "এখন",
+        "Daily Checklist" to "দৈনিক চেকলিস্ট", "Habits" to "অভ্যাস", "Prayers" to "নামাজ",
+        "No checklist items for today." to "আজকের জন্য কোনো চেকলিস্ট নেই।",
+        "No items in this category." to "এই বিভাগে কিছু নেই।",
+        "All checklist items completed! 👏" to "সব কাজ শেষ! 👏",
+        "No scheduled events for today." to "আজ কোনো নির্ধারিত কাজ নেই।",
+        "Daily Reflection" to "দিনের ভাবনা", "How was your day?" to "আজকের দিন কেমন গেল?",
+        "Write a reflection or thought about today..." to "আজকের দিন নিয়ে কিছু লিখুন...",
+        "Fresh Start" to "নতুন শুরু", "Plan Completed 🏁" to "পরিকল্পনা শেষ 🏁",
+        "Class in Session" to "ক্লাস চলছে", "Recent Class" to "সাম্প্রতিক ক্লাস", "Courses" to "কোর্স",
+        "Log last night's sleep" to "গতরাতের ঘুম লিখুন", "app limits" to "অ্যাপ সীমা",
+        "STUDY" to "পড়াশোনা", "RESEARCH" to "গবেষণা", "CODE" to "কোড", "Research" to "গবেষণা", "Code" to "কোড",
+        "Maghrib" to "মাগরিব", "Weather" to "আবহাওয়া", "Refresh weather" to "আবহাওয়া রিফ্রেশ",
+        "Humidity" to "আর্দ্রতা", "Wind" to "বাতাস", "High and low" to "সর্বোচ্চ ও সর্বনিম্ন",
+        "Weather & Air Index" to "আবহাওয়া ও বায়ুমান", "Offline Cache" to "অফলাইন ক্যাশ",
+        "Loading live weather & air quality…" to "আবহাওয়া ও বায়ুমান লোড হচ্ছে…",
+        "Tap refresh to load weather" to "আবহাওয়া দেখতে রিফ্রেশ চাপুন",
+        "Low" to "খারাপ", "Meh" to "মন্দ", "Okay" to "মোটামুটি", "Good" to "ভালো", "Great" to "দারুণ",
+
+        // ---------------- More / About / Policy
+        "Sleep & mood" to "ঘুম ও মুড", "Log last night" to "গতরাতের ঘুম লিখুন", "Weekly review" to "সাপ্তাহিক পর্যালোচনা",
+        "Routines" to "রুটিন", "Class notes" to "ক্লাস নোট", "Reports" to "রিপোর্ট", "Today's score" to "আজকের স্কোর",
+        "Share card" to "শেয়ার কার্ড", "Make one" to "একটি বানান", "Plan complete" to "পরিকল্পনা শেষ", "30-day plan" to "৩০ দিনের পরিকল্পনা",
+        "Notifications" to "নোটিফিকেশন", "Schedule & classes" to "সময়সূচি ও ক্লাস", "Look & feel" to "চেহারা ও রং",
+        "Backup, lock & more" to "ব্যাকআপ, লক ও আরও", "Developer" to "ডেভেলপার", "Bornosoft" to "বর্ণসফট",
+        "Habits, money and notes stay on this phone" to "অভ্যাস, টাকা ও নোট এই ফোনেই থাকে",
+        "No account, no ads, no tracking" to "কোনো অ্যাকাউন্ট নেই, বিজ্ঞাপন নেই, ট্র্যাকিং নেই",
+        "Privacy policy" to "গোপনীয়তা নীতি", "Terms of use" to "ব্যবহারের শর্তাবলি",
+        "Everything stays on your phone" to "সবকিছু আপনার ফোনেই থাকে",
+        "Habits, mood, journal, sleep, money, calendar, focus sessions, class notes and photos are saved only in this app's storage on your phone. There is no account, no server and no cloud sync. We never see your data."
+            to "অভ্যাস, মুড, জার্নাল, ঘুম, টাকা, ক্যালেন্ডার, ফোকাস সেশন, ক্লাস নোট ও ছবি শুধু আপনার ফোনে এই অ্যাপের স্টোরেজে সেভ হয়। কোনো অ্যাকাউন্ট, সার্ভার বা ক্লাউড সিঙ্ক নেই। আমরা কখনো আপনার তথ্য দেখি না।",
+        "Weather is the one online feature" to "শুধু আবহাওয়া অনলাইনে কাজ করে",
+        "To show weather and air quality, the app sends your approximate coordinates (latitude and longitude, no name or ID) to Open-Meteo (open-meteo.com). Your phone's location service may also look up the area name. Turn weather off in Settings and nothing is sent."
+            to "আবহাওয়া ও বায়ুমান দেখাতে অ্যাপটি আপনার আনুমানিক অবস্থান (অক্ষাংশ ও দ্রাঘিমাংশ, কোনো নাম বা আইডি নয়) Open-Meteo (open-meteo.com)-এ পাঠায়। আপনার ফোনের লোকেশন সেবা এলাকার নামও খুঁজতে পারে। সেটিংসে আবহাওয়া বন্ধ করলে কিছুই পাঠানো হয় না।",
+        "App Blocker and screen reading" to "অ্যাপ ব্লকার ও স্ক্রিন পড়া",
+        "If you switch on the App Blocker's accessibility service, it reads which app is open and, in Facebook, Instagram and YouTube, the on-screen labels needed to count reels. This happens on the phone only. Nothing is recorded except app names, minutes and reel counts, and nothing leaves the device."
+            to "অ্যাপ ব্লকারের অ্যাক্সেসিবিলিটি সেবা চালু করলে এটি দেখে কোন অ্যাপ খোলা আছে, এবং Facebook, Instagram ও YouTube-এ রিলস গোনার জন্য স্ক্রিনের লেখা পড়ে। এটি শুধু ফোনেই হয়। অ্যাপের নাম, মিনিট ও রিলের সংখ্যা ছাড়া কিছু রেকর্ড হয় না, আর কিছুই ফোনের বাইরে যায় না।",
+        "Camera, photos and text recognition" to "ক্যামেরা, ছবি ও লেখা চেনা",
+        "Class-note photos you take or pick are copied into the app's private folder. Text is read from them on your phone with Google ML Kit's on-device model; images are not uploaded."
+            to "ক্লাস নোটের যে ছবি তোলেন বা বেছে নেন, তা অ্যাপের নিজস্ব ফোল্ডারে কপি হয়। Google ML Kit-এর অন-ডিভাইস মডেল দিয়ে ফোনেই লেখা পড়া হয়; কোনো ছবি আপলোড হয় না।",
+        "Notifications and alarms" to "নোটিফিকেশন ও অ্যালার্ম",
+        "Reminders, the wake-up alarm and the status countdown are scheduled on your phone with Android's alarm system. They need no internet."
+            to "রিমাইন্ডার, ঘুম ভাঙার অ্যালার্ম ও স্ট্যাটাস কাউন্টডাউন অ্যান্ড্রয়েডের অ্যালার্ম দিয়ে ফোনেই চলে। এর জন্য ইন্টারনেট লাগে না।",
+        "Sharing and backups are your choice" to "শেয়ার ও ব্যাকআপ আপনার ইচ্ছায়",
+        "Share cards, PDF notes and backup files are created only when you tap share or export, and go only where you send them. Mood, journal, money and exact sleep times are off on share cards unless you turn them on."
+            to "শেয়ার কার্ড, PDF নোট ও ব্যাকআপ ফাইল শুধু আপনি শেয়ার বা এক্সপোর্ট চাপলেই তৈরি হয় এবং শুধু যেখানে পাঠান সেখানেই যায়। মুড, জার্নাল, টাকা ও ঘুমের সঠিক সময় শেয়ার কার্ডে বন্ধ থাকে, যদি না আপনি চালু করেন।",
+        "No ads, no tracking" to "বিজ্ঞাপন নেই, ট্র্যাকিং নেই",
+        "The app contains no advertising, no analytics and no third-party tracking." to "অ্যাপে কোনো বিজ্ঞাপন, অ্যানালিটিক্স বা তৃতীয় পক্ষের ট্র্যাকিং নেই।",
+        "Deleting your data" to "আপনার তথ্য মোছা",
+        "Use Settings, Reset to wipe everything, or uninstall the app. Because no copy exists anywhere else, deleted data cannot be recovered unless you exported a backup."
+            to "সব মুছতে সেটিংস থেকে রিসেট করুন, অথবা অ্যাপ আনইনস্টল করুন। অন্য কোথাও কপি না থাকায় ব্যাকআপ এক্সপোর্ট না করলে মোছা তথ্য আর ফেরত আনা যায় না।",
+        "Contact" to "যোগাযোগ", "Questions about this policy: Bornosoft, bornosoft.bd." to "এই নীতি নিয়ে প্রশ্ন: বর্ণসফট, bornosoft.bd।",
+        "Personal use" to "ব্যক্তিগত ব্যবহার",
+        "Dinrekha is a personal tool for planning your day, habits and money. Use it at your own discretion." to "দিনরেখা আপনার দিন, অভ্যাস ও টাকা পরিকল্পনার একটি ব্যক্তিগত টুল। নিজের বিবেচনায় ব্যবহার করুন।",
+        "Not professional advice" to "পেশাদার পরামর্শ নয়",
+        "Money summaries, sleep and mood insights are for your own tracking only. They are not financial, medical or mental-health advice. If you are struggling, please talk to someone you trust or a professional."
+            to "টাকার হিসাব, ঘুম ও মুডের তথ্য শুধু নিজের ট্র্যাকিংয়ের জন্য। এগুলো আর্থিক, চিকিৎসা বা মানসিক স্বাস্থ্যের পরামর্শ নয়। কষ্টে থাকলে বিশ্বস্ত কারো বা একজন পেশাদারের সাথে কথা বলুন।",
+        "Reminders can be missed" to "রিমাইন্ডার মিস হতে পারে",
+        "Battery savers, phone restarts or system settings can delay or stop alarms. Don't rely on the app for anything critical."
+            to "ব্যাটারি সেভার, ফোন রিস্টার্ট বা সিস্টেম সেটিংস অ্যালার্ম দেরি বা বন্ধ করতে পারে। খুব জরুরি কিছুর জন্য শুধু এই অ্যাপের উপর নির্ভর করবেন না।",
+        "Your data, your responsibility" to "আপনার তথ্য, আপনার দায়িত্ব",
+        "Your data lives only on your phone. Export a backup regularly; a lost or reset phone means lost data."
+            to "আপনার তথ্য শুধু আপনার ফোনে থাকে। নিয়মিত ব্যাকআপ নিন; ফোন হারালে বা রিসেট করলে তথ্যও হারাবে।",
+        "Changes" to "পরিবর্তন",
+        "These terms and the privacy policy may change with app updates. The date at the top shows the latest version."
+            to "অ্যাপ আপডেটের সাথে এই শর্ত ও গোপনীয়তা নীতি বদলাতে পারে। উপরের তারিখটি সর্বশেষ সংস্করণ দেখায়।",
+        "17 November 2026" to "১৭ নভেম্বর ২০২৬",
+
+        // ---------------- Sleep & journal
+        "Sleep" to "ঘুম", "Mood & journal" to "মুড ও জার্নাল", "How did you sleep?" to "ঘুম কেমন হলো?",
+        "Last 14 nights" to "গত ১৪ রাত", "Avg sleep" to "গড় ঘুম", "Avg bedtime" to "গড় ঘুমের সময়", "On time" to "সময়মতো",
+        "History" to "ইতিহাস", "Log another night" to "আরেক রাত লিখুন", " Under 7h" to " ৭ ঘণ্টার কম", "Night of" to "রাত",
+        "Went to bed" to "ঘুমাতে গেলাম", "Woke up" to "ঘুম থেকে উঠলাম", "Dreams, wake-ups…" to "স্বপ্ন, ঘুম ভাঙা…",
+        "A few heavy days" to "কয়েকটা কঠিন দিন গেল",
+        "Talking to someone you trust, a short walk outside, or writing it down can help." to "বিশ্বস্ত কারো সাথে কথা বলা, বাইরে একটু হাঁটা, বা লিখে ফেলা সাহায্য করতে পারে।",
+        "Message a friend" to "বন্ধুকে মেসেজ দিন", "Write it down" to "লিখে ফেলুন", "Tap to write" to "লিখতে চাপুন",
+        "Write today" to "আজকের কথা লিখুন", "7-day avg " to "৭ দিনের গড় ", "Entries" to "লেখাগুলো", "Low " to "খারাপ ",
+        " Great" to " দারুণ", "What happened today? One line is enough." to "আজ কী হলো? এক লাইনই যথেষ্ট।",
+
+        // ---------------- Focus
+        "Focus Timer" to "ফোকাস টাইমার", "Deep work & focused study sessions" to "গভীর কাজ ও মনোযোগী পড়াশোনা",
+        "Session in progress" to "সেশন চলছে", "Today's Sessions" to "আজকের সেশন", "Recent Sessions" to "সাম্প্রতিক সেশন",
+        "Session Note" to "সেশন নোট", "What did you accomplish?" to "কী কী করলেন?", "SCHEDULED FOR TODAY" to "আজকের নির্ধারিত",
+        "FOCUS MODE" to "ফোকাস মোড", "DURATION" to "সময়কাল", "Adjust Length" to "সময় ঠিক করুন", "Do Not Disturb" to "বিরক্ত করবেন না",
+        "Tap to allow DND permission" to "DND অনুমতি দিতে চাপুন", "Paused" to "বিরতি", "+5 min" to "+৫ মিনিট",
+        "Resume" to "আবার শুরু", "Pause" to "বিরতি", "Stop" to "থামান",
+
+        // ---------------- Calendar
+        "Calendar exported" to "ক্যালেন্ডার এক্সপোর্ট হয়েছে", "Show layers…" to "স্তর দেখান…", "Import .ics file" to ".ics ফাইল ইমপোর্ট",
+        "Export my events (.ics)" to "আমার ইভেন্ট এক্সপোর্ট (.ics)", "Event" to "ইভেন্ট", "Anything about this day" to "এই দিন সম্পর্কে কিছু",
+        "Show on the calendar" to "ক্যালেন্ডারে দেখান", "New event" to "নতুন ইভেন্ট", "Edit event" to "ইভেন্ট এডিট",
+        "Add a note for this day" to "এই দিনের জন্য নোট যোগ করুন", "Nothing in the next 60 days" to "আগামী ৬০ দিনে কিছু নেই",
+        "Add an event with the button below, or switch on more layers." to "নিচের বোতাম দিয়ে ইভেন্ট যোগ করুন, অথবা আরও স্তর চালু করুন।",
+        "Add note" to "নোট যোগ করুন", "Edit note" to "নোট এডিট", "Open day view" to "দিনের ভিউ খুলুন", "Free day" to "ফাঁকা দিন",
+        "My events" to "আমার ইভেন্ট", "Classes, buses, prayers & blocks" to "ক্লাস, বাস, নামাজ ও ব্লক", "Holidays" to "ছুটি", "Day notes" to "দিনের নোট",
+        "On a date" to "নির্দিষ্ট তারিখে", "After a number of times" to "নির্দিষ্ট সংখ্যক বারের পর", "Event added" to "ইভেন্ট যোগ হয়েছে",
+        "Event saved" to "ইভেন্ট সেভ হয়েছে", "Event Title" to "ইভেন্টের নাম", "E.g. Study session, Project meeting" to "যেমন: পড়ার সেশন, প্রজেক্ট মিটিং",
+        "Starts" to "শুরু", "Ends" to "শেষ", "The end has to be after the start." to "শেষ সময় শুরুর পরে হতে হবে।",
+        "Place (optional)" to "স্থান (ঐচ্ছিক)", "E.g. Library, Room 402, Home" to "যেমন: লাইব্রেরি, রুম ৪০২, বাসা",
+        "Notes (optional)" to "নোট (ঐচ্ছিক)", "Colour" to "রং", "Repeats" to "পুনরাবৃত্তি", "Remind me" to "মনে করিয়ে দিন",
+        "Add Event" to "ইভেন্ট যোগ করুন", "Reminders: " to "রিমাইন্ডার: ", "Class Notes & Photos" to "ক্লাস নোট ও ছবি",
+        "Add photo" to "ছবি যোগ করুন", "No photos captured for this class yet." to "এই ক্লাসের এখনো কোনো ছবি নেই।",
+        "Edit in Schedule" to "সময়সূচিতে এডিট", "Edit holidays" to "ছুটি এডিট", "Delete event" to "ইভেন্ট মুছুন",
+        "Edit which events?" to "কোন ইভেন্টগুলো এডিট করবেন?", "Delete which events?" to "কোন ইভেন্টগুলো মুছবেন?", "All events" to "সব ইভেন্ট",
+        "Delete all" to "সব মুছুন", "Only this one" to "শুধু এটি", "at the start" to "শুরুতে", "1 day before" to "১ দিন আগে",
+        "1 hour before" to "১ ঘণ্টা আগে",
+
+        // ---------------- Wallet
+        "Total balance" to "মোট ব্যালেন্স", "In" to "আয়", "Out" to "ব্যয়", "Expense" to "খরচ", "Income" to "আয়",
+        "Transfer" to "ট্রান্সফার", "Adjust" to "সমন্বয়", "Budgets" to "বাজেট", "Bills due" to "বকেয়া বিল", "Recent" to "সাম্প্রতিক",
+        "Accounts" to "অ্যাকাউন্ট", "Hide amounts" to "টাকার অঙ্ক লুকান", "Show amounts" to "টাকার অঙ্ক দেখান",
+        "Monthly report" to "মাসিক রিপোর্ট", "No transactions yet" to "এখনো কোনো লেনদেন নেই",
+        "Tap Expense or Income to record your first one." to "প্রথম লেনদেন লিখতে খরচ বা আয় চাপুন।",
+        "Balance Adjustment" to "ব্যালেন্স সমন্বয়", "Uncategorised" to "অশ্রেণীবদ্ধ", "Transaction deleted" to "লেনদেন মুছে ফেলা হয়েছে",
+        "Edit account" to "অ্যাকাউন্ট এডিট", "Balance" to "ব্যালেন্স", "Add account" to "অ্যাকাউন্ট যোগ করুন", "Add Account" to "অ্যাকাউন্ট যোগ করুন",
+        "Bank • MFS • Cash" to "ব্যাংক, মোবাইল ব্যাংকিং, নগদ", "Actual balance now" to "এখনকার আসল ব্যালেন্স", "Amount" to "পরিমাণ",
+        "Account" to "অ্যাকাউন্ট", "Transfer fee (optional, e.g. bKash cash-out)" to "ট্রান্সফার ফি (ঐচ্ছিক, যেমন বিকাশ ক্যাশআউট)",
+        "Saved as a separate Fees & Charges expense" to "আলাদা 'ফি ও চার্জ' খরচ হিসেবে সেভ হবে", "Note (optional)" to "নোট (ঐচ্ছিক)",
+        "What was this for?" to "কীসের জন্য?", "Delete transaction" to "লেনদেন মুছুন", "Delete this transaction?" to "এই লেনদেন মুছবেন?",
+        "Its linked fee is deleted too." to "এর সাথে যুক্ত ফি-ও মুছে যাবে।", "This cannot be undone." to "এটি আর ফেরানো যাবে না।",
+        "Add transaction" to "লেনদেন যোগ করুন", "Edit transaction" to "লেনদেন এডিট",
+        "Set a screen lock (PIN / fingerprint) on your phone to use the app lock." to "অ্যাপ লক ব্যবহার করতে ফোনে স্ক্রিন লক (পিন / আঙুলের ছাপ) সেট করুন।",
+        "Unlock Dinrekha" to "দিনরেখা আনলক করুন", "Fingerprint or phone PIN" to "আঙুলের ছাপ বা ফোনের পিন",
+        "Monthly limit (৳) — empty = no budget" to "মাসিক সীমা (৳) — খালি = কোনো বাজেট নেই", "Recurring" to "নিয়মিত খরচ",
+        "+ New recurring item" to "+ নতুন নিয়মিত খরচ", "New recurring" to "নতুন নিয়মিত খরচ", "Edit recurring" to "নিয়মিত খরচ এডিট",
+        "Title (e.g. Rent)" to "নাম (যেমন: বাসা ভাড়া)", "Amount ৳" to "পরিমাণ ৳", "Day of month (1–31)" to "মাসের তারিখ (১–৩১)",
+        "+ Add account" to "+ অ্যাকাউন্ট যোগ করুন", "Edit categories" to "বিভাগ এডিট", " (archived)" to " (আর্কাইভ)",
+        "New account" to "নতুন অ্যাকাউন্ট", "Nickname (e.g. DBBL salary)" to "ডাকনাম (যেমন: DBBL বেতন)", "Opening balance ৳" to "শুরুর ব্যালেন্স ৳",
+        "Last 4 digits (optional)" to "শেষ ৪ ডিজিট (ঐচ্ছিক)", "Archived (hidden, history kept)" to "আর্কাইভ (লুকানো, ইতিহাস থাকবে)",
+        "Has transactions — archived instead" to "লেনদেন আছে — তাই আর্কাইভ করা হলো", "Real balance ৳" to "আসল ব্যালেন্স ৳",
+        "Categories" to "বিভাগ", "+ Expense category" to "+ খরচের বিভাগ", "+ Income" to "+ আয়", "New category" to "নতুন বিভাগ",
+        "Edit category" to "বিভাগ এডিট", "Icon (emoji)" to "আইকন (ইমোজি)", "In use by transactions — kept" to "লেনদেনে ব্যবহৃত — রাখা হলো",
+        "Net" to "নিট", "Spent" to "খরচ", "Monthly Comparison" to "মাসিক তুলনা",
+        "No previous month data available to compare." to "তুলনার জন্য আগের মাসের তথ্য নেই।",
+        "Spending is identical to last month." to "খরচ গত মাসের সমান।", "Category Breakdown" to "বিভাগ অনুযায়ী",
+        "No recorded expenses for this month." to "এই মাসে কোনো খরচ লেখা হয়নি।", "Other" to "অন্যান্য",
+        "Daily Spending Trend" to "দৈনিক খরচের ধারা", "Top Expenses" to "সবচেয়ে বড় খরচ",
+        "Search transactions or notes" to "লেনদেন বা নোট খুঁজুন", "All types" to "সব ধরন", "No transactions found" to "কোনো লেনদেন পাওয়া যায়নি",
+        "Try adjusting your search terms or clearing some filters." to "অন্য শব্দে খুঁজুন বা কিছু ফিল্টার সরান।",
+
+        // ---------------- Blocker
+        "App limits" to "অ্যাপ সীমা", "App Usage & Screen Time" to "অ্যাপ ব্যবহার ও স্ক্রিন টাইম", "Screen Time" to "স্ক্রিন টাইম",
+        "Distractions Blocked" to "বাধা আটকানো হয়েছে", "TODAY'S APP ACTIVITY" to "আজকের অ্যাপ ব্যবহার",
+        "No app activity recorded yet today.\nUsage updates as apps are opened." to "আজ এখনো কোনো অ্যাপ ব্যবহার রেকর্ড হয়নি।\nঅ্যাপ খুললে আপডেট হবে।",
+        "Shorts & Reels Watched" to "দেখা শর্টস ও রিলস", "No reels scrolled today. Focus is intact!" to "আজ কোনো রিল দেখা হয়নি। মনোযোগ ঠিক আছে!",
+        "Instagram Reels" to "ইনস্টাগ্রাম রিলস", "YouTube Shorts" to "ইউটিউব শর্টস", "Facebook Reels" to "ফেসবুক রিলস",
+        "Emergency Unlock Active" to "জরুরি আনলক চালু", "Active Rules" to "সক্রিয় নিয়ম", "Blocks Today" to "আজ ব্লক হয়েছে",
+        "Reels count reset for today" to "আজকের রিল গণনা রিসেট হয়েছে", "Side counter" to "পাশের কাউন্টার",
+        "Small time + reels pill in Facebook, Instagram, YouTube" to "ফেসবুক, ইনস্টাগ্রাম, ইউটিউবে ছোট সময় + রিল কাউন্টার",
+        "TODAY'S APP LIMITS" to "আজকের অ্যাপ সীমা", "Emergency unlock" to "জরুরি আনলক",
+        "Anti-cheat strict mode is active. Cannot disable this rule right now." to "কঠোর মোড চালু আছে। এখন এই নিয়ম বন্ধ করা যাবে না।",
+        "Daily limit" to "দৈনিক সীমা", "Schedule" to "সময়সূচি", "Focus timer" to "ফোকাস টাইমার", "Class hours" to "ক্লাসের সময়",
+        "App group" to "অ্যাপ গ্রুপ", "During focus sessions" to "ফোকাস সেশনের সময়", "During scheduled classes" to "নির্ধারিত ক্লাসের সময়",
+        "Blocker Setup Required" to "ব্লকার সেটআপ দরকার",
+        "To accurately detect and block distracting apps, please grant the following Android permissions:" to "অ্যাপ সঠিকভাবে চিনে ব্লক করতে এই অনুমতিগুলো দিন:",
+        "Accessibility Service" to "অ্যাক্সেসিবিলিটি সেবা", "Detects foreground app & Chrome URLs instantly" to "খোলা অ্যাপ ও ক্রোমের লিংক সাথে সাথে চেনে",
+        "Usage Access" to "ব্যবহারের অনুমতি", "Tracks daily screen time accurately" to "দৈনিক স্ক্রিন টাইম সঠিকভাবে গোনে",
+        "Display Over Other Apps" to "অন্য অ্যাপের উপরে দেখানো", "Shows block screen over restricted apps" to "নিষিদ্ধ অ্যাপের উপর ব্লক স্ক্রিন দেখায়",
+        "Shorts & Reels Counter" to "শর্টস ও রিলস কাউন্টার",
+        "Short-form video tracking is paused. Turn on to count reels and receive mindful interval alerts." to "ছোট ভিডিও গণনা বন্ধ আছে। রিল গুনতে ও সতর্কবার্তা পেতে চালু করুন।",
+        "reels watched today" to "আজ রিল দেখা হয়েছে", "<1 min scroll" to "<১ মিনিট স্ক্রল", "DAILY REEL LIMIT" to "দৈনিক রিল সীমা",
+        "⚠️ Daily limit reached! Time to focus." to "⚠️ দৈনিক সীমা শেষ! এখন মনোযোগ দিন।", "Alerts every 25 reels to stay mindful" to "সচেতন থাকতে প্রতি ২৫ রিলে সতর্ক করবে",
+        "Reset count" to "গণনা রিসেট", "I choose to break my own rule" to "আমি নিজের নিয়ম ভাঙতে চাই", "Emergency 5-Min Unlock" to "জরুরি ৫ মিনিট আনলক",
+        "Daily limit reached: you have already used your 2 emergency unlocks for today." to "দৈনিক সীমা শেষ: আজকের ২টি জরুরি আনলক ব্যবহার হয়ে গেছে।",
+        "To prevent mindless bypassing, you must wait 60 seconds and type the sentence below." to "অভ্যাসবশত এড়িয়ে যাওয়া ঠেকাতে ৬০ সেকেন্ড অপেক্ষা করে নিচের বাক্যটি লিখুন।",
+        "Cool-down wait" to "অপেক্ষার সময়", "Ready ✓" to "প্রস্তুত ✓", "Type this exact sentence:" to "হুবহু এই বাক্যটি লিখুন:",
+        "Emergency unlock active for 5 minutes" to "৫ মিনিটের জন্য জরুরি আনলক চালু", "Unlock (5 min)" to "আনলক (৫ মিনিট)",
+        "Edit Rule" to "নিয়ম এডিট", "New Block Rule" to "নতুন ব্লক নিয়ম",
+        "Anti-cheat strict mode is active. This rule cannot be changed until tomorrow." to "কঠোর মোড চালু। আগামীকালের আগে এই নিয়ম বদলানো যাবে না।",
+        "Please give this rule a name" to "নিয়মের একটি নাম দিন", "Please select at least one app to restrict" to "অন্তত একটি অ্যাপ বেছে নিন",
+        "Rule saved" to "নিয়ম সেভ হয়েছে", "Save Rule" to "নিয়ম সেভ করুন",
+        "Anti-cheat strict mode is currently active. Changes to this rule are disabled until outside restricted hours." to "কঠোর মোড চালু। নিষিদ্ধ সময় শেষ না হওয়া পর্যন্ত এই নিয়ম বদলানো যাবে না।",
+        "Rule name" to "নিয়মের নাম", "e.g. Facebook & Insta, Sleep Time Block" to "যেমন: ফেসবুক ও ইনস্টা, ঘুমের সময় ব্লক", "RULE TYPE" to "নিয়মের ধরন",
+        "Schedule / Sleep" to "সময়সূচি / ঘুম", "Set maximum minutes allowed per day with warning notifications." to "দিনে সর্বোচ্চ কত মিনিট, সতর্কবার্তাসহ সেট করুন।",
+        "Block apps during specific hours (e.g. night bedtime to wake)." to "নির্দিষ্ট সময়ে অ্যাপ ব্লক করুন (যেমন রাতে ঘুম থেকে সকাল)।",
+        "Automatically blocks these apps whenever a Focus timer session is active." to "ফোকাস সেশন চললে এই অ্যাপগুলো স্বয়ংক্রিয়ভাবে ব্লক হবে।",
+        "Automatically blocks these apps during your scheduled class periods." to "ক্লাসের সময় এই অ্যাপগুলো স্বয়ংক্রিয়ভাবে ব্লক হবে।",
+        "Share a combined daily limit across all apps in this group." to "এই গ্রুপের সব অ্যাপের জন্য একটি মিলিত দৈনিক সীমা।",
+        "Select Apps to Block" to "ব্লক করার অ্যাপ বাছুন", "Add / Change Apps" to "অ্যাপ যোগ / পরিবর্তন",
+        "Website domains to block (Chrome)" to "ব্লক করার ওয়েবসাইট (ক্রোম)", "e.g. facebook.com, youtube.com, instagram.com" to "যেমন: facebook.com, youtube.com, instagram.com",
+        "Blocks matching domains in Chrome so you can't bypass via browser" to "ক্রোমেও এই সাইটগুলো ব্লক হবে, যাতে ব্রাউজার দিয়ে এড়ানো না যায়",
+        "TIME LIMITS" to "সময় সীমা", "Daily Limit" to "দৈনিক সীমা", "Completely blocked (0 min)" to "পুরোপুরি ব্লক (০ মিনিট)", "Blocked" to "ব্লক",
+        "Session Limit" to "সেশন সীমা", "Kick out after continuous use" to "টানা ব্যবহারের পর বের করে দেবে", "+ Enable session limit" to "+ সেশন সীমা চালু করুন",
+        "TIME WINDOW" to "সময়ের পরিসর", "Active Days (empty = every day)" to "সক্রিয় দিন (খালি = প্রতিদিন)", "Anti-Cheat Strict Mode" to "কঠোর মোড",
+        "Lock settings during active hours" to "সক্রিয় সময়ে সেটিংস লক থাকবে",
+        "When active, this rule cannot be disabled or edited. Bypassing requires a 60-second cooldown challenge (max 2 per day)." to "চালু থাকলে এই নিয়ম বন্ধ বা এডিট করা যাবে না। এড়াতে ৬০ সেকেন্ডের অপেক্ষা লাগবে (দিনে সর্বোচ্চ ২ বার)।",
+        "Select Apps to Restrict" to "নিষিদ্ধ করার অ্যাপ বাছুন", "Select Start Time" to "শুরুর সময় বাছুন", "Select End Time" to "শেষের সময় বাছুন",
+        "Delete this rule?" to "এই নিয়ম মুছবেন?", "This rule and all its app limits will be permanently removed." to "এই নিয়ম ও এর সব অ্যাপ সীমা চিরতরে মুছে যাবে।",
+        "App blocker & limits" to "অ্যাপ ব্লকার ও সীমা",
+
+        // ---------------- Class notes
+        "No notes to export" to "এক্সপোর্ট করার মতো নোট নেই", "Share course notes PDF" to "কোর্স নোট PDF শেয়ার", "Generating…" to "তৈরি হচ্ছে…",
+        "Export PDF" to "PDF এক্সপোর্ট", "Search text, tags, OCR..." to "লেখা, ট্যাগ, OCR খুঁজুন...", "⭐ Important" to "⭐ গুরুত্বপূর্ণ", "Important" to "গুরুত্বপূর্ণ",
+        "No class notes yet.\nTap 'Capture Note' to take board/slide photos!" to "এখনো কোনো ক্লাস নোট নেই।\nবোর্ড/স্লাইডের ছবি তুলতে 'নোট নিন' চাপুন!",
+        "No matching notes found" to "মিলে এমন নোট পাওয়া যায়নি", "Capture Note" to "নোট নিন", "Delete note & photos?" to "নোট ও ছবি মুছবেন?",
+        "This will permanently remove this class note and all its attached photos from your device." to "এই ক্লাস নোট ও এর সব ছবি আপনার ফোন থেকে চিরতরে মুছে যাবে।",
+        "Class Note" to "ক্লাস নোট", "Course Library" to "কোর্স লাইব্রেরি", "Add Course" to "কোর্স যোগ করুন",
+        "Search by code, title, teacher or room..." to "কোড, নাম, শিক্ষক বা রুম দিয়ে খুঁজুন...", "No matching courses found" to "মিলে এমন কোর্স নেই",
+        "No archived courses" to "কোনো আর্কাইভ কোর্স নেই", "No courses in your library yet" to "লাইব্রেরিতে এখনো কোনো কোর্স নেই",
+        "Try searching for another keyword" to "অন্য শব্দ দিয়ে খুঁজুন", "Tap '+ Add Course' to organize your class notes & board photos." to "ক্লাস নোট ও বোর্ডের ছবি গোছাতে '+ কোর্স যোগ করুন' চাপুন।",
+        "Add Your First Course" to "প্রথম কোর্স যোগ করুন", "Delete Course?" to "কোর্স মুছবেন?", "Delete Course" to "কোর্স মুছুন",
+        "Edit course" to "কোর্স এডিট", "Unarchive course" to "আর্কাইভ থেকে ফেরান", "Archive course" to "কোর্স আর্কাইভ", "Delete course" to "কোর্স মুছুন",
+        "Fall 2026" to "ফল ২০২৬", "Edit Course" to "কোর্স এডিট", "Add New Course" to "নতুন কোর্স যোগ", "Course Code *" to "কোর্স কোড *",
+        "e.g. CSE411, SE333" to "যেমন: CSE411, SE333", "Course Title *" to "কোর্সের নাম *", "e.g. Artificial Intelligence" to "যেমন: আর্টিফিশিয়াল ইন্টেলিজেন্স",
+        "Teacher" to "শিক্ষক", "Room" to "রুম", "Semester" to "সেমিস্টার", "Color Tag" to "রঙের ট্যাগ",
+        "Please enter course code" to "কোর্স কোড লিখুন", "Please enter course title" to "কোর্সের নাম লিখুন", "Create Course" to "কোর্স তৈরি করুন",
+        "Slide" to "স্লাইড", "Assignment" to "অ্যাসাইনমেন্ট", "Exam hint" to "পরীক্ষার ইঙ্গিত", "Course / বিষয়" to "বিষয়",
+        "Change date" to "তারিখ বদলান", "Snap Photo" to "ছবি তুলুন", "From Gallery" to "গ্যালারি থেকে", "Note Details" to "নোটের বিবরণ",
+        "Topic / Title (optional)" to "বিষয় / শিরোনাম (ঐচ্ছিক)", "e.g. Heuristic Search, Graph Algorithm" to "যেমন: হিউরিস্টিক সার্চ, গ্রাফ অ্যালগরিদম",
+        "Notes / Formulas / Transcript" to "নোট / সূত্র / লেখা", "Write formulas, hints, teacher's remarks..." to "সূত্র, ইঙ্গিত, শিক্ষকের কথা লিখুন...",
+        "Tags" to "ট্যাগ", "Please select a course" to "একটি কোর্স বাছুন", "Add at least a photo or some notes" to "অন্তত একটি ছবি বা কিছু নোট যোগ করুন",
+        "Saving note & processing photos…" to "নোট সেভ ও ছবি প্রসেস হচ্ছে…", "Share note image" to "নোটের ছবি শেয়ার",
+        "Detected Text from Board (OCR)" to "বোর্ড থেকে পাওয়া লেখা (OCR)", "Class Note OCR" to "ক্লাস নোট OCR", "Text copied to clipboard" to "লেখা কপি হয়েছে",
+        "Delete photo?" to "ছবি মুছবেন?", "This photo will be permanently removed from this note." to "এই ছবিটি নোট থেকে চিরতরে মুছে যাবে।",
+        "Class Notes" to "ক্লাস নোট",
+
+        // ---------------- Onboarding
+        "Quiet rhythm, deep focus, and offline finances — completely private." to "শান্ত ছন্দ, গভীর মনোযোগ আর অফলাইন হিসাব — পুরোপুরি ব্যক্তিগত।",
+        "Daily Horizon & Habits" to "দৈনিক রেখা ও অভ্যাস", "Track wake-up times, daily prayers, and customizable routines with Dayline." to "দিনরেখায় ঘুম থেকে ওঠা, নামাজ ও নিজের রুটিন ট্র্যাক করুন।",
+        "Deep Focus Sessions" to "গভীর ফোকাস সেশন", "Focused study and code blocks with automatic Do Not Disturb mode." to "স্বয়ংক্রিয় 'বিরক্ত করবেন না' মোডসহ মনোযোগী পড়া ও কোডিং।",
+        "Offline Personal Wallet" to "অফলাইন ব্যক্তিগত ওয়ালেট", "Cards, cashflow, and spending budgets stored 100% locally on your phone." to "কার্ড, আয়-ব্যয় ও বাজেট ১০০% আপনার ফোনেই থাকে।",
+        "RELIABLE ALARMS & REMINDERS" to "নির্ভরযোগ্য অ্যালার্ম ও রিমাইন্ডার",
+        "For routine alerts & prayer reminders" to "রুটিন ও নামাজের রিমাইন্ডারের জন্য", "Exact Alarms" to "সঠিক সময়ের অ্যালার্ম",
+        "Ensures wake-up alarms ring at the precise minute" to "ঘুম ভাঙার অ্যালার্ম ঠিক মিনিটে বাজবে", "Battery Unrestricted" to "ব্যাটারি সীমাবদ্ধতা বন্ধ",
+        "Prevents system from putting the app to sleep" to "সিস্টেম অ্যাপকে ঘুম পাড়িয়ে দেবে না", "Device-Specific Tips (Xiaomi, Samsung, etc.)" to "ফোন অনুযায়ী টিপস (শাওমি, স্যামসাং ইত্যাদি)",
+        "Zero tracking • 100% offline • No account required" to "কোনো ট্র্যাকিং নেই, পুরোপুরি অফলাইন, অ্যাকাউন্ট লাগে না",
+        "Tap anywhere to skip • স্পর্শ করে এগিয়ে যান" to "যেকোনো জায়গায় স্পর্শ করে এগিয়ে যান",
+
+        // ---------------- Reports & cards
+        "Daily Summary" to "দৈনিক সারাংশ", "Export Share Card" to "শেয়ার কার্ড এক্সপোর্ট", "Computing daily summary..." to "দৈনিক সারাংশ তৈরি হচ্ছে...",
+        "Edit Weights" to "গুরুত্ব বদলান", "DAILY PROGRESS" to "দৈনিক অগ্রগতি", "DEEP FOCUS" to "গভীর ফোকাস", "HABITS DONE" to "অভ্যাস সম্পন্ন",
+        "PRAYERS" to "নামাজ", "All 5 on time ✓" to "৫ ওয়াক্তই সময়মতো ✓", "Daily prayers" to "দৈনিক নামাজ", "SCREEN TIME" to "স্ক্রিন টাইম",
+        "WEEKLY PROGRESS" to "সাপ্তাহিক অগ্রগতি", "TOTAL FOCUS THIS WEEK" to "এই সপ্তাহের মোট ফোকাস", "HABITS CONSISTENCY" to "অভ্যাসের ধারাবাহিকতা",
+        "PRAYERS OFFERED" to "আদায়কৃত নামাজ", "DAILY SCREEN TIME" to "দৈনিক স্ক্রিন টাইম", "WOKE ON TIME" to "সময়মতো ওঠা",
+        "30-DAY TRANSFORMATION" to "৩০ দিনের পরিবর্তন", "FOCUS TIME" to "ফোকাস সময়", "HABIT CONSISTENCY" to "অভ্যাসের ধারাবাহিকতা",
+        "Routine transformed" to "রুটিন বদলে গেছে", "PRAYERS COMPLETED" to "নামাজ সম্পন্ন", "Rhythm established" to "ছন্দ তৈরি হয়েছে",
+        "CLASS NOTES SAVED" to "সেভ করা ক্লাস নোট", "Fully archived" to "সম্পূর্ণ সংরক্ষিত", "DINREKHA • দিনরেখা" to "দিনরেখা", "SCORE" to "স্কোর",
+        "Mastery Day 🌟" to "সেরা দিন 🌟", "High Momentum ⚡" to "দারুণ গতি ⚡", "Steady Progress 👍" to "স্থির অগ্রগতি 👍", "Day in Motion 🔄" to "দিন চলছে 🔄",
+        "Wake: On time ✓" to "ওঠা: সময়মতো ✓", "Wake: In progress" to "ওঠা: চলছে", "Disciplined morning and deep work." to "শৃঙ্খলাবদ্ধ সকাল আর গভীর কাজ।",
+        "Consistent steps toward goals." to "লক্ষ্যের দিকে নিয়মিত পদক্ষেপ।", "WEEKLY AVERAGE" to "সাপ্তাহিক গড়", "30-DAY HABIT TRANSFORMATION" to "৩০ দিনের অভ্যাস পরিবর্তন",
+        "DAILY FOCUS HOURS (7 DAYS)" to "দৈনিক ফোকাস ঘণ্টা (৭ দিন)", "✨ WEEKLY TAKEAWAYS" to "✨ সপ্তাহের শিক্ষা", "🏆 30-DAY MILESTONES UNLOCKED" to "🏆 ৩০ দিনের অর্জন",
+        "EARNED ACHIEVEMENTS" to "অর্জিত সাফল্য", "Tracked with Dinrekha  •  Personal Growth & Discipline" to "দিনরেখায় ট্র্যাক করা — ব্যক্তিগত উন্নতি ও শৃঙ্খলা",
+        "Solid Consistency 👍" to "দৃঢ় ধারাবাহিকতা 👍", "Progress in Motion 🔄" to "অগ্রগতি চলছে 🔄", "Woke on time • Disciplined morning" to "সময়মতো ওঠা, শৃঙ্খলাবদ্ধ সকাল",
+        "SLEEP & WAKE RHYTHM" to "ঘুম ও ওঠার ছন্দ", "On time ✓" to "সময়মতো ✓", "DEEP WORK & FOCUS" to "গভীর কাজ ও ফোকাস", "Habits Done" to "অভ্যাস সম্পন্ন",
+        "Daily Prayers" to "দৈনিক নামাজ", "Full consistency ✓" to "পুরো ধারাবাহিকতা ✓", "Keep offering" to "আদায় চালিয়ে যান",
+        "SCREEN TIME & LIMITS" to "স্ক্রিন টাইম ও সীমা", "ACADEMICS & TASKS" to "পড়াশোনা ও কাজ", "JOURNAL & MOOD (PRIVATE)" to "জার্নাল ও মুড (ব্যক্তিগত)",
+        "Improvement Score Weights" to "উন্নতি স্কোরের গুরুত্ব", "Wake on time" to "সময়মতো ওঠা", "Sleep before target" to "লক্ষ্যের আগে ঘুম",
+        "Deep focus minutes" to "গভীর ফোকাসের মিনিট", "Daily habits completed" to "দৈনিক অভ্যাস সম্পন্ন", "Screen time limit" to "স্ক্রিন টাইম সীমা",
+        "Save Weights" to "গুরুত্ব সেভ করুন", "Share Card Studio" to "শেয়ার কার্ড স্টুডিও", "Save Gallery" to "গ্যালারিতে সেভ", "Share Card" to "কার্ড শেয়ার",
+        "🔵  Share to Facebook Story" to "🔵  ফেসবুক স্টোরিতে শেয়ার", "CARD THEME" to "কার্ডের থিম", "PRIVACY & DISPLAY CONTROLS" to "গোপনীয়তা ও প্রদর্শন",
+        "Your Name / Handle (Optional)" to "আপনার নাম (ঐচ্ছিক)", "e.g. Ali Nayeem" to "যেমন: আলী নাঈম", "Show Deep Focus Minutes" to "ফোকাসের মিনিট দেখান",
+        "Show Habit Completion" to "অভ্যাস সম্পন্ন দেখান", "Show Daily Prayers" to "দৈনিক নামাজ দেখান", "Show Screen Time" to "স্ক্রিন টাইম দেখান",
+        "Show Earned Badges" to "অর্জিত ব্যাজ দেখান", "STRICTLY PRIVATE (OFF BY DEFAULT)" to "একদম ব্যক্তিগত (শুরুতে বন্ধ)",
+        "Include Personal Mood (1-5)" to "নিজের মুড যোগ করুন (১-৫)", "Include Journal Note" to "জার্নাল নোট যোগ করুন", "Include Exact Sleep/Wake Times" to "ঘুম/ওঠার সঠিক সময় যোগ করুন",
+        "Rendering crisp 1080p card..." to "কার্ড তৈরি হচ্ছে...", "Facebook App ID" to "ফেসবুক অ্যাপ আইডি",
+        "Saved to Pictures/Dinrekha" to "Pictures/Dinrekha-তে সেভ হয়েছে", "Failed to save image" to "ছবি সেভ হয়নি", "Share to Facebook" to "ফেসবুকে শেয়ার",
+        "Share Story Card" to "স্টোরি কার্ড শেয়ার", "30-Day Plan Transformation" to "৩০ দিনের পরিকল্পনার পরিবর্তন", "Export Transformation Card" to "পরিবর্তনের কার্ড এক্সপোর্ট",
+        "Analyzing 30-day journey..." to "৩০ দিনের যাত্রা বিশ্লেষণ হচ্ছে...", "BEFORE & AFTER (30 DAYS)" to "আগে ও পরে (৩০ দিন)", "Day 1 Baseline" to "প্রথম দিনের অবস্থা",
+        "Day 30 Mastery" to "৩০তম দিনের দক্ষতা", "CORE PILLAR COMPARISON" to "মূল বিষয়ের তুলনা", "⚡ Deep Focus / Day" to "⚡ গভীর ফোকাস / দিন",
+        "✅ Habit Consistency" to "✅ অভ্যাসের ধারাবাহিকতা", "📱 Screen Time / Day" to "📱 স্ক্রিন টাইম / দিন", "TOTAL PLAN ACHIEVEMENTS" to "পরিকল্পনার মোট অর্জন",
+        "Focus Logged" to "ফোকাস রেকর্ড", "Prayers Offered" to "আদায়কৃত নামাজ", "30-DAY BADGES UNLOCKED" to "৩০ দিনের ব্যাজ অর্জিত",
+        "Weekly Progress Report" to "সাপ্তাহিক অগ্রগতি রিপোর্ট", "30-Day Plan" to "৩০ দিনের পরিকল্পনা", "Export Story Card" to "স্টোরি কার্ড এক্সপোর্ট",
+        "Calculating weekly statistics & trends..." to "সাপ্তাহিক হিসাব তৈরি হচ্ছে...", "Deep Focus" to "গভীর ফোকাস", "Habits Consistency" to "অভ্যাসের ধারাবাহিকতা",
+        "Exceptional consistency ✓" to "অসাধারণ ধারাবাহিকতা ✓", "Regular rhythm" to "নিয়মিত ছন্দ", "Daily Screen Time" to "দৈনিক স্ক্রিন টাইম",
+        "BEDTIME & SLEEP RHYTHM" to "ঘুমের সময় ও ছন্দ", "DAILY HABIT COMPLETION HEATMAP" to "দৈনিক অভ্যাসের হিটম্যাপ", "HIGHLIGHTS & STREAKS" to "উল্লেখযোগ্য ও ধারাবাহিকতা",
+        "Best Day" to "সেরা দিন", "Longest Streaks" to "দীর্ঘতম ধারা", "AUTO INSIGHTS (PLAIN WORDS)" to "সহজ কথায় পর্যবেক্ষণ", "ACHIEVEMENTS EARNED" to "অর্জিত সাফল্য",
+        "Weekly Progress & Story Card" to "সাপ্তাহিক অগ্রগতি ও স্টোরি কার্ড", "See charts, trends vs last week & export image" to "চার্ট, গত সপ্তাহের তুলনা দেখুন ও ছবি এক্সপোর্ট করুন",
+        "Woke on Time" to "সময়মতো ওঠা", "Average Mood" to "গড় মুড", "What went well this week?" to "এই সপ্তাহে কী ভালো হলো?",
+        "Habits you sustained, deep focus blocks, or positive momentum." to "যে অভ্যাস ধরে রেখেছেন, গভীর ফোকাস, বা ভালো অগ্রগতি।",
+        "What got in the way?" to "কী বাধা দিল?", "Distractions, low energy, poor sleep, or interruptions." to "মনোযোগে বাধা, ক্লান্তি, কম ঘুম, বা ব্যাঘাত।",
+        "One small change for next week" to "আগামী সপ্তাহের জন্য একটি ছোট পরিবর্তন",
+        "E.g. put phone away 15 min earlier, prepare study desk at night." to "যেমন: ১৫ মিনিট আগে ফোন রাখা, রাতেই পড়ার টেবিল গোছানো।",
+        "Review Saved ✓" to "পর্যালোচনা সেভ হয়েছে ✓", "Save Weekly Review" to "সাপ্তাহিক পর্যালোচনা সেভ করুন", "Write your thoughts…" to "আপনার ভাবনা লিখুন…",
+        "30-Day Milestone" to "৩০ দিনের মাইলফলক", "Review" to "পর্যালোচনা", "Progress" to "অগ্রগতি", "Current Day" to "বর্তমান দিন", "Remaining" to "বাকি",
+        "Daily Completion:" to "দৈনিক সম্পন্ন:",
+
+        // ---------------- Stats
+        "Habit & Focus Analytics" to "অভ্যাস ও ফোকাস বিশ্লেষণ", "Calculated from Day 1 to current milestone" to "প্রথম দিন থেকে এখন পর্যন্ত হিসাব",
+        "Wake-up Streak" to "ওঠার ধারাবাহিকতা", "Best Streak" to "সেরা ধারা", "Days in Plan" to "পরিকল্পনার দিন", "Habit Success Rates" to "অভ্যাসের সাফল্যের হার",
+        "Starts on Day 1" to "প্রথম দিন থেকে শুরু", "Weekly Deep Work Hours" to "সাপ্তাহিক গভীর কাজের ঘণ্টা",
+
+        // ---------------- Notifications settings & log
+        "Scheduled (next of each)" to "নির্ধারিত (প্রতিটির পরেরটি)", "Nothing scheduled." to "কিছু নির্ধারিত নেই।", "Recently fired" to "সম্প্রতি এসেছে",
+        "Nothing yet." to "এখনো কিছু নেই।", "All reminders" to "সব রিমাইন্ডার", "Everything is off — including the wake-up alarm" to "সব বন্ধ — ঘুম ভাঙার অ্যালার্মসহ",
+        "Status bar countdown" to "স্ট্যাটাস বারে কাউন্টডাউন", "Silent always-on notification: next reminder + time left" to "নীরব নোটিফিকেশন: পরের রিমাইন্ডার ও বাকি সময়",
+        "Mute today" to "আজ নীরব", "Silences everything except the wake-up alarm until midnight" to "মধ্যরাত পর্যন্ত ঘুম ভাঙার অ্যালার্ম ছাড়া সব নীরব",
+        "Holiday mode" to "ছুটির মোড", "Pause class & bus reminders for a date range (e.g. semester break)" to "নির্দিষ্ট দিনগুলোতে ক্লাস ও বাসের রিমাইন্ডার বন্ধ (যেমন সেমিস্টার বিরতি)",
+        "Quiet hours" to "নীরব সময়", "Wake-up snooze" to "অ্যালার্ম স্নুজ", "Snooze length" to "স্নুজের সময়", "Max snoozes per morning" to "সকালে সর্বোচ্চ স্নুজ",
+        "Reminder types" to "রিমাইন্ডারের ধরন", "Test arrives in ~5 s" to "~৫ সেকেন্ডে টেস্ট আসবে", "Quiet hours start" to "নীরব সময় শুরু",
+        "Quiet hours end" to "নীরব সময় শেষ", "At the time" to "ঠিক সময়ে", "At your wake target" to "ওঠার লক্ষ্য সময়ে",
+        "Before bedtime (set in Schedule)" to "ঘুমের আগে (সময়সূচিতে সেট)", "At bedtime" to "ঘুমের সময়ে", "At each routine's time" to "প্রতিটি রুটিনের সময়ে",
+        "As set on each event" to "প্রতিটি ইভেন্টে যেমন সেট", "Sound" to "শব্দ", "Ringtone" to "রিংটোন", "▶ Test this notification" to "▶ এই নোটিফিকেশন টেস্ট করুন",
+        "Notification log" to "নোটিফিকেশন লগ",
+
+        // ---------------- Routines
+        "Read Quran" to "কুরআন পড়া", "Call family" to "পরিবারকে ফোন", "Laundry" to "কাপড় ধোয়া", "Clean room" to "রুম পরিষ্কার", "Gym" to "জিম",
+        "Pay mobile bill" to "মোবাইল বিল দেওয়া", "Haircut" to "চুল কাটা", "Plan next week" to "আগামী সপ্তাহের পরিকল্পনা", "+ New routine" to "+ নতুন রুটিন",
+        "Quick start" to "দ্রুত শুরু", "New routine" to "নতুন রুটিন", "Edit routine" to "রুটিন এডিট", "Icon" to "আইকন", "Name" to "নাম",
+        "Day of month" to "মাসের তারিখ", "Time (optional)" to "সময় (ঐচ্ছিক)", "Clear time" to "সময় মুছুন", "Notification at the time, with Done ✓" to "সময়মতো নোটিফিকেশন, 'সম্পন্ন ✓' সহ",
+        "In shorter months it falls on the last day." to "ছোট মাসে এটি শেষ দিনে পড়বে।", "Routine time" to "রুটিনের সময়", "My routines" to "আমার রুটিন",
+
+        // ---------------- Schedule editor
+        "Plan" to "পরিকল্পনা", "Start (Day 1)" to "শুরু (দিন ১)", "Length" to "দৈর্ঘ্য", "Screens off" to "স্ক্রিন বন্ধ", "Sleep phases & goals" to "ঘুমের ধাপ ও লক্ষ্য",
+        "+ Phase" to "+ ধাপ", "Class-day wake overrides" to "ক্লাসের দিনের ওঠার সময়", "Classes" to "ক্লাস", "+ Class" to "+ ক্লাস",
+        "No classes. Tap + Class." to "কোনো ক্লাস নেই। + ক্লাস চাপুন।", "+ Bus" to "+ বাস", "Study / research / code blocks" to "পড়া / গবেষণা / কোডিংয়ের সময়",
+        "+ Block" to "+ সময় যোগ", "Prayer times" to "নামাজের সময়", "+ Holiday" to "+ ছুটি", "Reset schedule to my original plan" to "সময়সূচি আগের পরিকল্পনায় ফেরান",
+        "Before noon = after midnight" to "দুপুরের আগে = মধ্যরাতের পরে", "Focus blocks expected" to "প্রত্যাশিত ফোকাস সময়", "Prayer goal (reminded)" to "নামাজের লক্ষ্য (রিমাইন্ডারসহ)",
+        "New class" to "নতুন ক্লাস", "Edit class" to "ক্লাস এডিট", "Course (e.g. AI (SE333))" to "কোর্স (যেমন: AI (SE333))", "Class starts" to "ক্লাস শুরু",
+        "Class ends" to "ক্লাস শেষ", "New bus" to "নতুন বাস", "Edit bus" to "বাস এডিট", "Departs" to "ছাড়ে", "Bus time" to "বাসের সময়",
+        "New block" to "নতুন সময়", "Edit block" to "সময় এডিট", "Block starts" to "শুরু", "Block ends" to "শেষ", "Place / note (optional)" to "স্থান / নোট (ঐচ্ছিক)",
+        "Add holiday" to "ছুটি যোগ করুন", "Name (e.g. Victory Day)" to "নাম (যেমন: বিজয় দিবস)", "Reset the schedule?" to "সময়সূচি রিসেট করবেন?",
+        "Your ticks, mood, routines and money are not touched." to "আপনার টিক, মুড, রুটিন ও টাকার হিসাব থাকবে।", "Schedule reset" to "সময়সূচি রিসেট হয়েছে",
+
+        // ---------------- Settings
+        "Backup saved" to "ব্যাকআপ সেভ হয়েছে", "CSV saved" to "CSV সেভ হয়েছে", "Reminders may not arrive" to "রিমাইন্ডার নাও আসতে পারে",
+        "Exact alarms" to "সঠিক সময়ের অ্যালার্ম", "Battery optimisation off" to "ব্যাটারি অপটিমাইজেশন বন্ধ", "Control centre" to "নিয়ন্ত্রণ কেন্দ্র",
+        "All reminders are OFF" to "সব রিমাইন্ডার বন্ধ", "All on" to "সব চালু", "Appearance" to "চেহারা", "Theme" to "থিম", "Colour palette" to "রঙের প্যালেট",
+        "Splash inspiration" to "শুরুর উক্তি", "Category" to "বিভাগ", "Language" to "ভাষা", "Launch Preview" to "শুরুর প্রিভিউ",
+        "Daily motivation" to "দৈনিক অনুপ্রেরণা", "3 a day: morning, midday, evening" to "দিনে ৩ বার: সকাল, দুপুর, সন্ধ্যা", "15 min after waking" to "ওঠার ১৫ মিনিট পরে",
+        "Midday quote" to "দুপুরের উক্তি", "Evening quote" to "সন্ধ্যার উক্তি", "Weather & air index" to "আবহাওয়া ও বায়ুমান", "Show on home screen" to "হোম স্ক্রিনে দেখান",
+        "Real-time temperature, condition, and AQI from Open-Meteo." to "Open-Meteo থেকে তাপমাত্রা, আবহাওয়া ও বায়ুমান।", "Location / শহর" to "শহর",
+        "Detect location" to "অবস্থান বের করুন", "Time & calendar" to "সময় ও ক্যালেন্ডার", "24-hour time" to "২৪ ঘণ্টার সময়",
+        "Off = 12-hour with AM/PM. Applies to every screen, notification and time picker." to "বন্ধ = AM/PM সহ ১২ ঘণ্টা। সব স্ক্রিন, নোটিফিকেশন ও সময় বাছাইয়ে প্রযোজ্য।",
+        "First day of week" to "সপ্তাহের প্রথম দিন", "App lock" to "অ্যাপ লক", "Backup" to "ব্যাকআপ", "Export JSON" to "JSON এক্সপোর্ট", "Import" to "ইমপোর্ট",
+        "Export transactions CSV" to "লেনদেন CSV এক্সপোর্ট", "Danger zone" to "সতর্কতা", "Factory Reset / সম্পূর্ণ রিসেট" to "সম্পূর্ণ রিসেট",
+        "Wipes all habit logs, wallet transactions, accounts, custom routines, calendar events, focus history, and preferences. Returns the app to a completely fresh, blank state as if newly installed."
+            to "সব অভ্যাস, লেনদেন, অ্যাকাউন্ট, রুটিন, ক্যালেন্ডার ইভেন্ট, ফোকাস ইতিহাস ও সেটিংস মুছে যাবে। অ্যাপ একদম নতুনের মতো হয়ে যাবে।",
+        "Reset full app (clear all)" to "পুরো অ্যাপ রিসেট (সব মুছুন)", "Replace all data?" to "সব তথ্য প্রতিস্থাপন করবেন?",
+        "Everything in Dinrekha is replaced by the file." to "দিনরেখার সবকিছু ফাইলের তথ্য দিয়ে বদলে যাবে।", "Backup restored" to "ব্যাকআপ ফিরে এসেছে",
+        "Reset to completely blank app?" to "অ্যাপ পুরো নতুন করবেন?", "App reset to blank" to "অ্যাপ নতুন করে রিসেট হয়েছে", "Erase everything" to "সব মুছে ফেলুন",
+        "Needs attention" to "মনোযোগ দরকার", "Dinrekha (default)" to "দিনরেখা (ডিফল্ট)", "Material You (wallpaper)" to "Material You (ওয়ালপেপার)",
+        "Ocean blue" to "সাগর নীল", "Forest green" to "বন সবুজ", "Sunset" to "সূর্যাস্ত", "Lavender" to "ল্যাভেন্ডার", "Rose" to "গোলাপি", "Monochrome" to "সাদাকালো",
+        "Light" to "লাইট", "Dark" to "ডার্ক", "System" to "সিস্টেম", "Bangla digits" to "বাংলা সংখ্যা", "Show numbers as ১২৩" to "সংখ্যা ১২৩ হিসেবে দেখান",
+
+        // ---------------- Data-layer labels (habits, prayers, categories, account & focus types)
+        "Woke on time" to "সময়মতো ওঠা", "Morning routine" to "সকালের রুটিন", "Course study" to "কোর্স পড়া", "Code / project" to "কোড / প্রজেক্ট",
+        "Walk 20+ min" to "২০+ মিনিট হাঁটা", "Nap ≤ 20 min" to "২০ মিনিটের কম ঘুম", "Screens off before bed" to "ঘুমের আগে স্ক্রিন বন্ধ",
+        "Fajr" to "ফজর", "Zuhr" to "যোহর", "Dhuhr" to "যোহর", "Asr" to "আসর", "Isha" to "এশা",
+        "Wake up" to "ঘুম থেকে উঠুন", "Go to sleep" to "ঘুমাতে যান", "Bus to campus" to "ক্যাম্পাসের বাস", "Bus home" to "বাসার বাস",
+        "Food" to "খাবার", "Transport" to "যাতায়াত", "Education" to "শিক্ষা", "Shopping" to "কেনাকাটা", "Bills" to "বিল", "Health" to "স্বাস্থ্য",
+        "Entertainment" to "বিনোদন", "Mobile & Internet" to "মোবাইল ও ইন্টারনেট", "Fees & Charges" to "ফি ও চার্জ", "Salary" to "বেতন",
+        "Tuition" to "টিউশন", "Gift" to "উপহার", "Allowance" to "হাতখরচ", "Rent" to "বাসা ভাড়া", "Groceries" to "বাজার",
+        "Cash" to "নগদ", "Bank" to "ব্যাংক", "Mobile banking" to "মোবাইল ব্যাংকিং", "Card" to "কার্ড",
+        "Good morning" to "শুভ সকাল", "Midday boost" to "দুপুরের অনুপ্রেরণা", "Evening reflection" to "সন্ধ্যার ভাবনা",
+
+        // ---------------- Reminder notifications
+        "Open the curtains, get light, no phone for 30 min." to "পর্দা সরান, আলো নিন, ৩০ মিনিট ফোন ধরবেন না।",
+        "Five quiet minutes: what went well, what got in the way, one small change." to "পাঁচ মিনিট শান্তভাবে ভাবুন: কী ভালো হলো, কী বাধা দিল, একটি ছোট পরিবর্তন।",
+        "See your weekly achievements and export your story card." to "এই সপ্তাহের অর্জন দেখুন ও স্টোরি কার্ড এক্সপোর্ট করুন।",
+        "Ten seconds now saves guessing later." to "এখন দশ সেকেন্ড দিলে পরে আন্দাজ করতে হবে না।",
+        "Log today's expenses" to "আজকের খরচ লিখুন", "Your weekly card is ready ✨" to "আপনার সাপ্তাহিক কার্ড তৈরি ✨",
+        "Bus — leave now" to "বাস — এখন বের হন", "Class starting" to "ক্লাস শুরু হচ্ছে", "Calendar events" to "ক্যালেন্ডার ইভেন্ট",
+        "Motivation quotes" to "অনুপ্রেরণার উক্তি", "Recurring bills due" to "নিয়মিত বিল বকেয়া", "Reminders" to "রিমাইন্ডার",
+        "Wake-up alarm" to "ঘুম ভাঙার অ্যালার্ম", "Weekly review (Friday)" to "সাপ্তাহিক পর্যালোচনা (শুক্রবার)", "Silent" to "নীরব",
+        "Vibrate only" to "শুধু ভাইব্রেশন", "Custom hours" to "নিজের মতো সময়", "Bedtime → wake time" to "ঘুম থেকে ওঠা পর্যন্ত", "Wake-up" to "ঘুম ভাঙা",
+        "Next" to "পরবর্তী", "Spent today" to "আজকের খরচ", "Today's checklist" to "আজকের চেকলিস্ট", "Open Dinrekha" to "দিনরেখা খুলুন",
+        "Focusing" to "ফোকাস চলছে", "Plan starts soon" to "পরিকল্পনা শীঘ্রই শুরু", "Plan done" to "পরিকল্পনা শেষ", "day streak" to "দিনের ধারা",
+        "days streak" to "দিনের ধারা", "slept" to "ঘুম", "Note" to "নোট", "Nothing else today" to "আজ আর কিছু নেই", "All clear" to "সব শেষ",
+        // ---------------- Long texts built from several pieces
+        ("This permanently erases ALL data from Dinrekha:\n\n" +
+            "• All habit checks & daily logs\n" +
+            "• All wallet transactions, recurring & budgets\n" +
+            "• All calendar events & notes\n" +
+            "• All custom routines & schedules\n" +
+            "• All settings, theme & inspiration preferences\n\n" +
+            "The app will return to the initial onboarding screen as a fresh, blank install. This action cannot be undone.") to
+            ("এটি দিনরেখার সব তথ্য চিরতরে মুছে দেবে:\n\n" +
+                "• সব অভ্যাসের টিক ও দৈনিক লগ\n" +
+                "• সব লেনদেন, নিয়মিত খরচ ও বাজেট\n" +
+                "• সব ক্যালেন্ডার ইভেন্ট ও নোট\n" +
+                "• সব রুটিন ও সময়সূচি\n" +
+                "• সব সেটিংস, থিম ও উক্তির পছন্দ\n\n" +
+                "অ্যাপটি একদম নতুন ইনস্টলের মতো শুরুর স্ক্রিনে ফিরে যাবে। এটি আর ফেরানো যাবে না।"),
+        ("• Xiaomi / POCO: Settings → Apps → Dinrekha → Autostart ON, Battery saver → No restrictions.\n" +
+            "• Realme / OPPO: Settings → Battery → Dinrekha → Allow background activity + Auto launch.\n" +
+            "• Samsung: Settings → Battery → Background usage limits → remove Dinrekha from Sleeping apps.\n" +
+            "• Honor / Huawei: Settings → Battery → App launch → Dinrekha → Manage manually, all three ON.\n" +
+            "• Tip: In Recent Apps, lock Dinrekha so it isn't cleared when swiping away apps.") to
+            ("• শাওমি / পোকো: সেটিংস → অ্যাপস → দিনরেখা → অটোস্টার্ট চালু, ব্যাটারি সেভার → কোনো সীমা নেই।\n" +
+                "• রিয়েলমি / অপো: সেটিংস → ব্যাটারি → দিনরেখা → ব্যাকগ্রাউন্ড চালু + অটো লঞ্চ।\n" +
+                "• স্যামসাং: সেটিংস → ব্যাটারি → ব্যাকগ্রাউন্ড ব্যবহারের সীমা → স্লিপিং অ্যাপস থেকে দিনরেখা সরান।\n" +
+                "• অনার / হুয়াওয়ে: সেটিংস → ব্যাটারি → অ্যাপ লঞ্চ → দিনরেখা → নিজে পরিচালনা, তিনটিই চালু।\n" +
+                "• টিপ: সাম্প্রতিক অ্যাপে দিনরেখা লক করুন, যাতে সোয়াইপ করলে বন্ধ না হয়।"),
+        ("Back to your original classes, buses, blocks, phases and holidays. " +
+            "Your ticks, mood, routines and money are not touched.") to
+            "আগের ক্লাস, বাস, পড়ার সময়, ধাপ ও ছুটিতে ফিরে যাবে। আপনার টিক, মুড, রুটিন ও টাকার হিসাব থাকবে।",
+        "Because Dinrekha has zero internet access and runs purely on your device, Android needs these 3 settings so routine and focus alarms are not delayed."
+            to "দিনরেখা পুরোপুরি আপনার ফোনে চলে, তাই রুটিন ও ফোকাস অ্যালার্ম যেন দেরি না হয়, এজন্য অ্যান্ড্রয়েডে এই ৩টি সেটিং দরকার।",
+        "No app activity recorded yet today.\nUsage updates as apps are opened." to "আজ এখনো কোনো অ্যাপ ব্যবহার রেকর্ড হয়নি।\nঅ্যাপ খুললে আপডেট হবে।",
+        "No class notes yet.\nTap 'Capture Note' to take board/slide photos!" to "এখনো কোনো ক্লাস নোট নেই।\nবোর্ড/স্লাইডের ছবি তুলতে 'নোট নিন' চাপুন!",
+        "If you have a Facebook Developer App ID, enter it here for enhanced direct story attribution. (Leave blank to use standard story sharing)."
+            to "ফেসবুক ডেভেলপার অ্যাপ আইডি থাকলে এখানে দিন। (সাধারণ স্টোরি শেয়ারের জন্য খালি রাখুন।)",
+        "FB Reels • YT Shorts • Insta Reels" to "ফেসবুক রিলস, ইউটিউব শর্টস, ইনস্টা রিলস",
+        "Instagram • YouTube • Facebook" to "ইনস্টাগ্রাম, ইউটিউব, ফেসবুক",
+        "Instagram" to "ইনস্টাগ্রাম", "YouTube" to "ইউটিউব", "Facebook" to "ফেসবুক",
+    )
+
+    /** Exact lookups, plus a case-insensitive fallback so "TODAY" and "Today" both translate. */
+    val EXACT: Map<String, String> = HashMap<String, String>(base.size * 3).apply {
+        putAll(base)
+        base.forEach { (k, v) -> putIfAbsent(k.uppercase(), v); putIfAbsent(k.lowercase(), v) }
+    }
+
+    /** Sentences that carry numbers or names. `$1`, `$2` are the captured parts (translated if known). */
+    val PATTERNS: List<Pair<Regex, String>> = listOf(
+        "Wake up — (.+)" to "ঘুম থেকে উঠুন — $1",
+        "Wake target tomorrow: (.+)" to "কাল ওঠার লক্ষ্য: $1",
+        "Bedtime is (.+)\\. Put the phone away and wind down\\." to "ঘুমের সময় $1। ফোন রেখে শান্ত হোন।",
+        "Leave now for the (.+) bus" to "$1-এর বাস ধরতে এখন বের হন",
+        "Time for (.+)\\." to "$1-এর সময় হয়েছে।",
+        "(.+) prayer" to "$1-এর নামাজ",
+        "(.+) in (\\d+) min" to "$2 মিনিট পরে $1",
+        "Due today: (.+)" to "আজ বকেয়া: $1",
+        "(.+) — tap Add to record it\\." to "$1 — রেকর্ড করতে চাপুন।",
+        "(.+) at (\\d.*)" to "$1, $2-এ",
+        "(.+) now" to "$1 এখন",
+        "Day (\\d+) of (\\d+)" to "দিন $1 / $2",
+        "Day (\\d+) / (\\d+)" to "দিন $1 / $2",
+        "Day (\\d+)" to "দিন $1",
+        "Week (\\d+)" to "সপ্তাহ $1",
+        "Week (\\d+) Review" to "সপ্তাহ $1 পর্যালোচনা",
+        "Starts in (\\d+)d" to "$1 দিন পরে শুরু",
+        "Starts in (\\d+) days" to "$1 দিন পরে শুরু",
+        "(\\d+)-day streak" to "$1 দিনের ধারা",
+        "(\\d+) days streak" to "$1 দিনের ধারা",
+        "(\\d+) day streak" to "$1 দিনের ধারা",
+        "(\\d+) set" to "$1টি সেট",
+        "(\\d+) notes" to "$1টি নোট",
+        "(\\d+) reels, (\\d+) blocks" to "$1 রিল, $2 ব্লক",
+        "(\\d+)h (\\d+)m slept" to "$1 ঘণ্টা $2 মিনিট ঘুম",
+        "(\\d+)h (\\d+)m" to "$1ঘ $2মি",
+        "(\\d+)m" to "$1মি",
+        "(\\d+)h" to "$1ঘ",
+        "in (\\d+)h (\\d+)m" to "$1ঘ $2মি পরে",
+        "in (\\d+)m" to "$1মি পরে",
+        "at (.+)" to "$1-এ",
+        "until (.+)" to "$1 পর্যন্ত",
+        "ends (.+)" to "$1-এ শেষ",
+        "Wake (.+)" to "ওঠা $1",
+        "Bed (.+)" to "ঘুম $1",
+        "(\\d+)% of your day" to "দিনের $1%",
+        "of your day" to "দিন পার হয়েছে",
+        "(\\d+) of (\\d+) done" to "$2টির মধ্যে $1টি সম্পন্ন",
+        "(\\d+)/(\\d+) done" to "$1/$2 সম্পন্ন",
+        "(.+) spent" to "$1 খরচ",
+        "Balance (.+)" to "ব্যালেন্স $1",
+        "This month (.+)" to "এই মাসে $1",
+        "Spent today" to "আজকের খরচ",
+        "Due (\\d+)(st|nd|rd|th)" to "$1 তারিখে বকেয়া",
+        "Save (Expense|Income|Transfer|Adjustment)" to "$1 সেভ করুন",
+        "(Expense|Income|Transfer) saved" to "$1 সেভ হয়েছে",
+        "Records a difference of (.+)" to "$1 পার্থক্য রেকর্ড হবে",
+        "Note for (.+)" to "$1-এর নোট",
+        "Version (.+)" to "সংস্করণ $1",
+        "Updated (.+)" to "হালনাগাদ: $1",
+        "Made in Bangladesh by (.+)" to "বাংলাদেশে তৈরি, $1",
+        "Photo of (.+)" to "$1-এর ছবি",
+        "Quality (\\d) of 5" to "মান $1 / ৫",
+        "(\\d+) reels" to "$1 রিল",
+        "reels" to "রিল",
+        "No app time yet" to "এখনো অ্যাপ ব্যবহার নেই",
+        "Added (\\d+) events?" to "$1টি ইভেন্ট যোগ হয়েছে",
+        "(\\d+) items" to "$1টি আইটেম",
+        "(\\d+)° / (\\d+)°" to "$1° / $2°",
+        "Nothing else scheduled" to "আর কিছু নির্ধারিত নেই",
+        "All clear for today" to "আজকের সব শেষ",
+        "(\\d+) of (\\d+) done, (.+) spent" to "$2টির মধ্যে $1টি সম্পন্ন, $3 খরচ",
+    ).map { (p, r) -> Regex(p) to r }
+
+    private val WORDS = listOf(
+        "January" to "জানুয়ারি", "February" to "ফেব্রুয়ারি", "March" to "মার্চ", "April" to "এপ্রিল", "May" to "মে", "June" to "জুন",
+        "July" to "জুলাই", "August" to "আগস্ট", "September" to "সেপ্টেম্বর", "October" to "অক্টোবর", "November" to "নভেম্বর", "December" to "ডিসেম্বর",
+        "Jan" to "জানু", "Feb" to "ফেব্রু", "Mar" to "মার্চ", "Apr" to "এপ্রি", "Jun" to "জুন", "Jul" to "জুলা", "Aug" to "আগ",
+        "Sep" to "সেপ্টে", "Oct" to "অক্টো", "Nov" to "নভে", "Dec" to "ডিসে",
+        "Saturday" to "শনিবার", "Sunday" to "রবিবার", "Monday" to "সোমবার", "Tuesday" to "মঙ্গলবার", "Wednesday" to "বুধবার",
+        "Thursday" to "বৃহস্পতিবার", "Friday" to "শুক্রবার",
+        "Sat" to "শনি", "Sun" to "রবি", "Mon" to "সোম", "Tue" to "মঙ্গল", "Wed" to "বুধ", "Thu" to "বৃহঃ", "Fri" to "শুক্র",
+    )
+    private val WORD_RE = Regex("\\b(" + WORDS.joinToString("|") { it.first } + ")\\b")
+    private val WORD_MAP = WORDS.toMap()
+
+    /** Month and weekday names inside dates ("Mon 17 Nov") — only whole words, and only Latin text is touched. */
+    fun words(s: String): String = if (s.none { it in 'A'..'Z' }) s else WORD_RE.replace(s) { WORD_MAP[it.value] ?: it.value }
+}
