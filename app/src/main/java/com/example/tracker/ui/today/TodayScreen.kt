@@ -197,13 +197,13 @@ fun TodayScreen(
                                     color = MaterialTheme.colorScheme.primary,
                                 )
                                 Text(
-                                    text = "${ac.course.code} • ${ac.classTitle}",
+                                    text = "${ac.course.code}: ${ac.classTitle}",
                                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                 )
                                 Text(
-                                    text = "Room ${ac.room} • ${HM.format(ac.startTime)} - ${HM.format(ac.endTime)}",
+                                    text = "Room ${ac.room}, ${HM.format(ac.startTime)} – ${HM.format(ac.endTime)}",
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -221,7 +221,7 @@ fun TodayScreen(
                             ) {
                                 Icon(Icons.Rounded.CameraAlt, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(Modifier.width(6.dp))
-                                Text("Capture Note", fontWeight = FontWeight.Bold)
+                                Text("Capture note", fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -371,7 +371,7 @@ private fun DayHeader(s: TodayUi, onOpenReview: (Int) -> Unit, onOpenPlan: () ->
                             .padding(horizontal = 8.dp, vertical = 2.dp),
                     ) {
                         Text(
-                            text = "Fresh Start",
+                            text = "Fresh start",
                             style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
@@ -681,7 +681,7 @@ private fun ChecklistCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = "Daily Checklist",
+                    text = "Today's checklist",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 )
                 Box(
@@ -957,7 +957,7 @@ private fun ReflectionCard(s: TodayUi, vm: TodayViewModel) {
                 .padding(16.dp),
         ) {
             Text(
-                text = "Daily Reflection",
+                text = "Reflection",
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
             )
             Spacer(Modifier.height(2.dp))
@@ -1045,7 +1045,7 @@ private fun ReflectionCard(s: TodayUi, vm: TodayViewModel) {
                         onClick = { vm.setNote(s.date, note) },
                         contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp),
                     ) {
-                        Text("Save Note")
+                        Text("Save note")
                     }
                 }
             }

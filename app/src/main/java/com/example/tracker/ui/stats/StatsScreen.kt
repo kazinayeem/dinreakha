@@ -150,7 +150,7 @@ fun StatsScreen(onOpenPlan: () -> Unit = {}) {
                 ) {
                     Icon(Icons.Rounded.CalendarMonth, null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("30-Day Plan", style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold))
+                    Text("30-day plan", style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold))
                 }
             }
         }
@@ -162,14 +162,14 @@ fun StatsScreen(onOpenPlan: () -> Unit = {}) {
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 StatCard(
-                    title = "Wake-up Streak",
+                    title = "Wake-up streak",
                     value = "${HabitStats.currentStreak(days, today)} days",
                     icon = Icons.Rounded.LocalFireDepartment,
                     iconTint = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.weight(1f),
                 )
                 StatCard(
-                    title = "Best Streak",
+                    title = "Best streak",
                     value = "${HabitStats.bestStreak(days)} days",
                     icon = Icons.Rounded.EmojiEvents,
                     iconTint = MaterialTheme.colorScheme.primary,
@@ -213,7 +213,7 @@ fun StatsScreen(onOpenPlan: () -> Unit = {}) {
                         }
                         Spacer(Modifier.width(10.dp))
                         Text(
-                            text = "Habit Success Rates",
+                            text = "Habit success rates",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                         )
                     }
@@ -263,7 +263,7 @@ fun StatsScreen(onOpenPlan: () -> Unit = {}) {
                         }
                         Spacer(Modifier.width(10.dp))
                         Text(
-                            text = "Weekly Deep Work Hours",
+                            text = "Focus hours per week",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                         )
                     }

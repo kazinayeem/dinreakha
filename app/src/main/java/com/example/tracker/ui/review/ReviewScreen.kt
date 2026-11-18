@@ -226,7 +226,7 @@ fun ReviewScreen(
                     ReviewStatCard(
                         icon = Icons.Rounded.Mood,
                         iconTint = MaterialTheme.colorScheme.secondary,
-                        title = "Average Mood",
+                        title = "Average mood",
                         value = avgMood,
                         modifier = Modifier.weight(1f),
                     )

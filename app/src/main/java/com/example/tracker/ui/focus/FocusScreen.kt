@@ -120,10 +120,11 @@ fun FocusScreen(noteForSession: Long? = null, preset: Pair<FocusType, Int>? = nu
         contentPadding = PaddingValues(start = 16.dp, top = 14.dp, end = 16.dp, bottom = 28.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        item {
+        // The Study tab draws the page title; only a running session shows its own name here.
+        if (run != null) item {
             Column(modifier = Modifier.padding(top = 2.dp)) {
                 Text(
-                    text = if (run == null) "Focus Timer" else run!!.title,
+                    text = run!!.title,
                     style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 )
                 Text(
@@ -188,7 +189,7 @@ fun FocusScreen(noteForSession: Long? = null, preset: Pair<FocusType, Int>? = nu
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Rounded.DateRange, null, tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
-                            Text("This Week", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("This week", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Spacer(Modifier.height(6.dp))
                         Text(
@@ -205,7 +206,7 @@ fun FocusScreen(noteForSession: Long? = null, preset: Pair<FocusType, Int>? = nu
         if (todays.isNotEmpty()) {
             item {
                 Text(
-                    text = "Today's Sessions",
+                    text = "Today's sessions",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.padding(top = 4.dp),
                 )
@@ -235,7 +236,7 @@ fun FocusScreen(noteForSession: Long? = null, preset: Pair<FocusType, Int>? = nu
         if (earlier.isNotEmpty()) {
             item {
                 Text(
-                    text = "Recent Sessions",
+                    text = "Recent sessions",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.padding(top = 4.dp),
                 )
@@ -268,12 +269,12 @@ fun FocusScreen(noteForSession: Long? = null, preset: Pair<FocusType, Int>? = nu
         var text by remember(id, s?.note) { mutableStateOf(s?.note ?: "") }
         AlertDialog(
             onDismissRequest = { noteId = null },
-            title = { Text("Session Note") },
+            title = { Text("Session note") },
             text = {
                 Column {
                     s?.let {
                         Text(
-                            text = "${it.type.label} • ${FocusMath.formatHm(it.minutes)} at ${HM.format(it.start)}",
+                            text = "${it.type.label}, ${FocusMath.formatHm(it.minutes)} at ${HM.format(it.start)}",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -691,7 +692,7 @@ private fun SessionRow(s: FocusSessionInfo, showDate: Boolean = false, onClick: 
             }
             val subtitle = (if (showDate) "${SHORT_DATE.format(s.start)} at " else "") +
                 HM.format(s.start) +
-                if (s.note.isNotBlank()) " • ${s.note}" else ""
+                if (s.note.isNotBlank()) ", ${s.note}" else ""
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.labelSmall,

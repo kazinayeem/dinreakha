@@ -338,12 +338,12 @@ fun AddAccountCard(width: Dp = 140.dp, onClick: () -> Unit) {
             }
             Spacer(Modifier.height(8.dp))
             Text(
-                text = "Add Account",
+                text = "Add account",
                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
-                text = "Bank • MFS • Cash",
+                text = "Bank, MFS, Cash",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

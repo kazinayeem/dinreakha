@@ -78,7 +78,7 @@ fun ThirtyDayReportScreen(
             } else CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "30-Day Plan Transformation",
+                        text = "Your 30 days",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
                 },
@@ -93,7 +93,7 @@ fun ThirtyDayReportScreen(
             ExtendedFloatingActionButton(
                 onClick = { onOpenCardStudio("THIRTY_DAY") },
                 icon = { Icon(Icons.Rounded.Share, contentDescription = null) },
-                text = { Text("Export Transformation Card", fontWeight = FontWeight.Bold) },
+                text = { Text("Share card", fontWeight = FontWeight.Bold) },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
             )
@@ -145,7 +145,7 @@ fun ThirtyDayReportScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Column {
-                                    Text("Day 1 Baseline", style = MaterialTheme.typography.labelSmall)
+                                    Text("Day 1", style = MaterialTheme.typography.labelSmall)
                                     Text(
                                         text = "${r.day1Score} pts",
                                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
@@ -156,7 +156,7 @@ fun ThirtyDayReportScreen(
                                 Text("→", style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.primary)
 
                                 Column(horizontalAlignment = Alignment.End) {
-                                    Text("Day 30 Mastery", style = MaterialTheme.typography.labelSmall)
+                                    Text("Day 30", style = MaterialTheme.typography.labelSmall)
                                     Text(
                                         text = "${r.day30Score} pts",
                                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
@@ -239,7 +239,7 @@ fun ThirtyDayReportScreen(
                                     modifier = Modifier.weight(1f),
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                        Text("Focus Logged", style = MaterialTheme.typography.labelSmall)
+                                        Text("Focus logged", style = MaterialTheme.typography.labelSmall)
                                         Text("${"%.1f".format(r.totalFocusHours)}h", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.primary)
                                     }
                                 }
@@ -249,7 +249,7 @@ fun ThirtyDayReportScreen(
                                     modifier = Modifier.weight(1f),
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                        Text("Prayers Offered", style = MaterialTheme.typography.labelSmall)
+                                        Text("Prayers offered", style = MaterialTheme.typography.labelSmall)
                                         Text("${r.totalPrayersCompleted}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = Color(0xFFD97706).readable())
                                     }
                                 }
@@ -259,7 +259,7 @@ fun ThirtyDayReportScreen(
                                     modifier = Modifier.weight(1f),
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                        Text("Class Notes", style = MaterialTheme.typography.labelSmall)
+                                        Text("Class notes", style = MaterialTheme.typography.labelSmall)
                                         Text("${r.totalNotesCaptured}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = Color(0xFF10B981).readable())
                                     }
                                 }

@@ -204,7 +204,7 @@ fun BlockerScreen(
                             Icon(Icons.Rounded.LockOpen, contentDescription = null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(24.dp))
                             Spacer(Modifier.width(12.dp))
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Emergency Unlock Active", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = Color(0xFFF2A93B).readable())
+                                Text("Emergency unlock on", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = Color(0xFFF2A93B).readable())
                                 Text("All app rules are bypassed for ~$remainingEmergencyMin more min.", style = MaterialTheme.typography.labelSmall, color = Color(0xFFF2A93B).readable())
                             }
                         }
@@ -224,7 +224,7 @@ fun BlockerScreen(
                         modifier = Modifier.weight(1f),
                     ) {
                         Column(modifier = Modifier.padding(14.dp)) {
-                            Text("Active Rules", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("Active rules", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(
                                 text = "${rules.count { it.enabled }} of ${rules.size}",
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -238,7 +238,7 @@ fun BlockerScreen(
                         modifier = Modifier.weight(1f),
                     ) {
                         Column(modifier = Modifier.padding(14.dp)) {
-                            Text("Blocks Today", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("Blocks today", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(
                                 text = "$blockCountToday times",
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -478,7 +478,7 @@ private fun RuleCard(
 
                 val appCount = rule.targetPackages.split(",").filter { it.isNotBlank() }.size
                 Text(
-                    text = "$typeLabel • $detail • $appCount apps",
+                    text = "$typeLabel, $detail, $appCount apps",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -511,7 +511,7 @@ private fun PermissionsGuideCard(
                 Icon(Icons.Rounded.Warning, null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(22.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "Blocker Setup Required",
+                    text = "Finish setting up the blocker",
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.error,
                 )
@@ -529,7 +529,7 @@ private fun PermissionsGuideCard(
 
             // Accessibility Item
             PermissionRow(
-                title = "Accessibility Service",
+                title = "Accessibility service",
                 subtitle = "Detects foreground app & Chrome URLs instantly",
                 isGranted = isAccessibilityRunning,
                 onGrant = onOpenAccessibility,
@@ -537,7 +537,7 @@ private fun PermissionsGuideCard(
 
             // Usage Access Item
             PermissionRow(
-                title = "Usage Access",
+                title = "Usage access",
                 subtitle = "Tracks daily screen time accurately",
                 isGranted = hasUsageAccess,
                 onGrant = onOpenUsage,
@@ -545,7 +545,7 @@ private fun PermissionsGuideCard(
 
             // Overlay Item
             PermissionRow(
-                title = "Display Over Other Apps",
+                title = "Display over other apps",
                 subtitle = "Shows block screen over restricted apps",
                 isGranted = hasOverlayPermission,
                 onGrant = onOpenOverlay,
@@ -651,7 +651,7 @@ private fun ReelsCounterCard(
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                         )
                         Text(
-                            text = "FB Reels • YT Shorts • Insta Reels",
+                            text = "FB Reels, YT Shorts, Insta Reels",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )

@@ -101,7 +101,7 @@ fun WeeklyReportScreen(
             } else CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Weekly Progress Report",
+                        text = "This week",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
                 },
@@ -112,7 +112,7 @@ fun WeeklyReportScreen(
                 },
                 actions = {
                     TextButton(onClick = onOpenThirtyDayReport) {
-                        Text("30-Day Plan", fontWeight = FontWeight.Bold)
+                        Text("30-day plan", fontWeight = FontWeight.Bold)
                     }
                 },
             )
@@ -121,7 +121,7 @@ fun WeeklyReportScreen(
             ExtendedFloatingActionButton(
                 onClick = { onOpenCardStudio("WEEKLY", selectedWeek) },
                 icon = { Icon(Icons.Rounded.Share, contentDescription = null) },
-                text = { Text("Export Story Card", fontWeight = FontWeight.Bold) },
+                text = { Text("Share card", fontWeight = FontWeight.Bold) },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
             )
@@ -263,7 +263,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                 modifier = Modifier.weight(1f),
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
-                    Text("Deep Focus", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Focus time", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(4.dp))
                     Text(focusDisplay, style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
                     Text(
@@ -281,7 +281,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                 modifier = Modifier.weight(1f),
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
-                    Text("Habits Consistency", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Habit consistency", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(4.dp))
                     Text("${report.thisWeekHabitPercent}%", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
                     Text(
@@ -304,7 +304,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                 modifier = Modifier.weight(1f),
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
-                    Text("Prayers Offered", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Prayers offered", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(4.dp))
                     Text("${report.thisWeekPrayersCount}/35", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
                     Text(
@@ -327,7 +327,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                 modifier = Modifier.weight(1f),
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
-                    Text("Daily Screen Time", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Screen time per day", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(4.dp))
                     Text("$sDisplay/day", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
                     Text(
@@ -556,7 +556,7 @@ private fun WeeklyStreaksCard(report: WeeklyReport) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Rounded.Star, null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(4.dp))
-                            Text("Best Day", style = MaterialTheme.typography.labelSmall)
+                            Text("Best day", style = MaterialTheme.typography.labelSmall)
                         }
                         Spacer(Modifier.height(4.dp))
                         Text(
@@ -585,7 +585,7 @@ private fun WeeklyStreaksCard(report: WeeklyReport) {
                         }
                         Spacer(Modifier.height(4.dp))
                         Text(
-                            text = "${report.wakeStreak}d Wake • ${report.studyStreak}d Study",
+                            text = "Woke on time ${report.wakeStreak}d, studied ${report.studyStreak}d",
                             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                         )
                         Text(

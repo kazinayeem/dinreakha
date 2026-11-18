@@ -188,7 +188,7 @@ fun RuleEditorScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = if (ruleId != null && ruleId > 0L) "Edit Rule" else "New Block Rule",
+                        text = if (ruleId != null && ruleId > 0L) "Edit rule" else "New rule",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
                 },
@@ -263,7 +263,7 @@ fun RuleEditorScreen(
                         },
                         modifier = Modifier.weight(1f),
                     ) {
-                        Text("Save Rule", fontWeight = FontWeight.Bold)
+                        Text("Save rule", fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -419,7 +419,7 @@ fun RuleEditorScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Text("Daily Limit", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+                            Text("Daily limit", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
                             Text(
                                 text = if (limitMinutes == 0) "Completely blocked (0 min)" else "$limitMinutes minutes",
                                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
@@ -458,7 +458,7 @@ fun RuleEditorScreen(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Session Limit", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+                                Text("Session limit", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
                                 Text("Kick out after continuous use", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             Text(
@@ -569,7 +569,7 @@ fun RuleEditorScreen(
                             Icon(Icons.Rounded.Shield, contentDescription = null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(22.dp))
                             Spacer(Modifier.width(10.dp))
                             Column {
-                                Text("Anti-Cheat Strict Mode", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold))
+                                Text("Strict mode", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold))
                                 Text("Lock settings during active hours", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
@@ -661,7 +661,7 @@ fun RuleEditorScreen(
         val timePickerState = rememberTimePickerState(initialHour = startTime.hour, initialMinute = startTime.minute, is24Hour = false)
         AlertDialog(
             onDismissRequest = { showStartTimePicker = false },
-            title = { Text("Select Start Time") },
+            title = { Text("Start time") },
             text = { TimePicker(state = timePickerState) },
             confirmButton = {
                 TextButton(onClick = {
@@ -677,7 +677,7 @@ fun RuleEditorScreen(
         val timePickerState = rememberTimePickerState(initialHour = endTime.hour, initialMinute = endTime.minute, is24Hour = false)
         AlertDialog(
             onDismissRequest = { showEndTimePicker = false },
-            title = { Text("Select End Time") },
+            title = { Text("End time") },
             text = { TimePicker(state = timePickerState) },
             confirmButton = {
                 TextButton(onClick = {

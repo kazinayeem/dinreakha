@@ -139,11 +139,11 @@ fun CoursesScreen(
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
                             if (showTitle) Text(
-                                text = "Course Library",
+                                text = "Class notes",
                                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                             )
                             Text(
-                                text = "$totalCourses ${if (totalCourses == 1) "course" else "courses"} • $totalNotes notes • $totalPhotos photos",
+                                text = "$totalCourses ${if (totalCourses == 1) "course" else "courses"}, $totalNotes notes, $totalPhotos photos",
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -156,7 +156,7 @@ fun CoursesScreen(
                         ) {
                             Icon(Icons.Rounded.Add, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(6.dp))
-                            Text("Add Course", fontWeight = FontWeight.Bold)
+                            Text("Add course", fontWeight = FontWeight.Bold)
                         }
                     }
 
@@ -263,7 +263,7 @@ fun CoursesScreen(
                                 ) {
                                     Icon(Icons.Rounded.Add, contentDescription = null, modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(6.dp))
-                                    Text("Add Your First Course")
+                                    Text("Add your first course")
                                 }
                             }
                         }
@@ -287,7 +287,7 @@ fun CoursesScreen(
             ) {
                 Icon(Icons.Rounded.CameraAlt, contentDescription = "Capture")
                 Spacer(Modifier.width(8.dp))
-                Text("Capture Note", fontWeight = FontWeight.Bold)
+                Text("Capture note", fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -340,7 +340,7 @@ fun CoursesScreen(
             },
             text = {
                 Text(
-                    text = "Are you sure you want to delete ${target.course.code} • ${target.course.name}?\n\n" +
+                    text = "Are you sure you want to delete ${target.course.code}: ${target.course.name}?\n\n" +
                         "This will permanently delete ${target.noteCount} notes and ${target.photoCount} photos saved for this course. This action cannot be undone.",
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -360,7 +360,7 @@ fun CoursesScreen(
                         contentColor = MaterialTheme.colorScheme.error,
                     ),
                 ) {
-                    Text("Delete Course", fontWeight = FontWeight.Bold)
+                    Text("Delete course", fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
@@ -640,7 +640,7 @@ private fun CourseEditorDialog(
                 )
 
                 Text(
-                    text = "Color Tag",
+                    text = "Colour",
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.padding(top = 4.dp),
                 )

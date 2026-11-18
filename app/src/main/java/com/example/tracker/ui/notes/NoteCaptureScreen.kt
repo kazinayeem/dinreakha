@@ -219,7 +219,7 @@ fun NoteCaptureScreen(
                     FilterChip(
                         selected = isSel,
                         onClick = { selectedCourse = course },
-                        label = { Text("${course.code} • ${course.name}") },
+                        label = { Text("${course.code}: ${course.name}") },
                         leadingIcon = if (isSel) { { Icon(Icons.Rounded.Check, null) } } else null,
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = Color(course.color).copy(alpha = 0.2f),
@@ -261,7 +261,7 @@ fun NoteCaptureScreen(
                 ) {
                     Icon(Icons.Rounded.CameraAlt, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("Snap Photo")
+                    Text("Take photo")
                 }
                 OutlinedButton(
                     onClick = { pickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
@@ -269,7 +269,7 @@ fun NoteCaptureScreen(
                 ) {
                     Icon(Icons.Rounded.PhotoLibrary, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("From Gallery")
+                    Text("From gallery")
                 }
             }
 

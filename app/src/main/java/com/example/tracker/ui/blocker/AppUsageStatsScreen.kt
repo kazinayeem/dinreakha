@@ -109,7 +109,7 @@ fun AppUsageStatsScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text("App Usage & Screen Time", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
+                    Text("Screen time", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -144,7 +144,7 @@ fun AppUsageStatsScreen(
                                 Icon(Icons.Rounded.PhoneAndroid, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                             }
                             Spacer(Modifier.height(10.dp))
-                            Text("Screen Time", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("Screen time", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(
                                 text = if (totalHours > 0) "${totalHours}h ${totalMins}m" else "${totalMins}m",
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -166,7 +166,7 @@ fun AppUsageStatsScreen(
                                 Icon(Icons.Rounded.Shield, null, tint = Color(0xFFE53935).readable(), modifier = Modifier.size(20.dp))
                             }
                             Spacer(Modifier.height(10.dp))
-                            Text("Distractions Blocked", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("Distractions blocked", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(
                                 text = "$blockCountToday times",
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -294,7 +294,7 @@ private fun ReelsStatsCard(
                     Spacer(Modifier.width(10.dp))
                     Column {
                         Text("Shorts & Reels Watched", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold))
-                        Text("Instagram • YouTube • Facebook", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("Instagram, YouTube, Facebook", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
 

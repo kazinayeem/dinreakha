@@ -156,7 +156,7 @@ fun ShareCardStudioScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Share Card Studio",
+                        text = "Share card",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
                 },
@@ -247,7 +247,7 @@ fun ShareCardStudioScreen(
                         ) {
                             Icon(Icons.Rounded.Download, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text("Save Gallery", fontWeight = FontWeight.Bold)
+                            Text("Save to gallery", fontWeight = FontWeight.Bold)
                         }
 
                         // Share Sheet
@@ -262,7 +262,7 @@ fun ShareCardStudioScreen(
                         ) {
                             Icon(Icons.Rounded.Share, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text("Share Card", fontWeight = FontWeight.Bold)
+                            Text("Share card", fontWeight = FontWeight.Bold)
                         }
                     }
 

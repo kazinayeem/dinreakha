@@ -187,7 +187,7 @@ fun ReportScreen(vm: WalletViewModel) {
         // Month-over-Month Comparison Card
         item {
             SectionCard(
-                title = "Monthly Comparison",
+                title = "Month vs month",
                 icon = if ((FinanceMath.changePercent(cur.expense, prev.expense) ?: 0) > 0) Icons.AutoMirrored.Rounded.TrendingUp else Icons.AutoMirrored.Rounded.TrendingDown,
             ) {
                 val ch = FinanceMath.changePercent(cur.expense, prev.expense)
@@ -212,7 +212,7 @@ fun ReportScreen(vm: WalletViewModel) {
         // Spending by Category Donut Card
         item {
             SectionCard(
-                title = "Category Breakdown",
+                title = "By category",
                 icon = Icons.Rounded.DonutSmall,
             ) {
                 if (byCat.isEmpty()) {
@@ -258,7 +258,7 @@ fun ReportScreen(vm: WalletViewModel) {
         // Daily Spending Distribution Card
         item {
             SectionCard(
-                title = "Daily Spending Trend",
+                title = "Spending per day",
                 icon = Icons.Rounded.BarChart,
             ) {
                 val days = (1..month.lengthOfMonth()).map { cur.byDay[month.atDay(it)] ?: 0L }
@@ -275,7 +275,7 @@ fun ReportScreen(vm: WalletViewModel) {
                 if (max > 0) {
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        text = "Peak day ${Money.format(max)} • Daily average ${Money.format(cur.expense / month.lengthOfMonth())}",
+                        text = "Peak day ${Money.format(max)}, daily average ${Money.format(cur.expense / month.lengthOfMonth())}",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -286,7 +286,7 @@ fun ReportScreen(vm: WalletViewModel) {
         // Top Spending Categories Progress
         if (byCat.isNotEmpty()) {
             item {
-                SectionCard(title = "Top Expenses") {
+                SectionCard(title = "Top expenses") {
                     byCat.take(5).forEachIndexed { i, (catId, v) ->
                         val cat = d.categoryById[catId]
                         LabeledProgress(

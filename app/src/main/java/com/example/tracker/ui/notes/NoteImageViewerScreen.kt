@@ -385,7 +385,7 @@ fun NoteImageViewerScreen(
                                         IconButton(
                                             onClick = {
                                                 val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                                cm.setPrimaryClip(ClipData.newPlainText("Class Note OCR", ocr))
+                                                cm.setPrimaryClip(ClipData.newPlainText("Text from photo", ocr))
                                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                                 Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Text copied to clipboard"), Toast.LENGTH_SHORT).show()
                                             },

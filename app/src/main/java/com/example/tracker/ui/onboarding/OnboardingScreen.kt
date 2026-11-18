@@ -123,14 +123,14 @@ fun OnboardingScreen(onDone: () -> Unit) {
                     FeaturePill(
                         icon = Icons.Rounded.Timer,
                         iconTint = MaterialTheme.colorScheme.secondary,
-                        title = "Deep Focus Sessions",
+                        title = "Focus sessions",
                         description = "Focused study and code blocks with automatic Do Not Disturb mode.",
                     )
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f))
                     FeaturePill(
                         icon = Icons.Rounded.AccountBalanceWallet,
                         iconTint = MaterialTheme.colorScheme.tertiary,
-                        title = "Offline Personal Wallet",
+                        title = "Offline wallet",
                         description = "Cards, cashflow, and spending budgets stored 100% locally on your phone.",
                     )
                 }
@@ -178,7 +178,7 @@ fun OnboardingScreen(onDone: () -> Unit) {
                     )
 
                     PermissionTile(
-                        title = "Exact Alarms",
+                        title = "Exact alarms",
                         subtitle = "Ensures wake-up alarms ring at the precise minute",
                         isGranted = st.exactAlarms,
                         actionLabel = "Enable",
@@ -186,7 +186,7 @@ fun OnboardingScreen(onDone: () -> Unit) {
                     )
 
                     PermissionTile(
-                        title = "Battery Unrestricted",
+                        title = "Battery: unrestricted",
                         subtitle = "Prevents system from putting the app to sleep",
                         isGranted = st.batteryUnrestricted,
                         actionLabel = "Allow",
@@ -251,7 +251,7 @@ fun OnboardingScreen(onDone: () -> Unit) {
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(12.dp),
                             ) {
-                                Text("Open App Settings")
+                                Text("Open app settings")
                             }
                         }
                     }
@@ -274,7 +274,7 @@ fun OnboardingScreen(onDone: () -> Unit) {
                         .height(56.dp),
                 ) {
                     Text(
-                        text = "Get Started",
+                        text = "Get started",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
                 }
@@ -291,7 +291,7 @@ fun OnboardingScreen(onDone: () -> Unit) {
                     )
                     Spacer(Modifier.width(6.dp))
                     Text(
-                        text = "Zero tracking • 100% offline • No account required",
+                        text = "No tracking, fully offline, no account",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

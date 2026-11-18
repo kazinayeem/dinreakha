@@ -115,7 +115,7 @@ fun DailyReportScreen(
             } else CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Daily Summary",
+                        text = "Today's summary",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
                 },
@@ -135,7 +135,7 @@ fun DailyReportScreen(
             ExtendedFloatingActionButton(
                 onClick = { onOpenCardStudio("DAILY") },
                 icon = { Icon(Icons.Rounded.Share, contentDescription = null) },
-                text = { Text("Export Share Card", fontWeight = FontWeight.Bold) },
+                text = { Text("Share card", fontWeight = FontWeight.Bold) },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
             )
@@ -239,7 +239,7 @@ private fun DailyScoreHeroCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
-                    text = "Edit Weights",
+                    text = "Edit weights",
                     style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable { onOpenWeights() },
@@ -299,7 +299,7 @@ private fun DailyScoreHeroCard(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text = if (report.wokeOnTime) "Woke on time • Disciplined morning" else "Late by ${report.wakeLateMinutes}m • Room to recover tomorrow",
+                        text = if (report.wokeOnTime) "Woke on time" else "Late by ${report.wakeLateMinutes}m",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -339,7 +339,7 @@ private fun DailyRhythmCard(report: DailyReport) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Rounded.WbSunny, null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
-                            Text("Wake Target", style = MaterialTheme.typography.labelSmall)
+                            Text("Wake target", style = MaterialTheme.typography.labelSmall)
                         }
                         Spacer(Modifier.height(6.dp))
                         Text(
@@ -451,7 +451,7 @@ private fun DailyHabitsPrayersRow(report: DailyReport) {
             modifier = Modifier.weight(1f),
         ) {
             Column(modifier = Modifier.padding(14.dp)) {
-                Text("Habits Done", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text("Habits done", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(Modifier.height(4.dp))
                 Text(
                     text = "${report.habitPercent}%",
@@ -473,7 +473,7 @@ private fun DailyHabitsPrayersRow(report: DailyReport) {
             modifier = Modifier.weight(1f),
         ) {
             Column(modifier = Modifier.padding(14.dp)) {
-                Text("Daily Prayers", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text("Prayers", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(Modifier.height(4.dp))
                 Text(
                     text = "${report.prayersCompleted}/5",
@@ -630,7 +630,7 @@ private fun ScoreWeightsEditorDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Improvement Score Weights") },
+        title = { Text("Score weights") },
         text = {
             Column {
                 Text("Customize how heavily each pillar influences your 0–100 daily score (Total: $total pts):", style = MaterialTheme.typography.bodySmall)
@@ -659,7 +659,7 @@ private fun ScoreWeightsEditorDialog(
                     )
                 }
             ) {
-                Text("Save Weights")
+                Text("Save weights")
             }
         },
         dismissButton = {

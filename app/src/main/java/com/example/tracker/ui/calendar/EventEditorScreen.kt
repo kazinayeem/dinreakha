@@ -182,7 +182,7 @@ fun EventEditorScreen(eventId: Long?, date: LocalDate?, hour: Int?, minute: Int?
                 value = title,
                 onValueChange = { title = it },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Event Title") },
+                label = { Text("Title") },
                 placeholder = { Text("E.g. Study session, Project meeting") },
                 singleLine = true,
                 shape = RoundedCornerShape(14.dp),

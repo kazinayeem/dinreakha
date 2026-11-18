@@ -232,7 +232,7 @@ fun AnimatedSplash(
 
             Spacer(Modifier.height(20.dp))
             Text(
-                text = "Tap anywhere to skip • স্পর্শ করে এগিয়ে যান",
+                text = "Tap anywhere to skip",
                 color = Color.White.copy(alpha = 0.42f * quoteAlpha.value),
                 fontSize = 12.sp,
                 letterSpacing = 0.3.sp,

@@ -107,7 +107,7 @@ fun PlanGridScreen(onOpenDay: (LocalDate) -> Unit, onOpenReview: () -> Unit) {
                     ) {
                         Column {
                             Text(
-                                text = "30-Day Milestone",
+                                text = "30-day milestone",
                                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                             )
                             Spacer(Modifier.height(2.dp))
@@ -142,7 +142,7 @@ fun PlanGridScreen(onOpenDay: (LocalDate) -> Unit, onOpenReview: () -> Unit) {
                             color = MaterialTheme.colorScheme.primary,
                         )
                         MetricPill(
-                            title = "Current Day",
+                            title = "Today",
                             value = "Day $currentDayNum",
                             modifier = Modifier.weight(1f),
                             color = MaterialTheme.colorScheme.secondary,

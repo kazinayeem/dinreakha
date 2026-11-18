@@ -100,7 +100,7 @@ fun WeatherCard(
                                 .padding(horizontal = 6.dp, vertical = 2.dp),
                         ) {
                             Text(
-                                "Offline Cache",
+                                "Saved copy",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 12.sp,
@@ -228,7 +228,7 @@ fun WeatherCard(
                                 )
                             }
                             Text(
-                                text = "${cond.nameEn} • ${cond.nameBn}",
+                                text = "${cond.nameEn} / ${cond.nameBn}",
                                 style = MaterialTheme.typography.bodySmall,
                                 fontWeight = FontWeight.Medium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -298,7 +298,7 @@ fun WeatherCard(
                             }
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                text = "${level.adviceEn} • ${level.adviceBn}",
+                                text = "${level.adviceEn}\n${level.adviceBn}",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
                                 fontSize = 12.sp,

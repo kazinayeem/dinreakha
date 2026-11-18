@@ -328,7 +328,7 @@ fun CourseDetailScreen(
             ) {
                 Icon(Icons.Rounded.CameraAlt, contentDescription = "Capture")
                 Spacer(Modifier.width(8.dp))
-                Text("Capture Note", fontWeight = FontWeight.Bold)
+                Text("Capture note", fontWeight = FontWeight.Bold)
             }
         }
     }

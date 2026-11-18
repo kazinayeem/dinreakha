@@ -98,7 +98,7 @@ fun EmergencyUnlockDialog(
                     modifier = Modifier.size(24.dp),
                 )
                 Spacer(Modifier.width(8.dp))
-                Text("Emergency 5-Min Unlock", fontWeight = FontWeight.Bold)
+                Text("5-minute emergency unlock", fontWeight = FontWeight.Bold)
             }
         },
         text = {
