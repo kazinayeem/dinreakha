@@ -42,9 +42,13 @@ class MainActivity : FragmentActivity() {
         installSplashScreen() // system splash (brand colour + mark), then the animated Compose intro
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        pendingRoute = intent?.getStringExtra(Notifications.EXTRA_ROUTE)
-        handleShareIntent(intent)
         val coldStart = savedInstanceState == null
+        // Only on a fresh start: after rotation / process restore the same launch intent comes back,
+        // and re-handling it would yank the user back to that screen (or re-open the share capture).
+        if (coldStart) {
+            pendingRoute = intent?.getStringExtra(Notifications.EXTRA_ROUTE)
+            handleShareIntent(intent)
+        }
 
         setContent {
             val settings by container.settings.settings.collectAsStateWithLifecycle(null)

@@ -337,6 +337,10 @@ object BanglaStrings {
         "Quick start" to "দ্রুত শুরু", "New routine" to "নতুন রুটিন", "Edit routine" to "রুটিন এডিট", "Icon" to "আইকন", "Name" to "নাম",
         "Day of month" to "মাসের তারিখ", "Time (optional)" to "সময় (ঐচ্ছিক)", "Clear time" to "সময় মুছুন", "Notification at the time, with Done ✓" to "সময়মতো নোটিফিকেশন, 'সম্পন্ন ✓' সহ",
         "In shorter months it falls on the last day." to "ছোট মাসে এটি শেষ দিনে পড়বে।", "Routine time" to "রুটিনের সময়", "My routines" to "আমার রুটিন",
+        "Habits & routines" to "অভ্যাস ও রুটিন", "Daily habits" to "প্রতিদিনের অভ্যাস",
+        "Switch off what you don't do. Tap a name to rename it — past ticks are kept." to "যেটা করেন না সেটা বন্ধ করুন। নাম বদলাতে নামে চাপুন — আগের টিক থেকে যাবে।",
+        "Your own habits & routines" to "আপনার নিজের অভ্যাস ও রুটিন", "+ New habit or routine" to "+ নতুন অভ্যাস বা রুটিন",
+        "Rename habit" to "অভ্যাসের নাম বদলান", "Reset name" to "আগের নাম",
 
         // ---------------- Schedule editor
         "Plan" to "পরিকল্পনা", "Start (Day 1)" to "শুরু (দিন ১)", "Length" to "দৈর্ঘ্য", "Screens off" to "স্ক্রিন বন্ধ", "Sleep phases & goals" to "ঘুমের ধাপ ও লক্ষ্য",

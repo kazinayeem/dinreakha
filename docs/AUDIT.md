@@ -26,6 +26,27 @@ Earlier passes today also fixed: Focus pause/stop buttons clipped, FB/YT reels n
 title bars (7 screens), sun card dark in light mode, 165 uses of 11 sp text, 32 all-caps labels,
 18 tap targets under 48 dp, blocker back-gesture bypass, API 29 crash, 66 MB → 23 MB APK.
 
+## Workflow pass (18 Nov 2026)
+
+Every user flow traced end to end: start-up & onboarding, notification / widget / share links,
+tabs & back stack, Today & day view, wallet add/edit/delete, calendar events, focus, sleep,
+class notes, app blocker rules, settings, backup restore and factory reset, app lock.
+
+| # | Flow | Problem | Fix |
+|---|---|---|---|
+| 1 | Share photos → Dinrekha | Shared photos were cleared before the capture screen read them, so it opened empty | Photos are held until the capture screen takes them |
+| 2 | Class notes | No courses yet → "Please select a course" with no way to add one | "Add course" button on the capture screen |
+| 3 | Class notes | Photos taken were lost if the camera app pushed Dinrekha out of memory or the phone rotated; a failed save left the button stuck on "Saving…" | Photo list survives; failed save shows the error and can be retried |
+| 4 | App lock on | Leaving the app (camera, file picker, share) tore down every screen: back stack, typed forms, the photo just taken and the backup file just picked were lost | Lock panel now covers the screen instead of removing it; one unlock prompt at a time |
+| 5 | Notification / widget links | Opening "Today", "Wallet", "Focus" from a notification stacked a second copy of the tab | Tab links switch tabs; links with arguments open above Today |
+| 6 | Notification / share links | Rotating the phone re-ran the link and jumped back to that screen (or re-opened capture) | Links are handled only on a fresh start or a new intent |
+| 7 | App lock + notification link | A link arriving while the app lock was up navigated before the screens existed | Link waits until the app is unlocked |
+| 8 | Add transaction / event / block rule | A quick second tap on Save saved twice; a second Back/Save tap popped two screens | Save/Delete run once; back is ignored while the first one is animating |
+| 9 | 30-day plan → today's day | "Start focus" and "Log last night's sleep" did nothing on that screen | Wired up |
+| 10 | Block screen → "Focus 45 min" | Opened Focus with the default length (45 was ignored) | Link now carries a focus type, so the preset applies |
+| 11 | Factory reset / restore | The reschedule ran in the Settings screen, which reset disposes when it jumps to onboarding — old alarms could keep firing | Runs in the app scope; toast after it finishes |
+| 12 | Settings lock | "My routines" and "Notification log" weren't behind the Settings lock like the other settings pages | Locked the same way |
+
 ## Still wrong or risky (not fixed)
 
 1. ~~No version control~~ — **fixed:** git set up on 17 Nov (branch `main`). Two AI tools still edit

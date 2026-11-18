@@ -84,7 +84,23 @@ class ScheduleRepository(private val db: AppDatabase) {
                     dayOfMonth = r.dayOfMonth, time = r.time, remind = r.remind, active = r.active,
                 )
             },
+            hiddenHabits = m[HABIT_HIDDEN].orEmpty().split(",").map { it.trim() }.filter { it.isNotEmpty() }.toSet(),
+            habitNames = m.filterKeys { it.startsWith(HABIT_NAME_PREFIX) }
+                .mapKeys { it.key.removePrefix(HABIT_NAME_PREFIX) }
+                .filterValues { it.isNotBlank() },
         )
+    }
+
+    // ---- built-in habits: show / hide, rename ----
+    suspend fun setHabitHidden(key: String, hidden: Boolean) {
+        val now = PlanCalendar.config.hiddenHabits.let { if (hidden) it + key else it - key }
+        if (now.isEmpty()) settings.remove(HABIT_HIDDEN) else settings.put(Setting(HABIT_HIDDEN, now.sorted().joinToString(",")))
+    }
+
+    /** Blank or null [name] goes back to the built-in name. */
+    suspend fun setHabitName(key: String, name: String?) {
+        val n = name?.trim().orEmpty()
+        if (n.isEmpty()) settings.remove(HABIT_NAME_PREFIX + key) else settings.put(Setting(HABIT_NAME_PREFIX + key, n))
     }
 
     // ---- plan ----
@@ -132,3 +148,6 @@ class ScheduleRepository(private val db: AppDatabase) {
     }
     suspend fun clearLog() = notif.clearLog()
 }
+
+private const val HABIT_HIDDEN = "habit_hidden"
+private const val HABIT_NAME_PREFIX = "habit_name_"

@@ -142,7 +142,8 @@ class BlockActivity : ComponentActivity() {
                     onStartFocus = {
                         val focusIntent = Intent(this, MainActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            putExtra("route", "focus?min=45")
+                            // A preset needs a type, otherwise the 45 minutes were ignored.
+                            putExtra(com.example.tracker.alarm.Notifications.EXTRA_ROUTE, "focus?type=STUDY&min=45")
                         }
                         startActivity(focusIntent)
                         finish()

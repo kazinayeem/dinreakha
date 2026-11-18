@@ -112,7 +112,8 @@ object PlanCalendar {
         fun block(key: String) = ChecklistItem(key, Habits.label(key), blocks[key]?.expected == true)
         fun item(key: String) = ChecklistItem(key, Habits.label(key), true)
         val goal = phaseFor(date).prayers
-        return buildList {
+        val hidden = config.hiddenHabits
+        return buildList<ChecklistItem> {
             add(item(Habits.WOKE_ON_TIME))
             add(item(Habits.MORNING_ROUTINE))
             add(block(Habits.COURSE_STUDY))
@@ -132,7 +133,7 @@ object PlanCalendar {
             config.routines.filter { it.occursOn(date) }.forEach { r ->
                 add(ChecklistItem(r.habitKey, "${r.icon} ${r.title}", true))
             }
-        }
+        }.filter { it.key !in hidden }
     }
 
     /** Completion 0..1 of expected items given the set of done habit keys. */

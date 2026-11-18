@@ -170,6 +170,10 @@ data class ScheduleConfig(
     val blocks: List<Schedule.Block>,
     val screensOffLeadMin: Long,
     val routines: List<Schedule.Routine> = emptyList(),
+    /** Built-in habit keys the user switched off (left out of the checklist, stats and reports). */
+    val hiddenHabits: Set<String> = emptySet(),
+    /** User's own names for built-in habits, by key. Keys never change, so old checks still count. */
+    val habitNames: Map<String, String> = emptyMap(),
 ) {
     val planEnd: LocalDate get() = planStart.plusDays((planDays - 1).toLong())
 

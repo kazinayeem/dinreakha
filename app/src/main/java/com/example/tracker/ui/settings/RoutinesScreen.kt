@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -31,6 +32,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import com.example.tracker.data.schedule.Habits
+import com.example.tracker.ui.components.habitIcon
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -71,13 +75,42 @@ fun RoutinesScreen() {
     val first = settings?.firstDayOfWeek ?: java.time.DayOfWeek.SATURDAY
     val scope = rememberCoroutineScope()
     var editing by remember { mutableStateOf<Routine?>(null) }
+    var renaming by remember { mutableStateOf<String?>(null) }
 
     fun change(block: suspend () -> Unit) = scope.launch { block(); c.scheduler.rescheduleAll() }
 
     LazyColumn(contentPadding = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 28.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         item {
+            SectionCard("Daily habits") {
+                Text("Switch off what you don't do. Tap a name to rename it — past ticks are kept.",
+                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Gap(4.dp)
+                Habits.BUILT_IN.forEach { key ->
+                    val shown = key !in cfg.hiddenHabits
+                    Row(Modifier.fillMaxWidth().heightIn(min = 52.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(habitIcon(key), contentDescription = null, modifier = Modifier.size(22.dp),
+                            tint = if (shown) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                        Surface(onClick = { renaming = key }, color = Color.Transparent, shape = MaterialTheme.shapes.small,
+                            modifier = Modifier.weight(1f).padding(horizontal = 6.dp)) {
+                            Column(Modifier.heightIn(min = 48.dp).padding(horizontal = 6.dp), verticalArrangement = Arrangement.Center) {
+                                Text(cfg.habitNames[key] ?: Habits.defaultLabel(key), style = MaterialTheme.typography.bodyLarge,
+                                    color = if (shown) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
+                                if (cfg.habitNames[key] != null) Text("Was: ${Habits.defaultLabel(key)}",
+                                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
+                        Switch(shown, { on -> change { c.schedule.setHabitHidden(key, !on) } })
+                    }
+                }
+            }
+        }
+        item {
+            Text("Your own habits & routines", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 8.dp))
+        }
+        item {
             Button(onClick = { editing = Routine(title = "") }, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
-                Text("+ New routine", fontWeight = FontWeight.SemiBold)
+                Text("+ New habit or routine", fontWeight = FontWeight.SemiBold)
             }
         }
         if (cfg.routines.isEmpty()) item {
@@ -100,6 +133,32 @@ fun RoutinesScreen() {
                 }
             }
         }
+    }
+
+    renaming?.let { key ->
+        var name by remember(key) { mutableStateOf(cfg.habitNames[key] ?: Habits.defaultLabel(key)) }
+        AlertDialog(
+            onDismissRequest = { renaming = null },
+            title = { Text("Rename habit") },
+            text = {
+                OutlinedTextField(name, { name = it.take(40) }, label = { Text("Name") }, singleLine = true,
+                    modifier = Modifier.fillMaxWidth())
+            },
+            confirmButton = {
+                TextButton(enabled = name.isNotBlank(), onClick = {
+                    val n = name.trim().takeIf { it != Habits.defaultLabel(key) }
+                    change { c.schedule.setHabitName(key, n) }; renaming = null
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                Row {
+                    if (cfg.habitNames[key] != null) TextButton(onClick = {
+                        change { c.schedule.setHabitName(key, null) }; renaming = null
+                    }) { Text("Reset name") }
+                    TextButton(onClick = { renaming = null }) { Text("Cancel") }
+                }
+            },
+        )
     }
 
     editing?.let { r0 ->

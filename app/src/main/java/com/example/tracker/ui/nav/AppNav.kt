@@ -46,11 +46,15 @@ import com.example.tracker.ui.i18n.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -124,7 +128,7 @@ private fun titleFor(route: String?, args: android.os.Bundle?): String? = when {
     route == "wallet/categories" -> "Categories"
     route == "settings/notifications" -> "Notifications"
     route == "settings/schedule" -> "Schedule"
-    route == "settings/routines" -> "My routines"
+    route == "settings/routines" -> "Habits & routines"
     route == "settings/log" -> "Notification log"
     route == "about" -> "About"
     route == "privacy" -> "Privacy"
@@ -162,20 +166,8 @@ fun AppNav(
     val snackbar = remember { SnackbarHostState() }
     val feedback = remember { Feedback(snackbar, scope) }
 
-    LaunchedEffect(pendingRoute, s.onboardingDone) {
-        if (pendingRoute != null && s.onboardingDone) {
-            nav.navigate(pendingRoute) { launchSingleTop = true }
-            onRouteHandled()
-        }
-    }
-
-    LaunchedEffect(s.onboardingDone) {
-        if (!s.onboardingDone) {
-            nav.navigate("onboarding") {
-                popUpTo(0) { inclusive = true }
-            }
-        }
-    }
+    // Photos shared into the app wait here until the capture screen has taken them.
+    var pendingShare by remember { mutableStateOf<List<Uri>>(emptyList()) }
 
     LockedSection(LockScope.APP) {
     CompositionLocalProvider(LocalFeedback provides feedback) {
@@ -191,7 +183,10 @@ fun AppNav(
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = { nav.popBackStack() }) {
+                        IconButton(onClick = {
+                            // Ignore a second tap while the first pop is still animating (it would pop two screens).
+                            if (entry?.lifecycle?.currentState == Lifecycle.State.RESUMED) nav.popBackStack()
+                        }) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
                     },
@@ -229,6 +224,19 @@ fun AppNav(
                 .consumeWindowInsets(padding)
                 .imePadding()
         ) {
+            // Runs only once the NavHost below has set its graph (it is hidden while the app lock is up).
+            LaunchedEffect(pendingRoute, s.onboardingDone) {
+                if (pendingRoute != null && s.onboardingDone) {
+                    if (pendingRoute.startsWith("notes/capture") && sharedUris.isNotEmpty()) pendingShare = sharedUris
+                    nav.openDeepLink(pendingRoute)
+                    onRouteHandled()
+                }
+            }
+            LaunchedEffect(s.onboardingDone) {
+                if (!s.onboardingDone && nav.currentDestination?.route != "onboarding") {
+                    nav.navigate("onboarding") { popUpTo(0) { inclusive = true } }
+                }
+            }
             NavHost(
                 navController = nav,
                 startDestination = if (s.onboardingDone) "today" else "onboarding",
@@ -286,6 +294,8 @@ fun AppNav(
                         onOpenReview = { nav.navigate("review/$it") },
                         onAddExpense = { nav.navigate("wallet/add") },
                         onOpenWallet = { nav.goTab("wallet") },
+                        onStartFocus = { t, m -> nav.navigate("focus?type=$t&min=$m") { launchSingleTop = true } },
+                        onLogSleep = { nav.navigate("sleep?log=true") },
                         onOpenPlan = { nav.navigate("plan") },
                         onCaptureNote = { cid ->
                             nav.navigate(if (cid != null) "notes/capture?courseId=$cid" else "notes/capture")
@@ -341,14 +351,14 @@ fun AppNav(
                         hour = a.getInt("hour").takeIf { it >= 0 },
                         minute = a.getInt("minute"),
                         occurrenceDate = a.getString("occ")?.let(LocalDate::parse),
-                        onDone = { nav.popBackStack() },
+                        onDone = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
                 composable("settings") { LockedSection(LockScope.SETTINGS) { SettingsScreen { nav.navigate(it) } } }
                 composable("settings/notifications") { LockedSection(LockScope.SETTINGS) { NotificationSettingsScreen() } }
                 composable("settings/schedule") { LockedSection(LockScope.SETTINGS) { ScheduleEditorScreen() } }
-                composable("settings/routines") { RoutinesScreen() }
-                composable("settings/log") { NotificationLogScreen() }
+                composable("settings/routines") { LockedSection(LockScope.SETTINGS) { RoutinesScreen() } }
+                composable("settings/log") { LockedSection(LockScope.SETTINGS) { NotificationLogScreen() } }
                 composable("about") { com.example.tracker.ui.more.AboutScreen { nav.navigate(it) } }
                 composable("privacy") { com.example.tracker.ui.more.PolicyScreen(terms = false) }
                 composable("terms") { com.example.tracker.ui.more.PolicyScreen(terms = true) }
@@ -364,7 +374,7 @@ fun AppNav(
                 )) { e ->
                     val a = e.arguments!!
                     LockedSection {
-                        AddTxnScreen(walletVm, a.getLong("id").takeIf { it > 0 }, onDone = { nav.popBackStack() },
+                        AddTxnScreen(walletVm, a.getLong("id").takeIf { it > 0 }, onDone = dropUnlessResumed { nav.popBackStack() },
                             preType = a.getString("type")?.let { t -> runCatching { com.example.tracker.data.db.TxnType.valueOf(t) }.getOrNull() },
                             preCategory = a.getLong("cat").takeIf { it > 0 })
                     }
@@ -385,7 +395,7 @@ fun AppNav(
                         onCaptureNote = { cid ->
                             nav.navigate(if (cid != null) "notes/capture?courseId=$cid" else "notes/capture")
                         },
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
                 composable(
@@ -395,7 +405,7 @@ fun AppNav(
                     val cid = e.arguments!!.getLong("courseId")
                     CourseDetailScreen(
                         courseId = cid,
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                         onCaptureNote = { nav.navigate("notes/capture?courseId=$cid") },
                         onOpenImageViewer = { noteId, idx ->
                             nav.navigate("notes/viewer/$noteId/$idx")
@@ -414,9 +424,11 @@ fun AppNav(
                     val cid = e.arguments!!.getLong("courseId").takeIf { it > 0 }
                     NoteCaptureScreen(
                         prefilledCourseId = cid,
-                        initialSharedUris = sharedUris,
-                        onSaved = { nav.popBackStack() },
-                        onBack = { nav.popBackStack() },
+                        initialSharedUris = pendingShare,
+                        onSharedConsumed = { pendingShare = emptyList() },
+                        onOpenCourses = { nav.navigate("courses") },
+                        onSaved = dropUnlessResumed { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
                 composable(
@@ -431,7 +443,7 @@ fun AppNav(
                     NoteImageViewerScreen(
                         noteId = noteId,
                         initialIndex = idx,
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
 
@@ -442,7 +454,7 @@ fun AppNav(
                             nav.navigate(if (id != null) "blocker/rule?id=$id" else "blocker/rule")
                         },
                         onOpenStats = { nav.navigate("blocker/stats") },
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
                 composable(
@@ -452,12 +464,12 @@ fun AppNav(
                     val id = e.arguments!!.getLong("id").takeIf { it > 0 }
                     RuleEditorScreen(
                         ruleId = id,
-                        onDone = { nav.popBackStack() },
-                        onBack = { nav.popBackStack() },
+                        onDone = dropUnlessResumed { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
                 composable("blocker/stats") {
-                    AppUsageStatsScreen(onBack = { nav.popBackStack() })
+                    AppUsageStatsScreen(onBack = dropUnlessResumed { nav.popBackStack() })
                 }
 
                 // Progress Reports & Share Cards
@@ -470,14 +482,14 @@ fun AppNav(
                     DailyReportScreen(
                         date = d,
                         onOpenCardStudio = { type -> nav.navigate("reports/card?type=$type&date=$d") },
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
                 composable("reports/daily") {
                     DailyReportScreen(
                         date = LocalDate.now(Schedule.ZONE),
                         onOpenCardStudio = { type -> nav.navigate("reports/card?type=$type") },
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
 
@@ -491,7 +503,7 @@ fun AppNav(
                         initialWeek = w,
                         onOpenCardStudio = { type, weekNo -> nav.navigate("reports/card?type=$type&week=$weekNo") },
                         onOpenThirtyDayReport = { nav.navigate("reports/thirty_day") },
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
                 composable("reports/weekly") {
@@ -499,14 +511,14 @@ fun AppNav(
                         initialWeek = PlanCalendar.weekNumber(LocalDate.now(Schedule.ZONE)),
                         onOpenCardStudio = { type, weekNo -> nav.navigate("reports/card?type=$type&week=$weekNo") },
                         onOpenThirtyDayReport = { nav.navigate("reports/thirty_day") },
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
 
                 composable("reports/thirty_day") {
                     ThirtyDayReportScreen(
                         onOpenCardStudio = { type -> nav.navigate("reports/card?type=$type") },
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
 
@@ -528,7 +540,7 @@ fun AppNav(
                         initialType = type,
                         date = d,
                         week = w,
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
                 composable("reports/card") {
@@ -536,7 +548,7 @@ fun AppNav(
                         initialType = CardType.DAILY,
                         date = LocalDate.now(Schedule.ZONE),
                         week = PlanCalendar.weekNumber(LocalDate.now(Schedule.ZONE)),
-                        onBack = { nav.popBackStack() },
+                        onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
             }
@@ -554,6 +566,23 @@ private fun NavHostController.goTab(route: String) = navigate(route) {
 
 
 private val TAB_ROUTES = setOf("today", "calendar", "focus", "wallet", "more")
+
+/**
+ * Opens a route from a notification, widget or share. Tab routes switch tabs instead of stacking a
+ * second copy on top (which left two "Today"s / "Wallet"s in the back stack); a tab with arguments
+ * (e.g. focus?note=…) opens straight above the start screen; everything else stacks on top.
+ */
+private fun NavHostController.openDeepLink(route: String) {
+    val base = route.substringBefore('?')
+    when {
+        route in TAB_ROUTES -> goTab(route)
+        base in TAB_ROUTES -> navigate(route) {
+            popUpTo(graph.findStartDestination().id)
+            launchSingleTop = true
+        }
+        else -> navigate(route) { launchSingleTop = true }
+    }
+}
 
 private fun isTabSwitch(from: String?, to: String?): Boolean {
     fun base(r: String?) = r?.substringBefore('?')

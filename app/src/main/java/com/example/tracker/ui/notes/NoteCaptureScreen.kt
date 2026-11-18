@@ -66,6 +66,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -107,6 +111,8 @@ val NOTE_TAGS = listOf("Lecture", "Board", "Slide", "Assignment", "Exam hint", "
 fun NoteCaptureScreen(
     prefilledCourseId: Long? = null,
     initialSharedUris: List<Uri> = emptyList(),
+    onSharedConsumed: () -> Unit = {},
+    onOpenCourses: () -> Unit = {},
     onSaved: () -> Unit,
     onBack: () -> Unit,
 ) {
@@ -126,12 +132,16 @@ fun NoteCaptureScreen(
     var isSaving by remember { mutableStateOf(false) }
     var showDatePicker by remember { mutableStateOf(false) }
 
-    val capturedUris = remember { mutableStateListOf<Uri>() }
+    // Saveable: the camera app often kills ours in the background; the photos taken must survive that.
+    val capturedUris = rememberSaveable(
+        saver = listSaver<SnapshotStateList<Uri>, Uri>(save = { it.toList() }, restore = { it.toMutableStateList() }),
+    ) { mutableStateListOf() }
 
-    // Add shared uris from external apps (WhatsApp, Messenger, etc.)
+    // Add shared uris from external apps (WhatsApp, Messenger, etc.), then tell the caller they're taken.
     LaunchedEffect(initialSharedUris) {
-        if (initialSharedUris.isNotEmpty() && capturedUris.isEmpty()) {
-            capturedUris.addAll(initialSharedUris)
+        if (initialSharedUris.isNotEmpty()) {
+            initialSharedUris.forEach { if (it !in capturedUris) capturedUris.add(it) }
+            onSharedConsumed()
         }
     }
 
@@ -153,7 +163,7 @@ fun NoteCaptureScreen(
     }
 
     // Camera launcher
-    var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
+    var tempCameraUri by rememberSaveable { mutableStateOf<Uri?>(null) }
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success && tempCameraUri != null) {
             capturedUris.add(tempCameraUri!!)
@@ -194,6 +204,16 @@ fun NoteCaptureScreen(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
+                if (courses.isEmpty()) {
+                    // Without a course the note can't be saved — offer the way out instead of a dead end.
+                    Text(
+                        "No courses yet. Add one to file this note under.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                    )
+                    TextButton(onClick = onOpenCourses) { Text("Add course") }
+                }
                 courses.forEach { course ->
                     val isSel = selectedCourse?.id == course.id
                     FilterChip(
@@ -338,10 +358,16 @@ fun NoteCaptureScreen(
                         tags = selectedTags.joinToString(","),
                         important = isImportant || ("Important" in selectedTags),
                     )
-                    c.notes.saveNote(noteEntity, capturedUris.toList(), course.code)
+                    val result = runCatching { c.notes.saveNote(noteEntity, capturedUris.toList(), course.code) }
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Note saved with ${capturedUris.size} photos"), Toast.LENGTH_SHORT).show()
-                        onSaved()
+                        if (result.isSuccess) {
+                            Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Note saved with ${capturedUris.size} photos"), Toast.LENGTH_SHORT).show()
+                            onSaved()
+                        } else {
+                            // Leave the screen usable so the note can be saved again.
+                            isSaving = false
+                            Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Couldn't save the note") + ": ${result.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             },

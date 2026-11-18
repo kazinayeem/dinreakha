@@ -114,6 +114,8 @@ fun EventEditorScreen(eventId: Long?, date: LocalDate?, hour: Int?, minute: Int?
     var count by rememberSaveable { mutableIntStateOf(10) }
     var reminders by rememberSaveable { mutableStateOf(setOf(30)) }
     var pick by remember { mutableStateOf<String?>(null) }
+    // Saving is async; without this a quick second tap added the event twice.
+    var submitted by remember { mutableStateOf(false) }
 
     LaunchedEffect(eventId) {
         if (eventId == null || loaded) return@LaunchedEffect
@@ -142,7 +144,7 @@ fun EventEditorScreen(eventId: Long?, date: LocalDate?, hour: Int?, minute: Int?
     val valid = title.isNotBlank() && timeOk
     val onlyThis = occurrenceDate != null
 
-    fun save() = scope.launch {
+    fun doSave() = scope.launch {
         if (onlyThis) {
             c.calendar.saveOccurrence(base!!.id, occurrenceDate!!, title, start, end, location, notes)
         } else {
@@ -153,6 +155,12 @@ fun EventEditorScreen(eventId: Long?, date: LocalDate?, hour: Int?, minute: Int?
         c.scheduler.rescheduleAll()
         feedback?.show(if (base == null) "Event added" else "Event saved")
         onDone()
+    }
+
+    fun save() {
+        if (submitted) return
+        submitted = true
+        doSave()
     }
 
     Column(Modifier.fillMaxSize()) {

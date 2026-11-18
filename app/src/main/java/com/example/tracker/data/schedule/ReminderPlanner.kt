@@ -184,7 +184,8 @@ object ReminderPlanner {
         add(Reminder(SLOT_BEDTIME, ReminderCategory.BEDTIME, bed, "Go to sleep",
             "Wake target tomorrow: ${HM.format(PlanCalendar.wakeTime(date.plusDays(1)))}", date))
 
-        phase.prayers.forEach { p ->
+        // A prayer hidden from the checklist gets no reminder either.
+        phase.prayers.filter { Habits.prayerKey(it) !in cfg.hiddenHabits }.forEach { p ->
             val prayerTime = config.prayerTimes[p] ?: p.defaultTime
             val time = if (p == Prayer.MAGHRIB && dow == DayOfWeek.MONDAY)
                 maxOf(prayerTime, Schedule.MONDAY_MAGHRIB_REMINDER) else prayerTime

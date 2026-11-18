@@ -200,4 +200,24 @@ class PlanCalendarTest {
         assertEquals(d(12, 10), PlanCalendar.planEnd)
         assertEquals(t(8, 0), PlanCalendar.wakeTime(d(12, 2))) // Wed without override → phase 1 time
     }
+
+    // ---- hidden / renamed built-in habits ----
+
+    @Test fun hiddenHabitsLeftOutOfChecklist() {
+        val day = d(11, 20)
+        assertTrue(PlanCalendar.checklist(day).any { it.key == Habits.NAP })
+        PlanCalendar.config = ScheduleConfig.DEFAULT.copy(hiddenHabits = setOf(Habits.NAP, Habits.prayerKey(Prayer.FAJR)))
+        val keys = PlanCalendar.checklist(day).map { it.key }
+        assertFalse(Habits.NAP in keys)
+        assertFalse(Habits.prayerKey(Prayer.FAJR) in keys)
+        assertTrue(Habits.WALK in keys)
+        assertFalse(Habits.NAP in Habits.visibleBuiltIns())
+    }
+
+    @Test fun renamedHabitLabelIsUsed() {
+        PlanCalendar.config = ScheduleConfig.DEFAULT.copy(habitNames = mapOf(Habits.WALK to "Evening walk"))
+        assertEquals("Evening walk", Habits.label(Habits.WALK))
+        assertEquals("Evening walk", PlanCalendar.checklist(d(11, 20)).first { it.key == Habits.WALK }.label)
+        assertEquals("Walk 20 min", Habits.defaultLabel(Habits.WALK))
+    }
 }

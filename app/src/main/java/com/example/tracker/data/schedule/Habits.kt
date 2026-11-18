@@ -28,5 +28,14 @@ object Habits {
         Schedule.Prayer.entries.forEach { put(prayerKey(it), it.label) }
     }
 
-    fun label(key: String) = LABELS[key] ?: key
+    /** The built-in habits the user can hide or rename, in checklist order. */
+    val BUILT_IN: List<String> = listOf(
+        WOKE_ON_TIME, MORNING_ROUTINE, COURSE_STUDY, CODE_PROJECT, RESEARCH, WALK, NAP, SCREENS_OFF,
+    ) + Schedule.Prayer.entries.map(::prayerKey)
+
+    /** Visible built-ins (hidden ones left out). */
+    fun visibleBuiltIns(): List<String> = BUILT_IN.filter { it !in PlanCalendar.config.hiddenHabits }
+
+    fun defaultLabel(key: String) = LABELS[key] ?: key
+    fun label(key: String) = PlanCalendar.config.habitNames[key] ?: defaultLabel(key)
 }

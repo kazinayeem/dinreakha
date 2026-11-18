@@ -150,7 +150,7 @@ fun SettingsScreen(nav: (String) -> Unit) {
 
         item {
             SectionCard("Control centre", icon = Icons.Rounded.Tune) {
-                NavRow(Icons.Rounded.TaskAlt, "My routines") { nav("settings/routines") }
+                NavRow(Icons.Rounded.TaskAlt, "Habits & routines") { nav("settings/routines") }
                 NavRow(Icons.Rounded.EditCalendar, "Schedule") { nav("settings/schedule") }
                 NavRow(Icons.Rounded.Shield, "App blocker & limits") { nav("blocker") }
                 val off = s.prefs.count { !it.value.enabled }
@@ -434,12 +434,13 @@ fun SettingsScreen(nav: (String) -> Unit) {
             confirmButton = {
                 TextButton(onClick = {
                     confirmImport = null
-                    scope.launch {
+                    // App scope: a restore can change the screen under us; the reschedule must still finish.
+                    c.appScope.launch {
                         runCatching {
                             val text = withContext(Dispatchers.IO) { ctx.contentResolver.openInputStream(uri)!!.bufferedReader().readText() }
                             c.backup.importJson(text)
                             c.scheduler.rescheduleAll()
-                        }.onSuccess { toast("Backup restored") }.onFailure { toast("Import failed: ${it.message}") }
+                        }.let { r -> withContext(Dispatchers.Main) { r.onSuccess { toast("Backup restored") }.onFailure { toast("Import failed: ${it.message}") } } }
                     }
                 }) { Text("Replace") }
             },
@@ -475,14 +476,15 @@ fun SettingsScreen(nav: (String) -> Unit) {
                 TextButton(
                     onClick = {
                         confirmReset = false
-                        scope.launch {
-                            runCatching {
+                        // App scope: the reset sends the app to onboarding, which disposes this screen
+                        // and used to cancel the reschedule — alarms for erased reminders kept firing.
+                        c.appScope.launch {
+                            val r = runCatching {
                                 c.backup.resetToBlankApp()
                                 c.scheduler.rescheduleAll()
-                            }.onSuccess {
-                                toast("App reset to blank")
-                            }.onFailure {
-                                toast("Reset failed: ${it.message}")
+                            }
+                            withContext(Dispatchers.Main) {
+                                r.onSuccess { toast("App reset to blank") }.onFailure { toast("Reset failed: ${it.message}") }
                             }
                         }
                     },

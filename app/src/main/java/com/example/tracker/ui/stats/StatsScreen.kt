@@ -221,10 +221,7 @@ fun StatsScreen(onOpenPlan: () -> Unit = {}) {
                     if (elapsed.isEmpty()) {
                         EmptyState(Icons.Rounded.HourglassTop, "Starts on Day 1", "")
                     } else {
-                        val keys = listOf(
-                            Habits.WOKE_ON_TIME, Habits.MORNING_ROUTINE, Habits.COURSE_STUDY,
-                            Habits.RESEARCH, Habits.CODE_PROJECT, Habits.WALK, Habits.NAP, Habits.SCREENS_OFF,
-                        ) + Schedule.Prayer.entries.map(Habits::prayerKey)
+                        val keys = Habits.visibleBuiltIns()
 
                         keys.forEachIndexed { i, key ->
                             val done = elapsed.count { days[it]?.doneKeys?.contains(key) == true }

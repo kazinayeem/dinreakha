@@ -133,6 +133,8 @@ fun RuleEditorScreen(
     var showEndTimePicker by remember { mutableStateOf(false) }
     var showAppPickerSheet by remember { mutableStateOf(false) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
+    // Set on the first Save/Delete so a second tap during the exit animation can't write twice.
+    var submitted by remember { mutableStateOf(false) }
 
     var installedApps by remember { mutableStateOf<List<AppItem>>(emptyList()) }
     var searchQuery by remember { mutableStateOf("") }
@@ -235,6 +237,8 @@ fun RuleEditorScreen(
                                 Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Please select at least one app to restrict"), Toast.LENGTH_SHORT).show()
                                 return@Button
                             }
+                            if (submitted) return@Button
+                            submitted = true
 
                             scope.launch {
                                 val rule = BlockRuleEntity(
@@ -694,7 +698,8 @@ fun RuleEditorScreen(
             confirmButton = {
                 TextButton(onClick = {
                     showDeleteConfirm = false
-                    if (ruleId != null) {
+                    if (ruleId != null && !submitted) {
+                        submitted = true
                         scope.launch {
                             c.blocker.deleteRule(ruleId)
                             onDone()

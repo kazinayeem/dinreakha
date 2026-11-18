@@ -123,6 +123,8 @@ fun AddTxnScreen(
     var loadedId by rememberSaveable { mutableLongStateOf(0L) }
     var pickDate by rememberSaveable { mutableStateOf(false) }
     var confirmDelete by rememberSaveable { mutableStateOf(false) }
+    // Set on the first Save/Delete: a second tap during the exit animation used to save a duplicate.
+    var submitted by remember { mutableStateOf(false) }
 
     // Load transaction once when editing
     LaunchedEffect(txnId, d.txns.size) {
@@ -176,6 +178,8 @@ fun AddTxnScreen(
     )
 
     fun save() {
+        if (submitted) return
+        submitted = true
         val at = LocalDate.parse(date).atTime(LocalTime.parse(time))
         when (type) {
             TxnType.EXPENSE, TxnType.INCOME -> vm.saveSimple(
@@ -527,6 +531,8 @@ fun AddTxnScreen(
             text = { Text(if (type == TxnType.TRANSFER) "Its linked fee is deleted too." else "This cannot be undone.") },
             confirmButton = {
                 TextButton(onClick = {
+                    if (submitted) return@TextButton
+                    submitted = true
                     vm.deleteWithUndo(editingId, feedback)
                     confirmDelete = false
                     onDone()
