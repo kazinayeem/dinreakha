@@ -81,14 +81,11 @@ fun MoreScreen(nav: (String) -> Unit) {
 
     val cs = MaterialTheme.colorScheme
     val tiles = listOf(
-        Tile(Icons.Rounded.Insights, Color(0xFFF2A93B), "Stats", "$streak-day streak", "stats"),
+        Tile(Icons.Rounded.Insights, Color(0xFFF2A93B), "Progress", "$streak-day streak", "progress?tab=DAY"),
         Tile(Icons.Rounded.Bedtime, Color(0xFF818CF8), "Sleep & mood",
             lastNight?.let { "${it.minutes / 60}h ${it.minutes % 60}m slept" } ?: "Log last night", "sleep?log=false"),
-        Tile(Icons.Rounded.EditNote, cs.secondary, "Weekly review", "Week ${PlanCalendar.weekNumber(today)}", "review"),
         Tile(Icons.Rounded.School, Color(0xFF4285F4), "Class notes", "${courses.sumOf { it.noteCount }} notes", "courses"),
         Tile(Icons.Rounded.Shield, Color(0xFFE5534B), "App limits", "$reels reels, $blocks blocks", "blocker"),
-        Tile(Icons.Rounded.Share, Color(0xFF6366F1), "Reports", "Today's score", "reports/daily"),
-        Tile(Icons.Rounded.CalendarMonth, cs.primary, "Share card", "Make one", "reports/card"),
     )
 
     LazyColumn(
@@ -99,7 +96,7 @@ fun MoreScreen(nav: (String) -> Unit) {
 
         // Plan progress — the one number you check most
         item {
-            Surface(onClick = { nav("plan") }, shape = RoundedCornerShape(22.dp), color = cs.primaryContainer) {
+            Surface(onClick = { nav("progress?tab=PLAN") }, shape = RoundedCornerShape(22.dp), color = cs.primaryContainer) {
                 Column(Modifier.fillMaxWidth().padding(18.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {

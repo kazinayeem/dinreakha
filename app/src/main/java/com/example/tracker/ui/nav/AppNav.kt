@@ -138,6 +138,7 @@ private fun titleFor(route: String?, args: android.os.Bundle?): String? = when {
     route?.startsWith("sleep") == true -> "Sleep & mood"
     route == "plan" -> "30-day plan"
     route == "stats" -> "Stats"
+    route == "progress" -> "Progress"
     route == "settings" -> "Settings"
     route.startsWith("calendar/edit") -> if ((args?.getLong("id") ?: 0L) > 0) "Edit event" else "New event"
     route == "courses" -> "Course Library"
@@ -285,7 +286,7 @@ fun AppNav(
                         },
                         onOpenCourses = { nav.navigate("courses") },
                         onOpenBlocker = { nav.navigate("blocker") },
-                        onOpenDailyReport = { d -> nav.navigate("reports/daily?date=$d") },
+                        onOpenDailyReport = { d -> nav.navigate("progress?tab=DAY&date=$d") },
                         onLogSleep = { nav.navigate("sleep?log=true") },
                     )
                 }
@@ -304,7 +305,7 @@ fun AppNav(
                         },
                         onOpenCourses = { nav.navigate("courses") },
                         onOpenBlocker = { nav.navigate("blocker") },
-                        onOpenDailyReport = { d -> nav.navigate("reports/daily?date=$d") },
+                        onOpenDailyReport = { d -> nav.navigate("progress?tab=DAY&date=$d") },
                     )
                 }
                 composable("plan") {
@@ -314,13 +315,31 @@ fun AppNav(
                 composable("review") {
                     ReviewScreen(
                         initialWeek = PlanCalendar.weekNumber(LocalDate.now(Schedule.ZONE)),
-                        onOpenWeeklyReport = { w -> nav.navigate("reports/weekly?week=$w") },
+                        onOpenWeeklyReport = { w -> nav.navigate("progress?tab=WEEK&week=$w") },
                     )
                 }
                 composable("review/{week}", listOf(navArgument("week") { type = NavType.IntType })) { e ->
                     ReviewScreen(
                         initialWeek = e.arguments!!.getInt("week"),
-                        onOpenWeeklyReport = { w -> nav.navigate("reports/weekly?week=$w") },
+                        onOpenWeeklyReport = { w -> nav.navigate("progress?tab=WEEK&week=$w") },
+                    )
+                }
+                composable(
+                    "progress?tab={tab}&week={week}&date={date}",
+                    listOf(
+                        navArgument("tab") { type = NavType.StringType; defaultValue = "DAY" },
+                        navArgument("week") { type = NavType.IntType; defaultValue = 0 },
+                        navArgument("date") { type = NavType.StringType; nullable = true; defaultValue = null },
+                    ),
+                ) { e ->
+                    val a = e.arguments!!
+                    val today = LocalDate.now(Schedule.ZONE)
+                    com.example.tracker.ui.report.ProgressScreen(
+                        initialTab = runCatching { com.example.tracker.ui.report.ProgressTab.valueOf(a.getString("tab") ?: "DAY") }
+                            .getOrDefault(com.example.tracker.ui.report.ProgressTab.DAY),
+                        date = a.getString("date")?.let { runCatching { LocalDate.parse(it) }.getOrNull() } ?: today,
+                        week = a.getInt("week").takeIf { it > 0 } ?: PlanCalendar.weekNumber(today),
+                        nav = { nav.navigate(it) },
                     )
                 }
                 composable("stats") { StatsScreen(onOpenPlan = { nav.navigate("plan") }) }

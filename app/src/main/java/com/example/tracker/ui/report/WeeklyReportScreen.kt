@@ -74,6 +74,8 @@ fun WeeklyReportScreen(
     onOpenCardStudio: (String, Int) -> Unit,
     onOpenThirtyDayReport: () -> Unit,
     onBack: () -> Unit,
+    embedded: Boolean = false,
+    onWriteReview: (Int) -> Unit = {},
 ) {
     val ctx = LocalContext.current
     val c = ctx.container
@@ -86,7 +88,17 @@ fun WeeklyReportScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            // Inside the Progress screen the container draws the title and back arrow.
+            if (embedded) {
+                androidx.compose.foundation.layout.Row(
+                    Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    TextButton(onClick = { onWriteReview(selectedWeek) }) {
+                        Text("Write this week's review", fontWeight = FontWeight.Bold)
+                    }
+                }
+            } else CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = "Weekly Progress Report",

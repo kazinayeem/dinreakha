@@ -80,6 +80,7 @@ fun DailyReportScreen(
     date: LocalDate = LocalDate.now(Schedule.ZONE),
     onOpenCardStudio: (String) -> Unit,
     onBack: () -> Unit,
+    embedded: Boolean = false,
 ) {
     val ctx = LocalContext.current
     val c = ctx.container
@@ -100,7 +101,18 @@ fun DailyReportScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            // Inside the Progress screen the container draws the title and back arrow.
+            if (embedded) {
+                androidx.compose.foundation.layout.Row(
+                    Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(dateTitle, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+                    IconButton(onClick = { showWeightsDialog = true }) {
+                        Icon(Icons.Rounded.Tune, contentDescription = "Score Weights")
+                    }
+                }
+            } else CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = "Daily Summary",

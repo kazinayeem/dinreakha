@@ -195,7 +195,7 @@ class FocusWidget : DinrekhaWidget() {
 // ======================================================================= 6. Streak
 class StreakWidget : DinrekhaWidget() {
     @Composable override fun Content(ctx: Context, d: WidgetSnapshot) {
-        Card(GlanceModifier.clickable(openRoute(ctx, "stats"))) {
+        Card(GlanceModifier.clickable(openRoute(ctx, "progress?tab=HABITS"))) {
             Icon(R.drawable.ic_w_flame, GlanceTheme.colors.tertiary, 28.dp)
             Spacer(GlanceModifier.defaultWeight())
             Big("${d.streak}", 34.sp)

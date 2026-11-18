@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Surface
 import com.example.tracker.ui.i18n.Text
 import androidx.compose.runtime.Composable
@@ -53,6 +54,8 @@ import com.example.tracker.ui.components.SHORT_DATE
 fun ThirtyDayReportScreen(
     onOpenCardStudio: (String) -> Unit,
     onBack: () -> Unit,
+    embedded: Boolean = false,
+    onOpenGrid: () -> Unit = {},
 ) {
     val ctx = LocalContext.current
     val c = ctx.container
@@ -64,7 +67,15 @@ fun ThirtyDayReportScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            // Inside the Progress screen the container draws the title and back arrow.
+            if (embedded) {
+                androidx.compose.foundation.layout.Row(
+                    Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    TextButton(onClick = onOpenGrid) { Text("Day-by-day grid", fontWeight = FontWeight.Bold) }
+                }
+            } else CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = "30-Day Plan Transformation",

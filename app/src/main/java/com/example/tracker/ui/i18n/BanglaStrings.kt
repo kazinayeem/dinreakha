@@ -342,6 +342,7 @@ object BanglaStrings {
         "Limits and blocked apps" to "সীমা ও বন্ধ করা অ্যাপ", "Theme, language, quotes, weather, time" to "থিম, ভাষা, উক্তি, আবহাওয়া, সময়",
         "App lock, backup, reset" to "অ্যাপ লক, ব্যাকআপ, রিসেট", "What was sent, and when" to "কী পাঠানো হয়েছে, কখন",
         "App blocker" to "অ্যাপ ব্লকার",
+        "Write this week's review" to "এই সপ্তাহের রিভিউ লিখুন", "Day-by-day grid" to "দিন অনুযায়ী গ্রিড",
         "Habits & routines" to "অভ্যাস ও রুটিন", "Daily habits" to "প্রতিদিনের অভ্যাস",
         "Switch off what you don't do. Tap a name to rename it — past ticks are kept." to "যেটা করেন না সেটা বন্ধ করুন। নাম বদলাতে নামে চাপুন — আগের টিক থেকে যাবে।",
         "Your own habits & routines" to "আপনার নিজের অভ্যাস ও রুটিন", "+ New habit or routine" to "+ নতুন অভ্যাস বা রুটিন",

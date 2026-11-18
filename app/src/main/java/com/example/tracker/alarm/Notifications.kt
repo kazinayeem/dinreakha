@@ -125,7 +125,7 @@ object Notifications {
         val id = if (isWake) notificationId(ReminderPlanner.SLOT_WAKE) else notificationId(r.slot)
         val route = when (r.category) {
             ReminderCategory.EXPENSE_LOG, ReminderCategory.RECURRING -> "wallet/add"
-            ReminderCategory.WEEKLY_REVIEW -> if (r.slot == ReminderPlanner.SLOT_WEEKLY_CARD) "reports/weekly" else "review"
+            ReminderCategory.WEEKLY_REVIEW -> if (r.slot == ReminderPlanner.SLOT_WEEKLY_CARD) "progress?tab=WEEK" else "review"
             ReminderCategory.CALENDAR -> "calendar"
             else -> "today"
         }
