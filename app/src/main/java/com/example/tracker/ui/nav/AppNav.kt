@@ -12,6 +12,8 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.text.font.FontWeight
@@ -235,7 +237,8 @@ fun AppNav(
             LaunchedEffect(pendingRoute, s.onboardingDone) {
                 if (pendingRoute != null && s.onboardingDone) {
                     if (pendingRoute.startsWith("notes/capture") && sharedUris.isNotEmpty()) pendingShare = sharedUris
-                    nav.openDeepLink(pendingRoute)
+                    // A bad route (e.g. from an old notification) must not crash the app.
+                    runCatching { nav.openDeepLink(pendingRoute) }
                     onRouteHandled()
                 }
             }
@@ -245,7 +248,9 @@ fun AppNav(
                 }
             }
             val noMotion = com.example.tracker.ui.theme.Motion.reduced()
+            Box(Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.TopCenter) {
             NavHost(
+                modifier = Modifier.fillMaxHeight().widthIn(max = 640.dp),
                 navController = nav,
                 startDestination = if (s.onboardingDone) "today" else "onboarding",
                 // Tabs: fade-through (old out fast, new in after it — never both on screen).
@@ -593,6 +598,7 @@ fun AppNav(
                         onBack = dropUnlessResumed { nav.popBackStack() },
                     )
                 }
+            }
             }
         }
     }

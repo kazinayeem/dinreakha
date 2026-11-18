@@ -62,7 +62,9 @@ class MainActivity : FragmentActivity() {
                 ThemeMode.LIGHT -> false
                 ThemeMode.DARK -> true
             }
-            var showIntro by rememberSaveable { mutableStateOf(coldStart) }
+            // The intro is for opening the app from the launcher. A tap on a notification, widget or share
+            // carries a destination: go straight there instead of hiding it behind a 4-second intro.
+            var showIntro by rememberSaveable { mutableStateOf(coldStart && pendingRoute == null) }
             var introGone by remember { mutableStateOf(!showIntro) }
             // Status/navigation bar icons follow the APP theme (not the phone's), so they stay visible —
             // and stay light while the dark intro is on screen.
