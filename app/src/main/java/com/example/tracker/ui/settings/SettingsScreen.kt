@@ -108,7 +108,8 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
     val scope = rememberCoroutineScope()
     val perms = rememberPermissionStatus(ctx)
     val today = LocalDate.now(Schedule.ZONE)
-    var confirmImport by remember { mutableStateOf<android.net.Uri?>(null) }
+    // The picked backup, already read and checked: (file text, what's in it).
+    var confirmImport by remember { mutableStateOf<Pair<String, com.example.tracker.data.backup.BackupCodec.Contents>?>(null) }
     var confirmReset by remember { mutableStateOf(false) }
 
     fun change(block: suspend () -> Unit) = scope.launch { block(); c.scheduler.rescheduleAll() }
@@ -119,7 +120,7 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
         scope.launch {
             runCatching {
                 val text = c.backup.exportJson()
-                withContext(Dispatchers.IO) { ctx.contentResolver.openOutputStream(uri)!!.use { it.write(text.toByteArray()) } }
+                withContext(Dispatchers.IO) { writeTruncating(ctx, uri, text) }
             }.onSuccess { toast("Backup saved") }.onFailure { toast("Export failed: ${it.message}") }
         }
     }
@@ -128,11 +129,23 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
         scope.launch {
             runCatching {
                 val text = c.backup.exportTransactionsCsv()
-                withContext(Dispatchers.IO) { ctx.contentResolver.openOutputStream(uri)!!.use { it.write(text.toByteArray()) } }
+                withContext(Dispatchers.IO) { writeTruncating(ctx, uri, text) }
             }.onSuccess { toast("CSV saved") }.onFailure { toast("Export failed: ${it.message}") }
         }
     }
-    val importJson = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri -> confirmImport = uri }
+    val importJson = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        uri ?: return@rememberLauncherForActivityResult
+        // Read and check the whole file first: a bad file is reported here and nothing is erased.
+        scope.launch {
+            runCatching {
+                val text = withContext(Dispatchers.IO) {
+                    (ctx.contentResolver.openInputStream(uri) ?: error("Couldn't open the file")).bufferedReader().use { it.readText() }
+                }
+                text to withContext(Dispatchers.Default) { c.backup.inspect(text) }
+            }.onSuccess { confirmImport = it }
+                .onFailure { toast("Can't restore this file: ${it.message}") }
+        }
+    }
     val hasLocPerm = LocationHelper.hasLocationPermission(ctx)
     val locPermLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { perms ->
         if (perms.values.any { it }) {
@@ -433,18 +446,23 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
         }
     }
 
-    confirmImport?.let { uri ->
+    confirmImport?.let { (text, contents) ->
         AlertDialog(
             onDismissRequest = { confirmImport = null },
             title = { Text("Replace all data?") },
-            text = { Text("Everything in Dinrekha is replaced by the file.") },
+            text = {
+                Text(
+                    "Everything in Dinrekha is replaced by this backup" +
+                        (contents.exportedAt?.let { " from ${it.take(16).replace('T', ' ')}" } ?: "") +
+                        ":\n" + contents.summary() + ".\n\nClass-note photos are not inside backups; they stay on this phone.",
+                )
+            },
             confirmButton = {
                 TextButton(onClick = {
                     confirmImport = null
                     // App scope: a restore can change the screen under us; the reschedule must still finish.
                     c.appScope.launch {
                         runCatching {
-                            val text = withContext(Dispatchers.IO) { ctx.contentResolver.openInputStream(uri)!!.bufferedReader().readText() }
                             c.backup.importJson(text)
                             c.scheduler.rescheduleAll()
                         }.let { r -> withContext(Dispatchers.Main) { r.onSuccess { toast("Backup restored") }.onFailure { toast("Import failed: ${it.message}") } } }
@@ -552,4 +570,12 @@ private fun PermRow(title: String, ok: Boolean, fix: () -> Unit) {
         Text(title, Modifier.weight(1f).padding(start = 10.dp), style = MaterialTheme.typography.bodyLarge)
         if (!ok) FilledTonalButton(onClick = fix) { Text("Fix") }
     }
+}
+
+/** Writes [text] to a document, replacing everything in it ("wt": plain "w" doesn't truncate on every provider). */
+private fun writeTruncating(ctx: android.content.Context, uri: android.net.Uri, text: String) {
+    val out = runCatching { ctx.contentResolver.openOutputStream(uri, "wt") }.getOrNull()
+        ?: ctx.contentResolver.openOutputStream(uri)
+        ?: error("Couldn't open the file for writing")
+    out.use { it.write(text.toByteArray(Charsets.UTF_8)) }
 }
