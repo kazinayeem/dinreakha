@@ -1,5 +1,7 @@
 package com.example.tracker.ui.today
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.material.icons.rounded.Insights
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -128,7 +130,7 @@ fun TodayScreen(
     val vm: TodayViewModel = viewModel(key = "day_$date") { TodayViewModel(c, date) }
     val ui by vm.ui.collectAsStateWithLifecycle()
     val weatherState by vm.weather.collectAsStateWithLifecycle()
-    val s = ui ?: return
+    val s = ui ?: run { TodaySkeleton(); return }
 
     var activeClass by remember { mutableStateOf<com.example.tracker.data.repo.ActiveClassResult?>(null) }
     LaunchedEffect(s.now) {
@@ -1030,5 +1032,25 @@ private fun eventColor(t: EventType): Color {
         EventType.PRAYER -> cs.primary
         EventType.FOCUS -> Color(0xFF4FA8E8)
         EventType.ROUTINE -> Color(0xFFF07AAE)
+    }
+}
+
+/** Grey placeholders in the shape of the page while today's data loads (instead of a blank screen). */
+@Composable
+private fun TodaySkeleton() {
+    val base = MaterialTheme.colorScheme.surfaceContainerHigh
+    val pulse by androidx.compose.animation.core.rememberInfiniteTransition(label = "skeleton").animateFloat(
+        0.55f, 1f, androidx.compose.animation.core.infiniteRepeatable(
+            tween(com.example.tracker.ui.theme.Motion.SLOW), androidx.compose.animation.core.RepeatMode.Reverse), label = "pulse")
+    val a = if (com.example.tracker.ui.theme.Motion.reduced()) 1f else pulse
+    Column(
+        Modifier.fillMaxWidth().padding(16.dp).semantics { contentDescription = "Loading" },
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Box(Modifier.fillMaxWidth(0.35f).height(14.dp).clip(RoundedCornerShape(6.dp)).background(base.copy(alpha = a)))
+        Box(Modifier.fillMaxWidth(0.6f).height(34.dp).clip(RoundedCornerShape(8.dp)).background(base.copy(alpha = a)))
+        Box(Modifier.fillMaxWidth().height(150.dp).clip(RoundedCornerShape(24.dp)).background(base.copy(alpha = a)))
+        Box(Modifier.fillMaxWidth().height(72.dp).clip(RoundedCornerShape(16.dp)).background(base.copy(alpha = a)))
+        Box(Modifier.fillMaxWidth().height(220.dp).clip(RoundedCornerShape(20.dp)).background(base.copy(alpha = a)))
     }
 }

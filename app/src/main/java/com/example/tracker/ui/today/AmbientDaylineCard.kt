@@ -163,17 +163,12 @@ fun AmbientDaylineCard(
             Row(Modifier.fillMaxWidth().padding(end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 when {
                     data != null -> {
-                        Box(
-                            Modifier.size(40.dp).clip(CircleShape).background(tint.copy(alpha = 0.16f)),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Icon(weatherIcon(data.weatherCode, !isNight), data.condition.nameEn, tint = tint, modifier = Modifier.size(22.dp))
-                        }
-                        Spacer(Modifier.width(10.dp))
-                        Column(Modifier.weight(1f)) {
-                            Text("${data.temperature.roundToInt()}°", style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
-                            Text(data.cityName.ifBlank { data.condition.nameEn }, style = MaterialTheme.typography.labelSmall, color = muted, maxLines = 1)
-                        }
+                        Icon(weatherIcon(data.weatherCode, !isNight), data.condition.nameEn, tint = tint, modifier = Modifier.size(20.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("${data.temperature.roundToInt()}°", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
+                        Spacer(Modifier.width(8.dp))
+                        Text(data.cityName.ifBlank { data.condition.nameEn }, style = MaterialTheme.typography.labelMedium, color = muted,
+                            maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
                         data.usAqi?.let { aqi ->
                             val level = data.aqiLevel ?: AirQualityLevel.GOOD
                             Row(
@@ -184,7 +179,8 @@ fun AmbientDaylineCard(
                             ) {
                                 Icon(Icons.Rounded.Air, null, tint = level.color.readable(3f), modifier = Modifier.size(15.dp))
                                 Spacer(Modifier.width(4.dp))
-                                Text("$aqi", color = level.color.readable(), style = MaterialTheme.typography.labelLarge)
+                                // "Air 45", not "AQI 45": plain words; colour still shows how good it is.
+                                Text("Air $aqi", color = level.color.readable(), style = MaterialTheme.typography.labelMedium)
                             }
                         }
                     }
@@ -195,7 +191,7 @@ fun AmbientDaylineCard(
                     else -> {
                         Icon(Icons.Rounded.MyLocation, null, tint = muted, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("Weather", style = MaterialTheme.typography.labelLarge, color = muted, modifier = Modifier.weight(1f))
+                        Text("Tap ↻ for weather", style = MaterialTheme.typography.labelMedium, color = muted, modifier = Modifier.weight(1f))
                     }
                 }
                 val spin = if (weatherState.isLoading) {

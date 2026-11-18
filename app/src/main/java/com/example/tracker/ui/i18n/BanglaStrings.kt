@@ -355,6 +355,8 @@ object BanglaStrings {
         "expense" to "খরচ",
         "Optional" to "ঐচ্ছিক",
         "Nothing on the checklist today" to "আজ চেকলিস্টে কিছু নেই",
+        "Tap ↻ for weather" to "আবহাওয়ার জন্য ↻ চাপুন",
+        "Loading" to "লোড হচ্ছে",
         "Tap anywhere to skip" to "যেকোনো জায়গায় স্পর্শ করে এগিয়ে যান",
 
         // ---------------- Reports & cards
@@ -546,6 +548,7 @@ object BanglaStrings {
 
     /** Sentences that carry numbers or names. `$1`, `$2` are the captured parts (translated if known). */
     val PATTERNS: List<Pair<Regex, String>> = listOf(
+        "Air (\\d+)" to "বাতাস \$1",
         "(All|Habits|Prayers|Classes|Routines) (\\d+)/(\\d+)" to "\$1 \$2/\$3",
         "Now, (.+)" to "এখন, \$1",
         "In (\\d.*), (.+)" to "\$1 পরে, \$2",
