@@ -94,7 +94,7 @@ fun EmergencyUnlockDialog(
                 Icon(
                     imageVector = Icons.Rounded.Warning,
                     contentDescription = null,
-                    tint = Color(0xFFF2A93B).readable(),
+                    tint = com.example.tracker.ui.theme.StatusColors.warn.readable(),
                     modifier = Modifier.size(24.dp),
                 )
                 Spacer(Modifier.width(8.dp))
@@ -110,7 +110,7 @@ fun EmergencyUnlockDialog(
                 } else if (!canUnlock) {
                     Surface(
                         shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFFE53935).copy(alpha = 0.15f),
+                        color = com.example.tracker.ui.theme.StatusColors.bad.copy(alpha = 0.15f),
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
@@ -147,7 +147,7 @@ fun EmergencyUnlockDialog(
                         Text(
                             text = if (secondsLeft > 0) "${secondsLeft}s" else "Ready ✓",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = if (secondsLeft > 0) Color(0xFFF2A93B).readable() else Color(0xFF4CAF50).readable(),
+                            color = if (secondsLeft > 0) com.example.tracker.ui.theme.StatusColors.warn.readable() else com.example.tracker.ui.theme.StatusColors.good.readable(),
                         )
                     }
 
@@ -197,7 +197,7 @@ fun EmergencyUnlockDialog(
                         }
                     },
                     enabled = readyToUnlock,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF2A93B)),
+                    colors = ButtonDefaults.buttonColors(containerColor = com.example.tracker.ui.theme.StatusColors.warn),
                 ) {
                     Icon(Icons.Rounded.LockOpen, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(6.dp))

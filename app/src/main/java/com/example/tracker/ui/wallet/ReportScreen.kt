@@ -56,11 +56,8 @@ import com.example.tracker.ui.theme.Expense
 import com.example.tracker.ui.theme.Income
 import java.time.format.DateTimeFormatter
 
-/** Categorical palette tuned to read on both light and dark backgrounds. */
-val CHART_COLORS = listOf(
-    Color(0xFF5B8DEF), Color(0xFF2FB38A), Color(0xFFF2A93B), Color(0xFFE0605E), Color(0xFF9B7BE8),
-    Color(0xFF3FB5C9), Color(0xFFE681B5), Color(0xFF8DA34B), Color(0xFFB98B5C), Color(0xFF7C8AA5),
-)
+/** Categorical chart palette — defined with the other theme colours. */
+val CHART_COLORS get() = com.example.tracker.ui.theme.ChartPalette
 
 private val MONTH = DateTimeFormatter.ofPattern("MMMM yyyy")
 

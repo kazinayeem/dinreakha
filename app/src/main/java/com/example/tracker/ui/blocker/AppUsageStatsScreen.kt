@@ -160,17 +160,17 @@ fun AppUsageStatsScreen(
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Box(
-                                modifier = Modifier.size(36.dp).clip(RoundedCornerShape(10.dp)).background(Color(0xFFE53935).copy(alpha = 0.18f)),
+                                modifier = Modifier.size(36.dp).clip(RoundedCornerShape(10.dp)).background(com.example.tracker.ui.theme.StatusColors.bad.copy(alpha = 0.18f)),
                                 contentAlignment = Alignment.Center,
                             ) {
-                                Icon(Icons.Rounded.Shield, null, tint = Color(0xFFE53935).readable(), modifier = Modifier.size(20.dp))
+                                Icon(Icons.Rounded.Shield, null, tint = com.example.tracker.ui.theme.StatusColors.bad.readable(), modifier = Modifier.size(20.dp))
                             }
                             Spacer(Modifier.height(10.dp))
                             Text("Distractions blocked", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(
                                 text = "$blockCountToday times",
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                                color = Color(0xFFE53935).readable(),
+                                color = com.example.tracker.ui.theme.StatusColors.bad.readable(),
                             )
                         }
                     }
@@ -286,10 +286,10 @@ private fun ReelsStatsCard(
                         modifier = Modifier
                             .size(36.dp)
                             .clip(RoundedCornerShape(10.dp))
-                            .background(Color(0xFFE1306C).copy(alpha = 0.18f)),
+                            .background(com.example.tracker.ui.theme.BrandColors.Instagram.copy(alpha = 0.18f)),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Icon(Icons.Rounded.PlayArrow, null, tint = Color(0xFFE1306C).readable(), modifier = Modifier.size(20.dp))
+                        Icon(Icons.Rounded.PlayArrow, null, tint = com.example.tracker.ui.theme.BrandColors.Instagram.readable(), modifier = Modifier.size(20.dp))
                     }
                     Spacer(Modifier.width(10.dp))
                     Column {
@@ -301,7 +301,7 @@ private fun ReelsStatsCard(
                 Text(
                     text = "$totalCount",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Black),
-                    color = if (totalCount > 50) Color(0xFFE53935).readable() else MaterialTheme.colorScheme.primary,
+                    color = if (totalCount > 50) com.example.tracker.ui.theme.StatusColors.bad.readable() else MaterialTheme.colorScheme.primary,
                 )
             }
 
@@ -312,7 +312,7 @@ private fun ReelsStatsCard(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(Icons.Rounded.CheckCircle, null, tint = Color(0xFF4CAF50).readable(), modifier = Modifier.size(16.dp))
+                    Icon(Icons.Rounded.CheckCircle, null, tint = com.example.tracker.ui.theme.StatusColors.good.readable(), modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(8.dp))
                     Text(
                         text = "No reels scrolled today. Focus is intact!",
@@ -329,11 +329,11 @@ private fun ReelsStatsCard(
 
                 Spacer(Modifier.height(10.dp))
 
-                ReelsPlatformBar(name = "Instagram Reels", count = instaCount, total = totalCount, color = Color(0xFFE1306C).readable())
+                ReelsPlatformBar(name = "Instagram Reels", count = instaCount, total = totalCount, color = com.example.tracker.ui.theme.BrandColors.Instagram.readable())
                 Spacer(Modifier.height(8.dp))
-                ReelsPlatformBar(name = "YouTube Shorts", count = ytCount, total = totalCount, color = Color(0xFFFF0000).readable())
+                ReelsPlatformBar(name = "YouTube Shorts", count = ytCount, total = totalCount, color = com.example.tracker.ui.theme.BrandColors.YouTube.readable())
                 Spacer(Modifier.height(8.dp))
-                ReelsPlatformBar(name = "Facebook Reels", count = fbCount, total = totalCount, color = Color(0xFF1877F2).readable())
+                ReelsPlatformBar(name = "Facebook Reels", count = fbCount, total = totalCount, color = com.example.tracker.ui.theme.BrandColors.Facebook.readable())
             }
         }
     }

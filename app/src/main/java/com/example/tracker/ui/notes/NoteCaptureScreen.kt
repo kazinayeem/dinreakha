@@ -378,7 +378,7 @@ fun NoteCaptureScreen(
             Text(
                 if (isSaving) "Saving note & processing photos…" else "Save Note (${capturedUris.size} photos)",
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.titleMedium,
             )
         }
     }

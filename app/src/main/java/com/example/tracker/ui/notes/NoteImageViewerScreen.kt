@@ -310,15 +310,15 @@ fun NoteImageViewerScreen(
                                 if (n.important) {
                                     Surface(
                                         shape = RoundedCornerShape(8.dp),
-                                        color = Color(0xFFF2A93B).copy(alpha = 0.25f),
+                                        color = com.example.tracker.ui.theme.StatusColors.warn.copy(alpha = 0.25f),
                                     ) {
                                         Row(
                                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                                             verticalAlignment = Alignment.CenterVertically,
                                         ) {
-                                            Icon(Icons.Rounded.Star, null, tint = Color(0xFFF2A93B), modifier = Modifier.size(13.dp))
+                                            Icon(Icons.Rounded.Star, null, tint = com.example.tracker.ui.theme.StatusColors.warn, modifier = Modifier.size(13.dp))
                                             Spacer(Modifier.width(3.dp))
-                                            Text("Important", style = MaterialTheme.typography.labelSmall, color = Color(0xFFF2A93B))
+                                            Text("Important", style = MaterialTheme.typography.labelSmall, color = com.example.tracker.ui.theme.StatusColors.warn)
                                         }
                                     }
                                 }

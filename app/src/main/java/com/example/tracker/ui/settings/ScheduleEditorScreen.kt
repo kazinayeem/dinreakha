@@ -416,7 +416,7 @@ fun Stepper(label: String, value: String, onMinus: () -> Unit, onPlus: () -> Uni
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier.size(38.dp),
             ) {
-                Text("−", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text("−", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             }
             Text(
                 value,
@@ -432,7 +432,7 @@ fun Stepper(label: String, value: String, onMinus: () -> Unit, onPlus: () -> Uni
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier.size(38.dp),
             ) {
-                Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text("+", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             }
         }
     }

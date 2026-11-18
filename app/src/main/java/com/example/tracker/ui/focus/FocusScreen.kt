@@ -346,7 +346,6 @@ private fun StartPanel(
                         text = "Scheduled for today",
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Bold,
-                            fontSize = 12.sp,
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -411,7 +410,6 @@ private fun StartPanel(
                     text = "Focus mode",
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -464,7 +462,6 @@ private fun StartPanel(
                     text = "Duration",
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

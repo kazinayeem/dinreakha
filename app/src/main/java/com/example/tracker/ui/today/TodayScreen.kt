@@ -500,7 +500,7 @@ private fun NextActionBar(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = if (isHappeningNow) "NOW" else "IN ${formatMins(mins)}",
-                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp),
+                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                         color = if (isHappeningNow) Income else MaterialTheme.colorScheme.primary,
                     )
                     Spacer(Modifier.width(6.dp))

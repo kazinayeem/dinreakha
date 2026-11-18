@@ -282,19 +282,19 @@ fun RuleEditorScreen(
             if (isStrictLocked) {
                 Surface(
                     shape = RoundedCornerShape(16.dp),
-                    color = Color(0xFFF2A93B).copy(alpha = 0.2f),
+                    color = com.example.tracker.ui.theme.StatusColors.warn.copy(alpha = 0.2f),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Row(
                         modifier = Modifier.padding(14.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(Icons.Rounded.Lock, contentDescription = null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(24.dp))
+                        Icon(Icons.Rounded.Lock, contentDescription = null, tint = com.example.tracker.ui.theme.StatusColors.warn.readable(), modifier = Modifier.size(24.dp))
                         Spacer(Modifier.width(12.dp))
                         Text(
                             text = "Anti-cheat strict mode is currently active. Changes to this rule are disabled until outside restricted hours.",
                             style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
-                            color = Color(0xFFF2A93B).readable(),
+                            color = com.example.tracker.ui.theme.StatusColors.warn.readable(),
                         )
                     }
                 }
@@ -566,7 +566,7 @@ fun RuleEditorScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.Shield, contentDescription = null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(22.dp))
+                            Icon(Icons.Rounded.Shield, contentDescription = null, tint = com.example.tracker.ui.theme.StatusColors.warn.readable(), modifier = Modifier.size(22.dp))
                             Spacer(Modifier.width(10.dp))
                             Column {
                                 Text("Strict mode", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold))

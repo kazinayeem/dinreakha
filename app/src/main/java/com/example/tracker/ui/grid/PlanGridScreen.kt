@@ -183,7 +183,7 @@ fun PlanGridScreen(onOpenDay: (LocalDate) -> Unit, onOpenReview: () -> Unit) {
                                     )
                                     Text(
                                         text = lbl,
-                                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp),
+                                        style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )
                                 }
@@ -240,7 +240,7 @@ private fun MetricPill(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp),
+                style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Spacer(Modifier.height(2.dp))
@@ -303,12 +303,12 @@ private fun DayCell(date: LocalDate, state: DayState?, today: LocalDate, onClick
                 Text(
                     text = "${PlanCalendar.dayNumber(date)}",
                     fontWeight = if (isToday) FontWeight.ExtraBold else FontWeight.Bold,
-                    fontSize = 13.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = onBg,
                 )
                 Text(
                     text = if (PlanCalendar.isHoliday(date)) "off" else "${date.dayOfMonth}/${date.monthValue}",
-                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp),
+                    style = MaterialTheme.typography.labelSmall,
                     color = onBg.copy(alpha = 0.75f),
                 )
             }

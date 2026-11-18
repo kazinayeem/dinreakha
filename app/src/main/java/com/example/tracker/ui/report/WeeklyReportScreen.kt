@@ -269,7 +269,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                     Text(
                         text = "$fArrow${kotlin.math.abs(report.focusDiffPercent)}% vs last week",
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                        color = if (report.focusDiffPercent >= 0) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
+                        color = if (report.focusDiffPercent >= 0) com.example.tracker.ui.theme.StatusColors.good.readable() else com.example.tracker.ui.theme.StatusColors.warn.readable(),
                     )
                 }
             }
@@ -287,7 +287,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                     Text(
                         text = "$hArrow${kotlin.math.abs(report.habitDiffPercent)}% vs last week",
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                        color = if (report.habitDiffPercent >= 0) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
+                        color = if (report.habitDiffPercent >= 0) com.example.tracker.ui.theme.StatusColors.good.readable() else com.example.tracker.ui.theme.StatusColors.warn.readable(),
                     )
                 }
             }
@@ -333,7 +333,7 @@ private fun WeekComparisonCards(report: WeeklyReport) {
                     Text(
                         text = "$sArrow${kotlin.math.abs(report.screenTimeDiffPercent)}% vs last week",
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                        color = if (report.screenTimeDiffPercent <= 0) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
+                        color = if (report.screenTimeDiffPercent <= 0) com.example.tracker.ui.theme.StatusColors.good.readable() else com.example.tracker.ui.theme.StatusColors.warn.readable(),
                     )
                 }
             }
@@ -377,7 +377,6 @@ private fun WeeklyFocusChartCard(report: WeeklyReport) {
                         Text(
                             text = if (day.focusMinutes >= 60) "${day.focusMinutes / 60}h" else "${day.focusMinutes}m",
                             style = MaterialTheme.typography.labelSmall,
-                            fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Spacer(Modifier.height(4.dp))
@@ -443,21 +442,19 @@ private fun WeeklySleepTrendCard(report: WeeklyReport) {
                             modifier = Modifier
                                 .size(28.dp)
                                 .clip(CircleShape)
-                                .background(if (isHealthy) Color(0xFF10B981).copy(alpha = 0.2f) else Color(0xFFF2A93B).copy(alpha = 0.2f)),
+                                .background(if (isHealthy) com.example.tracker.ui.theme.StatusColors.good.copy(alpha = 0.2f) else com.example.tracker.ui.theme.StatusColors.warn.copy(alpha = 0.2f)),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 text = "${hours.toInt()}h",
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                fontSize = 12.sp,
-                                color = if (isHealthy) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
+                                color = if (isHealthy) com.example.tracker.ui.theme.StatusColors.good.readable() else com.example.tracker.ui.theme.StatusColors.warn.readable(),
                             )
                         }
                         Spacer(Modifier.height(4.dp))
                         Text(
                             text = day.date.dayOfWeek.name.take(2),
                             style = MaterialTheme.typography.labelSmall,
-                            fontSize = 12.sp,
                         )
                     }
                 }
@@ -489,9 +486,9 @@ private fun WeeklyHabitMatrixCard(report: WeeklyReport) {
                 report.dailyReports.forEach { day ->
                     val pct = day.habitPercent
                     val tint = when {
-                        pct >= 85 -> Color(0xFF10B981)
+                        pct >= 85 -> com.example.tracker.ui.theme.StatusColors.good
                         pct >= 70 -> Color(0xFF0D9488)
-                        pct >= 50 -> Color(0xFFF2A93B)
+                        pct >= 50 -> com.example.tracker.ui.theme.StatusColors.warn
                         else -> MaterialTheme.colorScheme.surfaceContainerHighest
                     }
 
@@ -509,7 +506,6 @@ private fun WeeklyHabitMatrixCard(report: WeeklyReport) {
                             Text(
                                 text = "$pct%",
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                fontSize = 12.sp,
                                 color = if (pct >= 50) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -517,7 +513,6 @@ private fun WeeklyHabitMatrixCard(report: WeeklyReport) {
                         Text(
                             text = day.date.dayOfWeek.name.take(2),
                             style = MaterialTheme.typography.labelSmall,
-                            fontSize = 12.sp,
                         )
                     }
                 }
@@ -554,7 +549,7 @@ private fun WeeklyStreaksCard(report: WeeklyReport) {
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.Star, null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.Star, null, tint = com.example.tracker.ui.theme.StatusColors.warn.readable(), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(4.dp))
                             Text("Best day", style = MaterialTheme.typography.labelSmall)
                         }
@@ -579,7 +574,7 @@ private fun WeeklyStreaksCard(report: WeeklyReport) {
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.LocalFireDepartment, null, tint = Color(0xFFE53935).readable(), modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.LocalFireDepartment, null, tint = com.example.tracker.ui.theme.StatusColors.bad.readable(), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(4.dp))
                             Text("Longest Streaks", style = MaterialTheme.typography.labelSmall)
                         }

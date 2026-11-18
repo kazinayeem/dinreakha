@@ -194,18 +194,18 @@ fun BlockerScreen(
                 item {
                     Surface(
                         shape = RoundedCornerShape(16.dp),
-                        color = Color(0xFFF2A93B).copy(alpha = 0.2f),
+                        color = com.example.tracker.ui.theme.StatusColors.warn.copy(alpha = 0.2f),
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Row(
                             modifier = Modifier.padding(14.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Icon(Icons.Rounded.LockOpen, contentDescription = null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(24.dp))
+                            Icon(Icons.Rounded.LockOpen, contentDescription = null, tint = com.example.tracker.ui.theme.StatusColors.warn.readable(), modifier = Modifier.size(24.dp))
                             Spacer(Modifier.width(12.dp))
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Emergency unlock on", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = Color(0xFFF2A93B).readable())
-                                Text("All app rules are bypassed for ~$remainingEmergencyMin more min.", style = MaterialTheme.typography.labelSmall, color = Color(0xFFF2A93B).readable())
+                                Text("Emergency unlock on", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = com.example.tracker.ui.theme.StatusColors.warn.readable())
+                                Text("All app rules are bypassed for ~$remainingEmergencyMin more min.", style = MaterialTheme.typography.labelSmall, color = com.example.tracker.ui.theme.StatusColors.warn.readable())
                             }
                         }
                     }
@@ -242,7 +242,7 @@ fun BlockerScreen(
                             Text(
                                 text = "$blockCountToday times",
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                                color = if (blockCountToday > 0) Color(0xFFE53935).readable() else MaterialTheme.colorScheme.primary,
+                                color = if (blockCountToday > 0) com.example.tracker.ui.theme.StatusColors.bad.readable() else MaterialTheme.colorScheme.primary,
                             )
                         }
                     }
@@ -319,8 +319,8 @@ fun BlockerScreen(
                             val progress = (usedMinutes.toFloat() / limit.toFloat()).coerceIn(0f, 1f)
 
                             val progressColor = when {
-                                usedMinutes >= limit -> Color(0xFFE53935)
-                                progress >= 0.8f -> Color(0xFFF2A93B)
+                                usedMinutes >= limit -> com.example.tracker.ui.theme.StatusColors.bad
+                                progress >= 0.8f -> com.example.tracker.ui.theme.StatusColors.warn
                                 else -> MaterialTheme.colorScheme.primary
                             }
 
@@ -462,7 +462,7 @@ private fun RuleCard(
                         Icon(
                             imageVector = Icons.Rounded.Lock,
                             contentDescription = "Strict mode",
-                            tint = Color(0xFFF2A93B).readable(),
+                            tint = com.example.tracker.ui.theme.StatusColors.warn.readable(),
                             modifier = Modifier.size(14.dp),
                         )
                     }
@@ -571,14 +571,14 @@ private fun PermissionRow(
             Text(subtitle, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         if (isGranted) {
-            Icon(Icons.Rounded.CheckCircle, contentDescription = "Granted", tint = Color(0xFF4CAF50).readable(), modifier = Modifier.size(20.dp))
+            Icon(Icons.Rounded.CheckCircle, contentDescription = "Granted", tint = com.example.tracker.ui.theme.StatusColors.good.readable(), modifier = Modifier.size(20.dp))
         } else {
             Button(
                 onClick = onGrant,
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
                 modifier = Modifier.height(32.dp),
             ) {
-                Text("Grant", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text("Grant", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -634,13 +634,13 @@ private fun ReelsCounterCard(
                         modifier = Modifier
                             .size(38.dp)
                             .clip(RoundedCornerShape(12.dp))
-                            .background(Color(0xFFE1306C).copy(alpha = 0.18f)),
+                            .background(com.example.tracker.ui.theme.BrandColors.Instagram.copy(alpha = 0.18f)),
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.PlayArrow,
                             contentDescription = null,
-                            tint = Color(0xFFE1306C).readable(),
+                            tint = com.example.tracker.ui.theme.BrandColors.Instagram.readable(),
                             modifier = Modifier.size(22.dp),
                         )
                     }
@@ -685,7 +685,7 @@ private fun ReelsCounterCard(
                             Text(
                                 text = "$totalCount",
                                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
-                                color = if (isOverLimit) Color(0xFFE53935).readable() else MaterialTheme.colorScheme.onSurface,
+                                color = if (isOverLimit) com.example.tracker.ui.theme.StatusColors.bad.readable() else MaterialTheme.colorScheme.onSurface,
                             )
                             Spacer(Modifier.width(6.dp))
                             Text(
@@ -720,19 +720,19 @@ private fun ReelsCounterCard(
                     PlatformChip(
                         name = "Instagram",
                         count = "$instaCount",
-                        color = Color(0xFFE1306C).readable(),
+                        color = com.example.tracker.ui.theme.BrandColors.Instagram.readable(),
                         modifier = Modifier.weight(1f),
                     )
                     PlatformChip(
                         name = "YouTube",
                         count = "$ytCount",
-                        color = Color(0xFFFF0000).readable(),
+                        color = com.example.tracker.ui.theme.BrandColors.YouTube.readable(),
                         modifier = Modifier.weight(1f),
                     )
                     PlatformChip(
                         name = "Facebook",
                         count = "$fbCount",
-                        color = Color(0xFF1877F2).readable(),
+                        color = com.example.tracker.ui.theme.BrandColors.Facebook.readable(),
                         modifier = Modifier.weight(1f),
                     )
                 }
@@ -776,8 +776,8 @@ private fun ReelsCounterCard(
                     Spacer(Modifier.height(10.dp))
                     val progress = (totalCount.toFloat() / dailyLimit.toFloat()).coerceIn(0f, 1f)
                     val progressColor = when {
-                        isOverLimit -> Color(0xFFE53935)
-                        isNearLimit -> Color(0xFFF2A93B)
+                        isOverLimit -> com.example.tracker.ui.theme.StatusColors.bad
+                        isNearLimit -> com.example.tracker.ui.theme.StatusColors.warn
                         else -> MaterialTheme.colorScheme.primary
                     }
 

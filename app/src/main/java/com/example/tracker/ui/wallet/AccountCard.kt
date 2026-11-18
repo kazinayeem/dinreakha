@@ -166,7 +166,6 @@ fun AccountCard(
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontWeight = FontWeight.Bold,
                                 letterSpacing = 0.08.em,
-                                fontSize = 11.sp,
                             ),
                         )
                     }

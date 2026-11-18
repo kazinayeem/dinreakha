@@ -103,7 +103,6 @@ fun WeatherCard(
                                 "Saved copy",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 12.sp,
                             )
                         }
                     }
@@ -116,7 +115,6 @@ fun WeatherCard(
                             text = timeStr,
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            fontSize = 12.sp,
                         )
                         Spacer(Modifier.width(4.dp))
                     }
@@ -301,7 +299,6 @@ fun WeatherCard(
                                 text = "${level.adviceEn}\n${level.adviceBn}",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
-                                fontSize = 12.sp,
                             )
                         }
                     }
@@ -355,14 +352,12 @@ private fun EnvStat(
             text = "$label: ",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontSize = 12.sp,
         )
         Text(
             text = value,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 12.sp,
         )
     }
 }

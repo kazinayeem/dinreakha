@@ -160,7 +160,7 @@ fun ThirtyDayReportScreen(
                                     Text(
                                         text = "${r.day30Score} pts",
                                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                                        color = Color(0xFF10B981).readable(),
+                                        color = com.example.tracker.ui.theme.StatusColors.good.readable(),
                                     )
                                 }
                             }
@@ -170,7 +170,7 @@ fun ThirtyDayReportScreen(
                             Text(
                                 text = "$sign${r.scoreGrowthPercent} points improvement score growth 🚀",
                                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                                color = Color(0xFF10B981).readable(),
+                                color = com.example.tracker.ui.theme.StatusColors.good.readable(),
                             )
                         }
                     }
@@ -250,7 +250,7 @@ fun ThirtyDayReportScreen(
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
                                         Text("Prayers offered", style = MaterialTheme.typography.labelSmall)
-                                        Text("${r.totalPrayersCompleted}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = Color(0xFFD97706).readable())
+                                        Text("${r.totalPrayersCompleted}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = com.example.tracker.ui.theme.StatusColors.warn.readable())
                                     }
                                 }
                                 Surface(
@@ -260,7 +260,7 @@ fun ThirtyDayReportScreen(
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
                                         Text("Class notes", style = MaterialTheme.typography.labelSmall)
-                                        Text("${r.totalNotesCaptured}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = Color(0xFF10B981).readable())
+                                        Text("${r.totalNotesCaptured}", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), color = com.example.tracker.ui.theme.StatusColors.good.readable())
                                     }
                                 }
                             }
@@ -342,7 +342,7 @@ private fun ComparisonRow(title: String, day1: String, day30: String) {
             Spacer(Modifier.width(10.dp))
             Text("→", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.width(10.dp))
-            Text(day30, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold), color = Color(0xFF10B981).readable())
+            Text(day30, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold), color = com.example.tracker.ui.theme.StatusColors.good.readable())
         }
     }
 }

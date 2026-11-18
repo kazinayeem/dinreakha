@@ -143,7 +143,6 @@ fun OnboardingScreen(onDone: () -> Unit) {
                 text = "Reliable alarms & reminders",
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
                 ),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 4.dp, top = 4.dp),

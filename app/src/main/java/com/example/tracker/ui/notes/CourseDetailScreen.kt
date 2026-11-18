@@ -385,7 +385,7 @@ private fun NoteCardItem(
                         Icon(
                             Icons.Rounded.Star,
                             contentDescription = "Important",
-                            tint = Color(0xFFFFB300).readable(),
+                            tint = com.example.tracker.ui.theme.StatusColors.warn.readable(),
                             modifier = Modifier.size(18.dp),
                         )
                         Spacer(Modifier.width(4.dp))
@@ -425,7 +425,6 @@ private fun NoteCardItem(
                                 text = tag,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 12.sp,
                             )
                         }
                     }
@@ -485,7 +484,7 @@ private fun PhotoGrid(
                             text = "+$remaining",
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.titleMedium,
                         )
                     }
                 }

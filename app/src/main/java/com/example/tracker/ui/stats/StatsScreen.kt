@@ -318,7 +318,7 @@ private fun StatCard(
             Spacer(Modifier.height(2.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp),
+                style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

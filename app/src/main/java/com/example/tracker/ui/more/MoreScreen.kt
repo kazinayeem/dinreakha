@@ -80,10 +80,10 @@ fun MoreScreen(nav: (String) -> Unit) {
 
     val cs = MaterialTheme.colorScheme
     val tiles = listOf(
-        Tile(Icons.Rounded.Insights, Color(0xFFF2A93B), "Progress", "$streak-day streak", "progress?tab=DAY"),
+        Tile(Icons.Rounded.Insights, com.example.tracker.ui.theme.StatusColors.warn, "Progress", "$streak-day streak", "progress?tab=DAY"),
         Tile(Icons.Rounded.Bedtime, Color(0xFF818CF8), "Sleep & mood",
             lastNight?.let { "${it.minutes / 60}h ${it.minutes % 60}m slept" } ?: "Log last night", "sleep?log=false"),
-        Tile(Icons.Rounded.Shield, Color(0xFFE5534B), "App limits", "$reels reels, $blocks blocks", "blocker"),
+        Tile(Icons.Rounded.Shield, com.example.tracker.ui.theme.StatusColors.bad, "App limits", "$reels reels, $blocks blocks", "blocker"),
     )
 
     LazyColumn(
@@ -113,7 +113,7 @@ fun MoreScreen(nav: (String) -> Unit) {
                             Modifier.clip(RoundedCornerShape(50)).background(cs.surface.copy(alpha = 0.5f)).padding(horizontal = 12.dp, vertical = 6.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Icon(Icons.Rounded.LocalFireDepartment, null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(20.dp))
+                            Icon(Icons.Rounded.LocalFireDepartment, null, tint = com.example.tracker.ui.theme.StatusColors.warn.readable(), modifier = Modifier.size(20.dp))
                             Spacer(Modifier.width(4.dp))
                             Text("$streak", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold), color = cs.onSurface)
                         }

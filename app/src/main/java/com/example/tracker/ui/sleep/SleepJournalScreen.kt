@@ -99,7 +99,7 @@ val MOOD_FACES = listOf("😞" to "Low", "🙁" to "Meh", "😐" to "Okay", "�
 
 @Composable
 private fun moodColor(m: Int?): Color = when (m) {
-    1 -> Color(0xFFE5534B)
+    1 -> com.example.tracker.ui.theme.StatusColors.bad
     2 -> Color(0xFFF0883E)
     3 -> Color(0xFFB0A86A)
     4 -> Color(0xFF6CC28A)

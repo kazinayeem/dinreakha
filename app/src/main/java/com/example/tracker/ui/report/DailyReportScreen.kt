@@ -261,9 +261,9 @@ private fun DailyScoreHeroCard(
                         .clip(CircleShape)
                         .background(
                             when {
-                                report.improvementScore >= 85 -> Color(0xFF10B981).copy(alpha = 0.2f)
+                                report.improvementScore >= 85 -> com.example.tracker.ui.theme.StatusColors.good.copy(alpha = 0.2f)
                                 report.improvementScore >= 70 -> MaterialTheme.colorScheme.primaryContainer
-                                else -> Color(0xFFF2A93B).copy(alpha = 0.2f)
+                                else -> com.example.tracker.ui.theme.StatusColors.warn.copy(alpha = 0.2f)
                             }
                         ),
                     contentAlignment = Alignment.Center,
@@ -273,9 +273,9 @@ private fun DailyScoreHeroCard(
                             text = "${report.improvementScore}",
                             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
                             color = when {
-                                report.improvementScore >= 85 -> Color(0xFF10B981)
+                                report.improvementScore >= 85 -> com.example.tracker.ui.theme.StatusColors.good
                                 report.improvementScore >= 70 -> MaterialTheme.colorScheme.primary
-                                else -> Color(0xFFF2A93B)
+                                else -> com.example.tracker.ui.theme.StatusColors.warn
                             },
                         )
                         Text(
@@ -339,7 +339,7 @@ private fun DailyRhythmCard(report: DailyReport) {
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.WbSunny, null, tint = Color(0xFFF2A93B).readable(), modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.WbSunny, null, tint = com.example.tracker.ui.theme.StatusColors.warn.readable(), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
                             Text("Wake target", style = MaterialTheme.typography.labelSmall)
                         }
@@ -351,7 +351,7 @@ private fun DailyRhythmCard(report: DailyReport) {
                         Text(
                             text = if (report.wokeOnTime) "On time ✓" else "Late by ${report.wakeLateMinutes}m",
                             style = MaterialTheme.typography.labelSmall,
-                            color = if (report.wokeOnTime) Color(0xFF10B981).readable() else Color(0xFFE53935).readable(),
+                            color = if (report.wokeOnTime) com.example.tracker.ui.theme.StatusColors.good.readable() else com.example.tracker.ui.theme.StatusColors.bad.readable(),
                         )
                     }
                 }
@@ -458,7 +458,7 @@ private fun DailyHabitsPrayersRow(report: DailyReport) {
                 Text(
                     text = "${report.habitPercent}%",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = Color(0xFF10B981).readable(),
+                    color = com.example.tracker.ui.theme.StatusColors.good.readable(),
                 )
                 Text(
                     text = "${report.habitsCompleted} of ${report.habitsTotal} items",
@@ -480,7 +480,7 @@ private fun DailyHabitsPrayersRow(report: DailyReport) {
                 Text(
                     text = "${report.prayersCompleted}/5",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = Color(0xFFD97706).readable(),
+                    color = com.example.tracker.ui.theme.StatusColors.warn.readable(),
                 )
                 Text(
                     text = if (report.prayersCompleted == 5) "Full consistency ✓" else "Keep offering",
@@ -530,7 +530,7 @@ private fun DailyScreenTimeCard(report: DailyReport) {
             Text(
                 text = diffText,
                 style = MaterialTheme.typography.bodySmall,
-                color = if (report.screenTimeDiffMinutes <= 0) Color(0xFF10B981).readable() else Color(0xFFF2A93B).readable(),
+                color = if (report.screenTimeDiffMinutes <= 0) com.example.tracker.ui.theme.StatusColors.good.readable() else com.example.tracker.ui.theme.StatusColors.warn.readable(),
             )
 
             Spacer(Modifier.height(10.dp))
