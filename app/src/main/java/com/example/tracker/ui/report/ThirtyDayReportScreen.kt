@@ -84,7 +84,7 @@ fun ThirtyDayReportScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = com.example.tracker.ui.i18n.tr("Back"))
                     }
                 },
             )
@@ -168,7 +168,7 @@ fun ThirtyDayReportScreen(
                             Spacer(Modifier.height(10.dp))
                             val sign = if (r.scoreGrowthPercent >= 0) "+" else ""
                             Text(
-                                text = "$sign${r.scoreGrowthPercent} points improvement score growth 🚀",
+                                text = "Score $sign${r.scoreGrowthPercent} points",
                                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                                 color = com.example.tracker.ui.theme.StatusColors.good.readable(),
                             )

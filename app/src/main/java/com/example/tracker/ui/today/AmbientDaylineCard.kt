@@ -119,7 +119,7 @@ fun AmbientDaylineCard(
     val body = remember { Animatable(if (animationsOff) target.coerceIn(-0.08f, 1.08f) else 0f) }
     LaunchedEffect(target) {
         val to = target.coerceIn(-0.08f, 1.08f)
-        if (animationsOff) body.snapTo(to) else body.animateTo(to, tween(900, easing = FastOutSlowInEasing))
+        if (animationsOff) body.snapTo(to) else body.animateTo(to, tween(com.example.tracker.ui.theme.Motion.HERO, easing = FastOutSlowInEasing))
     }
 
     // Sun after wake, moon from Maghrib (or when the weather service says it's night).
@@ -200,7 +200,7 @@ fun AmbientDaylineCard(
                 }
                 val spin = if (weatherState.isLoading) {
                     rememberInfiniteTransition(label = "spin").animateFloat(
-                        0f, 360f, infiniteRepeatable(tween(900, easing = LinearEasing), RepeatMode.Restart), label = "rot",
+                        0f, 360f, infiniteRepeatable(tween(com.example.tracker.ui.theme.Motion.SPIN, easing = LinearEasing), RepeatMode.Restart), label = "rot",
                     ).value
                 } else 0f
                 IconButton(onClick = refresh) {

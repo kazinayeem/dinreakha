@@ -162,12 +162,12 @@ fun ShareCardStudioScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = com.example.tracker.ui.i18n.tr("Back"))
                     }
                 },
                 actions = {
                     IconButton(onClick = { showFbDialog = true }) {
-                        Icon(Icons.Rounded.Settings, contentDescription = "Facebook App ID")
+                        Icon(Icons.Rounded.Settings, contentDescription = com.example.tracker.ui.i18n.tr("Facebook App ID"))
                     }
                 },
             )
@@ -463,7 +463,7 @@ private fun CardPreviewBox(
                 if (bitmap != null) {
                     Image(
                         bitmap = bitmap.asImageBitmap(),
-                        contentDescription = "Share Card Live Preview",
+                        contentDescription = com.example.tracker.ui.i18n.tr("Share card preview"),
                         modifier = Modifier.fillMaxSize(),
                     )
                 } else if (isRendering) {

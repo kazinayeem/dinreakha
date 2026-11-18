@@ -116,7 +116,7 @@ fun TxnListScreen(vm: WalletViewModel, onOpen: (Long) -> Unit, preAccount: Long?
                         IconButton(onClick = { query = "" }) {
                             Icon(
                                 imageVector = Icons.Rounded.Clear,
-                                contentDescription = "Clear search",
+                                contentDescription = com.example.tracker.ui.i18n.tr("Clear search"),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }

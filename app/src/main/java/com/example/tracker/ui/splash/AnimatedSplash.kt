@@ -95,7 +95,15 @@ fun AnimatedSplash(
     val tagline = remember { Animatable(0f) }
     val quoteAlpha = remember { Animatable(0f) }
 
+    val noMotion = com.example.tracker.ui.theme.Motion.reduced()
     LaunchedEffect(Unit) {
+        if (noMotion) {
+            // "Remove animations" is on: show the finished mark and quote at once, keep the reading time.
+            listOf(line, rise, rays, title, tagline, quoteAlpha).forEach { it.snapTo(1f) }
+            delay(2000)
+            finishOnce()
+            return@LaunchedEffect
+        }
         // Step 1: Horizon line
         line.animateTo(0.3f, tween(340, easing = LinearOutSlowInEasing))
         // Step 2 & 3: Sun rise + rays

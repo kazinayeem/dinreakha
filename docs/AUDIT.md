@@ -56,6 +56,20 @@ class notes, app blocker rules, settings, backup restore and factory reset, app 
 | Settings: one 12-section scroll; Routines, Schedule, Notifications, Blocker also reachable from More | Settings hub of 6 rows → Look & language and Privacy & data are their own pages; one way in to each place |
 | Today: 8 blocks, checklist below the glance tiles, reflection always open | Checklist right after "up next"; reflection folded until 6 PM; class banner has one button |
 
+## UI/UX pass (18 Nov 2026, ui-ux-pro-max checklist)
+
+| Area | Before | After |
+|---|---|---|
+| Wording | 44 Title Case labels, marketing titles, 28 "A • B" strings | Sentence case, plain titles ("This week", "Your 30 days"), commas/colons |
+| Titles | Mixed: app bar / own bar / in-content headline | Tabs: large page title; detail screens: top bar |
+| Feedback | 29 Toasts + 6 snackbars | One `showMessage()` → themed snackbar (Toast only outside the main screen) |
+| Icons | 7 emoji used as UI icons | Material vector icons |
+| TalkBack | 31 tappable areas without a role; labels English only | Button role on all; labels translated |
+| Colour | 130 raw hex in screens | `StatusColors` (good / warn / bad, light & dark shades), `BrandColors`, `ChartPalette`; 47 illustration colours left on purpose |
+| Type | 64 literal sizes, one 11 sp | Type-scale styles; emoji and hero numbers keep their sizes |
+| Motion | 17 durations; 2 places honour "Remove animations" | `Motion` tokens (quick / standard / slow / hero); screen changes, splash and Dayline honour the setting |
+| Bangla | Report sentences and screen-reader labels untranslated | ~60 new strings and 18 sentence patterns, covered by I18nTest |
+
 ## Still wrong or risky (not fixed)
 
 1. ~~No version control~~ — **fixed:** git set up on 17 Nov (branch `main`). Two AI tools still edit

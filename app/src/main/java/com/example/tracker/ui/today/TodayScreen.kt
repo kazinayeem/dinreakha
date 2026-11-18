@@ -347,7 +347,7 @@ private fun DayHeader(s: TodayUi, onOpenReview: (Int) -> Unit, onOpenPlan: () ->
             )
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
                 androidx.compose.material3.IconButton(onClick = onOpenReport) {
-                    Icon(Icons.Rounded.AutoAwesome, contentDescription = "Daily summary and share card", tint = MaterialTheme.colorScheme.primary)
+                    Icon(Icons.Rounded.AutoAwesome, contentDescription = com.example.tracker.ui.i18n.tr("Daily summary and share card"), tint = MaterialTheme.colorScheme.primary)
                 }
                 PlanCalendar.holidayName(s.date)?.let { holiday ->
                     Box(
@@ -648,7 +648,7 @@ private fun FoldedRow(icon: androidx.compose.ui.graphics.vector.ImageVector, tit
             Icon(icon, null, Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary)
             Text(title, Modifier.weight(1f).padding(start = 12.dp), style = MaterialTheme.typography.titleSmall)
             Pill(badge)
-            Icon(Icons.Rounded.ExpandMore, contentDescription = "Show", tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            Icon(Icons.Rounded.ExpandMore, contentDescription = com.example.tracker.ui.i18n.tr("Show"), tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 8.dp))
         }
     }

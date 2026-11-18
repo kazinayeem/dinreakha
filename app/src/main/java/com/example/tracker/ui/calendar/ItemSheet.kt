@@ -174,7 +174,7 @@ fun ItemSheet(item: CalItem, vm: CalendarViewModel, nav: (String) -> Unit, onClo
                                     if (bmp != null) {
                                         Image(
                                             bitmap = bmp.asImageBitmap(),
-                                            contentDescription = "Note photo",
+                                            contentDescription = com.example.tracker.ui.i18n.tr("Note photo"),
                                             contentScale = ContentScale.Crop,
                                             modifier = Modifier
                                                 .size(68.dp)

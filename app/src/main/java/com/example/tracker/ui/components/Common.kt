@@ -120,7 +120,7 @@ fun CheckRow(
 ) {
     val haptics = LocalHapticFeedback.current
     val bg by animateColorAsState(
-        if (checked) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f) else Color.Transparent, tween(180), label = "bg")
+        if (checked) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f) else Color.Transparent, tween(com.example.tracker.ui.theme.Motion.STANDARD), label = "bg")
     Row(
         Modifier.fillMaxWidth().heightIn(min = 56.dp).clip(MaterialTheme.shapes.medium).background(bg)
             .toggleable(value = checked, role = Role.Checkbox) {
@@ -174,7 +174,7 @@ fun IconBadge(icon: ImageVector, tint: Color, size: Dp = 40.dp) {
 /** Animated ring showing 0..1 progress with a label in the middle; announced as a progress bar. */
 @Composable
 fun ProgressRing(progress: Float, size: Dp = 88.dp, stroke: Dp = 9.dp, label: String = "", center: @Composable () -> Unit = {}) {
-    val p by animateFloatAsState(progress.coerceIn(0f, 1f), tween(600), label = "ring")
+    val p by animateFloatAsState(progress.coerceIn(0f, 1f), tween(com.example.tracker.ui.theme.Motion.SLOW), label = "ring")
     val track = MaterialTheme.colorScheme.surfaceVariant
     val fg = MaterialTheme.colorScheme.primary
     Box(Modifier.size(size).semantics {
@@ -194,7 +194,7 @@ fun ProgressRing(progress: Float, size: Dp = 88.dp, stroke: Dp = 9.dp, label: St
 
 @Composable
 fun LabeledProgress(label: String, value: String, progress: Float, color: Color = MaterialTheme.colorScheme.primary) {
-    val p by animateFloatAsState(progress.coerceIn(0f, 1f), tween(500), label = "bar")
+    val p by animateFloatAsState(progress.coerceIn(0f, 1f), tween(com.example.tracker.ui.theme.Motion.SLOW), label = "bar")
     Column(Modifier.fillMaxWidth().padding(vertical = 6.dp).semantics(mergeDescendants = true) { }) {
         Row {
             Text(label, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)

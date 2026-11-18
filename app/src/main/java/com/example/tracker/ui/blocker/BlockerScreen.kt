@@ -141,12 +141,12 @@ fun BlockerScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = com.example.tracker.ui.i18n.tr("Back"))
                     }
                 },
                 actions = {
                     IconButton(onClick = onOpenStats) {
-                        Icon(Icons.Rounded.BarChart, contentDescription = "Usage Stats")
+                        Icon(Icons.Rounded.BarChart, contentDescription = com.example.tracker.ui.i18n.tr("Usage stats"))
                     }
                 },
             )
@@ -156,7 +156,7 @@ fun BlockerScreen(
                 onClick = { onOpenRule(null) },
                 containerColor = MaterialTheme.colorScheme.primary,
             ) {
-                Icon(Icons.Rounded.Add, contentDescription = "New Block Rule")
+                Icon(Icons.Rounded.Add, contentDescription = com.example.tracker.ui.i18n.tr("New Block Rule"))
             }
         },
     ) { padding ->
@@ -461,7 +461,7 @@ private fun RuleCard(
                         Spacer(Modifier.width(6.dp))
                         Icon(
                             imageVector = Icons.Rounded.Lock,
-                            contentDescription = "Strict mode",
+                            contentDescription = com.example.tracker.ui.i18n.tr("Strict mode"),
                             tint = com.example.tracker.ui.theme.StatusColors.warn.readable(),
                             modifier = Modifier.size(14.dp),
                         )
@@ -571,7 +571,7 @@ private fun PermissionRow(
             Text(subtitle, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         if (isGranted) {
-            Icon(Icons.Rounded.CheckCircle, contentDescription = "Granted", tint = com.example.tracker.ui.theme.StatusColors.good.readable(), modifier = Modifier.size(20.dp))
+            Icon(Icons.Rounded.CheckCircle, contentDescription = com.example.tracker.ui.i18n.tr("Granted"), tint = com.example.tracker.ui.theme.StatusColors.good.readable(), modifier = Modifier.size(20.dp))
         } else {
             Button(
                 onClick = onGrant,

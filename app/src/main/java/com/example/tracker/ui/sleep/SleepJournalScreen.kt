@@ -180,7 +180,7 @@ private fun SleepTab(sleep: List<SleepLogEntity>, today: LocalDate, onEdit: (Loc
                             Text(SleepMath.formatDuration(lastNight.minutes),
                                 style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold), modifier = Modifier.weight(1f))
                             Box(Modifier.size(48.dp).clip(CircleShape).clickable(role = androidx.compose.ui.semantics.Role.Button) { onEdit(lastNightDate) }
-                                .semantics { contentDescription = "Edit last night" }, contentAlignment = Alignment.Center) {
+                                .semantics { contentDescription = com.example.tracker.ui.i18n.tr("Edit last night") }, contentAlignment = Alignment.Center) {
                                 Icon(Icons.Rounded.Edit, null, tint = cs.onSurfaceVariant)
                             }
                         }
@@ -254,7 +254,7 @@ private fun SleepBars(sleep: List<SleepLogEntity>, today: LocalDate, onTap: (Loc
     val maxMin = 10 * 60f
     Column {
         Canvas(Modifier.fillMaxWidth().height(120.dp).semantics {
-            contentDescription = "Sleep for the last 14 nights. " + nights.mapNotNull { n -> byNight[n]?.let { "${DAY.format(n)} ${SleepMath.formatDuration(it.minutes)}" } }.joinToString(", ")
+            contentDescription = com.example.tracker.ui.i18n.tr("Sleep for the last 14 nights. ") + nights.mapNotNull { n -> byNight[n]?.let { "${DAY.format(n)} ${SleepMath.formatDuration(it.minutes)}" } }.joinToString(", ")
         }) {
             val gap = 6.dp.toPx()
             val bw = (size.width - gap * 13) / 14

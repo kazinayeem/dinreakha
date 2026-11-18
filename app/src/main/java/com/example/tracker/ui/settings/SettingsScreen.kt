@@ -277,7 +277,7 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
                                     },
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
                                 ) {
-                                    Icon(Icons.Rounded.Refresh, contentDescription = "Shuffle", modifier = Modifier.size(16.dp))
+                                    Icon(Icons.Rounded.Refresh, contentDescription = com.example.tracker.ui.i18n.tr("Shuffle"), modifier = Modifier.size(16.dp))
                                     Spacer(Modifier.width(4.dp))
                                     Text("Shuffle")
                                 }

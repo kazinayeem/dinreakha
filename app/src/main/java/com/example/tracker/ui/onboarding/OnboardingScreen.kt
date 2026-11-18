@@ -376,7 +376,7 @@ private fun PermissionTile(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Rounded.CheckCircle,
-                        contentDescription = "Ready",
+                        contentDescription = com.example.tracker.ui.i18n.tr("Ready"),
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(16.dp),
                     )

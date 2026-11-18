@@ -213,7 +213,7 @@ fun ScheduleEditorScreen() {
                         Text("${SHORT_DATE.format(d)} ${d.year}", Modifier.weight(0.45f), fontWeight = FontWeight.SemiBold)
                         Text(name, Modifier.weight(0.45f))
                         androidx.compose.material3.IconButton(onClick = { change { c.schedule.deleteHoliday(d) } }) {
-                            androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Rounded.Close, contentDescription = "Remove holiday")
+                            androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Rounded.Close, contentDescription = com.example.tracker.ui.i18n.tr("Remove holiday"))
                         }
                     }
                 }

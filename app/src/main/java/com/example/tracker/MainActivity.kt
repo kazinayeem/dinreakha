@@ -82,10 +82,12 @@ class MainActivity : FragmentActivity() {
                 // leaves, Today is loaded and laid out. The intro then fades (and drifts up a little)
                 // to reveal it — no cross-fade of two half-drawn screens, no content popping in after.
                 val introAlpha = remember { Animatable(if (showIntro) 1f else 0f) }
+                val noMotion = com.example.tracker.ui.theme.Motion.reduced()
                 androidx.compose.runtime.LaunchedEffect(showIntro) {
                     if (!showIntro) {
                         AppLock.ready = true // unlock prompt only once the intro is out of the way
-                        introAlpha.animateTo(0f, tween(360, easing = FastOutSlowInEasing))
+                        if (noMotion) introAlpha.snapTo(0f)
+                        else introAlpha.animateTo(0f, tween(360, easing = FastOutSlowInEasing))
                         introGone = true
                     }
                 }

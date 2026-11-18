@@ -309,7 +309,7 @@ private fun HeroBalanceCard(
             // 7-day spending bars
             val max = (weekSpend.maxOrNull() ?: 0L).coerceAtLeast(1L)
             Row(Modifier.fillMaxWidth().height(56.dp).semantics {
-                contentDescription = "Spending, last 7 days: " + week.zip(weekSpend).joinToString { (d, v) -> "${d.dayOfWeek.name.take(3)} ${Money.format(v)}" }
+                contentDescription = com.example.tracker.ui.i18n.tr("Spending, last 7 days: ") + week.zip(weekSpend).joinToString { (d, v) -> "${d.dayOfWeek.name.take(3)} ${Money.format(v)}" }
             }, horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.Bottom) {
                 week.zip(weekSpend).forEach { (day, v) ->
                     Box(

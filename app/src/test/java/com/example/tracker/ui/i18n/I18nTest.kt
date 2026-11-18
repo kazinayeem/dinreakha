@@ -19,6 +19,15 @@ class I18nTest {
         assertEquals("১০ মিনিট পরে কোর্স পড়া", bn("Course study in 10 min"))
     }
 
+    @Test fun reportSentencesAndScreenReaderLabels() {
+        assertEquals("পড়া: ৪৫মি", bn("Study: 45m"))
+        assertEquals("১০টির মধ্যে ৭টি", bn("7 of 10 items"))
+        assertEquals("গত সপ্তাহের চেয়ে ↑১২%", bn("↑12% vs last week"))
+        assertEquals("সময়মতো ওঠা ৩ দিন, পড়া ২ দিন", bn("Woke on time 3d, studied 2d"))
+        assertEquals("আগের মাস", bn("Previous month"))                       // TalkBack label
+        assertEquals("গত ১৪ রাতের ঘুম। ", bn("Sleep for the last 14 nights. "))  // trailing space kept
+    }
+
     @Test fun datesAndDigits() {
         assertEquals("সোম ১৭ নভে", bn("Mon 17 Nov"))
         assertEquals("Mon 17 Nov".let { bn(it, digits = false) }, "সোম 17 নভে")

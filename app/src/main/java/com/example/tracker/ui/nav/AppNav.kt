@@ -194,7 +194,7 @@ fun AppNav(
                             // Ignore a second tap while the first pop is still animating (it would pop two screens).
                             if (entry?.lifecycle?.currentState == Lifecycle.State.RESUMED) nav.popBackStack()
                         }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = com.example.tracker.ui.i18n.tr("Back"))
                         }
                     },
                 )
@@ -244,31 +244,36 @@ fun AppNav(
                     nav.navigate("onboarding") { popUpTo(0) { inclusive = true } }
                 }
             }
+            val noMotion = com.example.tracker.ui.theme.Motion.reduced()
             NavHost(
                 navController = nav,
                 startDestination = if (s.onboardingDone) "today" else "onboarding",
                 // Tabs: fade-through (old out fast, new in after it — never both on screen).
                 // Detail screens: short shared-axis slide. Durations follow Material motion (150–250 ms).
                 enterTransition = {
+                    if (noMotion) return@NavHost androidx.compose.animation.EnterTransition.None
                     if (isTabSwitch(initialState.destination.route, targetState.destination.route)) {
-                        fadeIn(tween(160, delayMillis = 70, easing = LinearOutSlowInEasing))
+                        fadeIn(tween(com.example.tracker.ui.theme.Motion.STANDARD, delayMillis = com.example.tracker.ui.theme.Motion.STAGGER, easing = LinearOutSlowInEasing))
                     } else {
-                        fadeIn(tween(200, delayMillis = 40)) +
-                            slideInHorizontally(tween(240, easing = FastOutSlowInEasing)) { (it * 0.12f).toInt() }
+                        fadeIn(tween(com.example.tracker.ui.theme.Motion.STANDARD, delayMillis = com.example.tracker.ui.theme.Motion.STAGGER)) +
+                            slideInHorizontally(tween(com.example.tracker.ui.theme.Motion.STANDARD, easing = FastOutSlowInEasing)) { (it * 0.12f).toInt() }
                     }
                 },
                 exitTransition = {
-                    if (isTabSwitch(initialState.destination.route, targetState.destination.route)) fadeOut(tween(70))
-                    else fadeOut(tween(90))
+                    if (noMotion) return@NavHost androidx.compose.animation.ExitTransition.None
+                    if (isTabSwitch(initialState.destination.route, targetState.destination.route)) fadeOut(tween(com.example.tracker.ui.theme.Motion.QUICK))
+                    else fadeOut(tween(com.example.tracker.ui.theme.Motion.QUICK))
                 },
                 popEnterTransition = {
+                    if (noMotion) return@NavHost androidx.compose.animation.EnterTransition.None
                     if (isTabSwitch(initialState.destination.route, targetState.destination.route)) {
-                        fadeIn(tween(160, delayMillis = 70, easing = LinearOutSlowInEasing))
-                    } else fadeIn(tween(200, delayMillis = 40))
+                        fadeIn(tween(com.example.tracker.ui.theme.Motion.STANDARD, delayMillis = com.example.tracker.ui.theme.Motion.STAGGER, easing = LinearOutSlowInEasing))
+                    } else fadeIn(tween(com.example.tracker.ui.theme.Motion.STANDARD, delayMillis = com.example.tracker.ui.theme.Motion.STAGGER))
                 },
                 popExitTransition = {
-                    if (isTabSwitch(initialState.destination.route, targetState.destination.route)) fadeOut(tween(70))
-                    else fadeOut(tween(120)) + slideOutHorizontally(tween(200, easing = FastOutLinearInEasing)) { (it * 0.12f).toInt() }
+                    if (noMotion) return@NavHost androidx.compose.animation.ExitTransition.None
+                    if (isTabSwitch(initialState.destination.route, targetState.destination.route)) fadeOut(tween(com.example.tracker.ui.theme.Motion.QUICK))
+                    else fadeOut(tween(com.example.tracker.ui.theme.Motion.QUICK)) + slideOutHorizontally(tween(com.example.tracker.ui.theme.Motion.QUICK, easing = FastOutLinearInEasing)) { (it * 0.12f).toInt() }
                 },
             ) {
                 composable("onboarding") {

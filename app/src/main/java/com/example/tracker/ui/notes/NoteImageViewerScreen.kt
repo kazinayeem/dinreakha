@@ -184,7 +184,7 @@ fun NoteImageViewerScreen(
                         onClick = onBack,
                         colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                     ) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = com.example.tracker.ui.i18n.tr("Back"))
                     }
 
                     Spacer(Modifier.width(6.dp))
@@ -237,7 +237,7 @@ fun NoteImageViewerScreen(
                         },
                         colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                     ) {
-                        Icon(Icons.AutoMirrored.Rounded.RotateRight, contentDescription = "Rotate 90 degrees")
+                        Icon(Icons.AutoMirrored.Rounded.RotateRight, contentDescription = com.example.tracker.ui.i18n.tr("Rotate 90 degrees"))
                     }
 
                     // Share
@@ -265,7 +265,7 @@ fun NoteImageViewerScreen(
                         },
                         colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                     ) {
-                        Icon(Icons.Rounded.Share, contentDescription = "Share image")
+                        Icon(Icons.Rounded.Share, contentDescription = com.example.tracker.ui.i18n.tr("Share image"))
                     }
 
                     // Delete
@@ -273,7 +273,7 @@ fun NoteImageViewerScreen(
                         onClick = { showDeleteConfirm = true },
                         colors = IconButtonDefaults.iconButtonColors(contentColor = Color(0xFFFF6B6B)),
                     ) {
-                        Icon(Icons.Rounded.Delete, contentDescription = "Delete photo")
+                        Icon(Icons.Rounded.Delete, contentDescription = com.example.tracker.ui.i18n.tr("Delete photo"))
                     }
                 }
             }
@@ -393,7 +393,7 @@ fun NoteImageViewerScreen(
                                         ) {
                                             Icon(
                                                 Icons.Rounded.ContentCopy,
-                                                contentDescription = "Copy text",
+                                                contentDescription = com.example.tracker.ui.i18n.tr("Copy text"),
                                                 tint = Color.White.copy(alpha = 0.8f),
                                                 modifier = Modifier.size(16.dp),
                                             )
@@ -520,7 +520,7 @@ private fun ZoomableImage(
         if (bmp != null) {
             Image(
                 bitmap = bmp.asImageBitmap(),
-                contentDescription = "Class note photo",
+                contentDescription = com.example.tracker.ui.i18n.tr("Class note photo"),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxSize()

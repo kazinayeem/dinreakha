@@ -536,7 +536,7 @@ private fun RunningPanel(
     val left = r.remaining(now)
     val frac by animateFloatAsState(
         targetValue = (r.elapsed(now).seconds.toFloat() / (r.plannedMinutes * 60f)).coerceIn(0f, 1f),
-        animationSpec = tween(800),
+        animationSpec = tween(com.example.tracker.ui.theme.Motion.SLOW),
         label = "dial",
     )
     val mm = left.toMinutes()
@@ -701,7 +701,7 @@ private fun SessionRow(s: FocusSessionInfo, showDate: Boolean = false, onClick: 
 
         Icon(
             imageVector = Icons.Rounded.EditNote,
-            contentDescription = "Edit note",
+            contentDescription = com.example.tracker.ui.i18n.tr("Edit note"),
             tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
             modifier = Modifier.size(20.dp),
         )

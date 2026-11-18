@@ -95,7 +95,7 @@ fun ReportScreen(vm: WalletViewModel) {
                     IconButton(onClick = { vm.month.value = month.minusMonths(1) }) {
                         Icon(
                             imageVector = Icons.Rounded.ChevronLeft,
-                            contentDescription = "Previous month",
+                            contentDescription = com.example.tracker.ui.i18n.tr("Previous month"),
                             tint = MaterialTheme.colorScheme.onSurface,
                         )
                     }
@@ -108,7 +108,7 @@ fun ReportScreen(vm: WalletViewModel) {
                     IconButton(onClick = { vm.month.value = month.plusMonths(1) }) {
                         Icon(
                             imageVector = Icons.Rounded.ChevronRight,
-                            contentDescription = "Next month",
+                            contentDescription = com.example.tracker.ui.i18n.tr("Next month"),
                             tint = MaterialTheme.colorScheme.onSurface,
                         )
                     }

@@ -191,7 +191,7 @@ fun CoursesScreen(
                         trailingIcon = {
                             if (searchQuery.isNotEmpty()) {
                                 IconButton(onClick = { searchQuery = "" }) {
-                                    Icon(Icons.Rounded.Close, contentDescription = "Clear search")
+                                    Icon(Icons.Rounded.Close, contentDescription = com.example.tracker.ui.i18n.tr("Clear search"))
                                 }
                             }
                         },
@@ -282,7 +282,7 @@ fun CoursesScreen(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(Icons.Rounded.CameraAlt, contentDescription = "Capture")
+                Icon(Icons.Rounded.CameraAlt, contentDescription = com.example.tracker.ui.i18n.tr("Capture"))
                 Spacer(Modifier.width(8.dp))
                 Text("Capture note", fontWeight = FontWeight.Bold)
             }
@@ -417,7 +417,7 @@ private fun CourseCard(
                     ) {
                         Icon(
                             Icons.Rounded.CameraAlt,
-                            contentDescription = "Capture photo for course",
+                            contentDescription = com.example.tracker.ui.i18n.tr("Capture photo for course"),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(19.dp),
                         )
@@ -430,7 +430,7 @@ private fun CourseCard(
                         ) {
                             Icon(
                                 Icons.Rounded.MoreVert,
-                                contentDescription = "Course options",
+                                contentDescription = com.example.tracker.ui.i18n.tr("Course options"),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(20.dp),
                             )

@@ -460,7 +460,7 @@ private fun PhotoThumbnailItem(
                 .clickable(role = androidx.compose.ui.semantics.Role.Button) { onRemove() },
             contentAlignment = Alignment.Center,
         ) {
-            Icon(Icons.Rounded.Close, contentDescription = "Remove", tint = Color.White, modifier = Modifier.size(14.dp))
+            Icon(Icons.Rounded.Close, contentDescription = com.example.tracker.ui.i18n.tr("Remove"), tint = Color.White, modifier = Modifier.size(14.dp))
         }
     }
 }

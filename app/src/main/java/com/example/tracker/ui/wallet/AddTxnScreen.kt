@@ -173,7 +173,7 @@ fun AddTxnScreen(
             TxnType.TRANSFER -> MaterialTheme.colorScheme.primary
             TxnType.ADJUSTMENT -> MaterialTheme.colorScheme.secondary
         },
-        animationSpec = tween(250),
+        animationSpec = tween(com.example.tracker.ui.theme.Motion.STANDARD),
         label = "typeColor",
     )
 
@@ -572,7 +572,7 @@ private fun Keypad(onKey: (String) -> Unit) {
                             if (k == "⌫") {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Rounded.Backspace,
-                                    contentDescription = "Backspace",
+                                    contentDescription = com.example.tracker.ui.i18n.tr("Backspace"),
                                     tint = MaterialTheme.colorScheme.onSurface,
                                     modifier = Modifier.size(20.dp),
                                 )

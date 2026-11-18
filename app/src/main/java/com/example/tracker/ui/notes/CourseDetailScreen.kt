@@ -326,7 +326,7 @@ fun CourseDetailScreen(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(Icons.Rounded.CameraAlt, contentDescription = "Capture")
+                Icon(Icons.Rounded.CameraAlt, contentDescription = com.example.tracker.ui.i18n.tr("Capture"))
                 Spacer(Modifier.width(8.dp))
                 Text("Capture note", fontWeight = FontWeight.Bold)
             }
@@ -384,7 +384,7 @@ private fun NoteCardItem(
                     if (note.important) {
                         Icon(
                             Icons.Rounded.Star,
-                            contentDescription = "Important",
+                            contentDescription = com.example.tracker.ui.i18n.tr("Important"),
                             tint = com.example.tracker.ui.theme.StatusColors.warn.readable(),
                             modifier = Modifier.size(18.dp),
                         )
@@ -400,7 +400,7 @@ private fun NoteCardItem(
                 IconButton(onClick = onDelete) {
                     Icon(
                         Icons.Rounded.Delete,
-                        contentDescription = "Delete note",
+                        contentDescription = com.example.tracker.ui.i18n.tr("Delete note"),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                         modifier = Modifier.size(16.dp),
                     )

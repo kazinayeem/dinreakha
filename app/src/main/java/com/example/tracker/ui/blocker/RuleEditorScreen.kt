@@ -194,13 +194,13 @@ fun RuleEditorScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = com.example.tracker.ui.i18n.tr("Back"))
                     }
                 },
                 actions = {
                     if (ruleId != null && ruleId > 0L) {
                         IconButton(onClick = { showDeleteConfirm = true }) {
-                            Icon(Icons.Rounded.Delete, contentDescription = "Delete Rule", tint = MaterialTheme.colorScheme.error)
+                            Icon(Icons.Rounded.Delete, contentDescription = com.example.tracker.ui.i18n.tr("Delete rule"), tint = MaterialTheme.colorScheme.error)
                         }
                     }
                 },
@@ -377,7 +377,7 @@ fun RuleEditorScreen(
                                             Spacer(Modifier.width(4.dp))
                                             Icon(
                                                 Icons.Rounded.Close,
-                                                contentDescription = "Remove",
+                                                contentDescription = com.example.tracker.ui.i18n.tr("Remove"),
                                                 modifier = Modifier.size(16.dp).clickable(role = androidx.compose.ui.semantics.Role.Button) { selectedPackages.remove(pkg) },
                                             )
                                         }

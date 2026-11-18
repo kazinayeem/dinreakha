@@ -66,7 +66,7 @@ fun Dayline(
     val sun = remember { Animatable(if (animationsOff) target.coerceIn(-0.08f, 1.08f) else 0f) }
     LaunchedEffect(target) {
         val to = target.coerceIn(-0.08f, 1.08f)
-        if (animationsOff) sun.snapTo(to) else sun.animateTo(to, tween(1100, easing = FastOutSlowInEasing))
+        if (animationsOff) sun.snapTo(to) else sun.animateTo(to, tween(com.example.tracker.ui.theme.Motion.HERO, easing = FastOutSlowInEasing))
     }
 
     val accent = MaterialTheme.colorScheme.primary

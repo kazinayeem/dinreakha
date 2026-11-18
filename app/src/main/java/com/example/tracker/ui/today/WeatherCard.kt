@@ -125,7 +125,7 @@ fun WeatherCard(
                             initialValue = 0f,
                             targetValue = 360f,
                             animationSpec = infiniteRepeatable(
-                                animation = tween(1000, easing = LinearEasing),
+                                animation = tween(com.example.tracker.ui.theme.Motion.SPIN, easing = LinearEasing),
                                 repeatMode = RepeatMode.Restart,
                             ),
                             label = "spinRot",
@@ -141,7 +141,7 @@ fun WeatherCard(
                     ) {
                         Icon(
                             Icons.Rounded.Refresh,
-                            contentDescription = "Refresh weather",
+                            contentDescription = com.example.tracker.ui.i18n.tr("Refresh weather"),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
                                 .size(18.dp)

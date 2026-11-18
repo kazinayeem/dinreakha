@@ -107,7 +107,7 @@ fun WeeklyReportScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = com.example.tracker.ui.i18n.tr("Back"))
                     }
                 },
                 actions = {
@@ -174,7 +174,7 @@ fun WeeklyReportScreen(
                         ) {
                             Column {
                                 Text(
-                                    text = "Week $selectedWeek Overview",
+                                    text = "Week $selectedWeek overview",
                                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                                 )
                                 Text(
@@ -584,7 +584,7 @@ private fun WeeklyStreaksCard(report: WeeklyReport) {
                             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                         )
                         Text(
-                            text = "${report.prayerStreak}d 5-Prayer streak",
+                            text = "${report.prayerStreak}d 5-prayer streak",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )

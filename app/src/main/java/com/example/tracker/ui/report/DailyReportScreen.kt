@@ -111,7 +111,7 @@ fun DailyReportScreen(
                 ) {
                     Text(dateTitle, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
                     IconButton(onClick = { showWeightsDialog = true }) {
-                        Icon(Icons.Rounded.Tune, contentDescription = "Score Weights")
+                        Icon(Icons.Rounded.Tune, contentDescription = com.example.tracker.ui.i18n.tr("Score weights"))
                     }
                 }
             } else CenterAlignedTopAppBar(
@@ -123,12 +123,12 @@ fun DailyReportScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = com.example.tracker.ui.i18n.tr("Back"))
                     }
                 },
                 actions = {
                     IconButton(onClick = { showWeightsDialog = true }) {
-                        Icon(Icons.Rounded.Tune, contentDescription = "Score Weights")
+                        Icon(Icons.Rounded.Tune, contentDescription = com.example.tracker.ui.i18n.tr("Score weights"))
                     }
                 },
             )
