@@ -47,6 +47,15 @@ class notes, app blocker rules, settings, backup restore and factory reset, app 
 | 11 | Factory reset / restore | The reschedule ran in the Settings screen, which reset disposes when it jumps to onboarding — old alarms could keep firing | Runs in the app scope; toast after it finishes |
 | 12 | Settings lock | "My routines" and "Notification log" weren't behind the Settings lock like the other settings pages | Locked the same way |
 
+## Simpler structure (18 Nov 2026)
+
+| Before | After |
+|---|---|
+| Tabs: Today, Calendar, Focus, Wallet, More | Today, Calendar, **Study** (focus timer + class notes), Wallet, **Me** |
+| 7 progress screens (Stats, plan grid, weekly review, daily / weekly / 30-day report, share card) | One **Progress** screen: Today · Week · Plan · Habits; share and "write review" on the tabs |
+| Settings: one 12-section scroll; Routines, Schedule, Notifications, Blocker also reachable from More | Settings hub of 6 rows → Look & language and Privacy & data are their own pages; one way in to each place |
+| Today: 8 blocks, checklist below the glance tiles, reflection always open | Checklist right after "up next"; reflection folded until 6 PM; class banner has one button |
+
 ## Still wrong or risky (not fixed)
 
 1. ~~No version control~~ — **fixed:** git set up on 17 Nov (branch `main`). Two AI tools still edit

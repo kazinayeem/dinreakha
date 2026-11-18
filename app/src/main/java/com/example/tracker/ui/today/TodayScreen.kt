@@ -149,6 +149,7 @@ fun TodayScreen(
     val expected = s.checklist.filter { it.expected }
     val doneCount = expected.count { it.key in s.day.doneKeys }
     var showSchedule by rememberSaveable { mutableStateOf(false) }
+    var showReflection by rememberSaveable { mutableStateOf(false) }
 
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -222,12 +223,6 @@ fun TodayScreen(
                                 Spacer(Modifier.width(6.dp))
                                 Text("Capture Note", fontWeight = FontWeight.Bold)
                             }
-                            OutlinedButton(
-                                onClick = onOpenCourses,
-                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-                            ) {
-                                Text("Courses")
-                            }
                         }
                     }
                 }
@@ -281,7 +276,17 @@ fun TodayScreen(
             }
         }
 
-        // ---- 4. At a glance: habits · spent · screen (each opens its page) ----
+        // ---- Checklist: what you act on all day, so it comes right after "up next" ----
+        item(key = "checklist") {
+            ChecklistCard(
+                s = s,
+                vm = vm,
+                expected = expected,
+                doneCount = doneCount,
+            )
+        }
+
+        // ---- At a glance: habits · spent · screen (each opens its page) ----
         item(key = "glance") {
             GlanceTiles(
                 doneCount = doneCount,
@@ -308,25 +313,17 @@ fun TodayScreen(
             }
         }
 
-        // ---- 5. Interactive Checklist with Category Filters ----
-        item(key = "checklist") {
-            ChecklistCard(
-                s = s,
-                vm = vm,
-                expected = expected,
-                doneCount = doneCount,
-            )
-        }
-
         // ---- 6. Schedule Timeline Card ----
         item(key = "timeline") {
             if (showSchedule || !s.isToday) TimelineCard(s = s, onCaptureNote = onCaptureNote)
             else FoldedRow(Icons.Rounded.Timeline, "Today's schedule", "${s.timeline.size}") { showSchedule = true }
         }
 
-        // ---- 7. Daily Reflection & Mood Card ----
+        // ---- Reflection & mood: an evening task, so folded earlier in the day ----
         item(key = "reflection") {
-            ReflectionCard(s = s, vm = vm)
+            val evening = !s.isToday || s.now.hour >= 18 || s.day.log?.mood != null
+            if (evening || showReflection) ReflectionCard(s = s, vm = vm)
+            else FoldedRow(Icons.Rounded.EditNote, "Evening reflection & mood", "+") { showReflection = true }
         }
     }
 }

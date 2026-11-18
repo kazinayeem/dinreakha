@@ -343,6 +343,7 @@ object BanglaStrings {
         "App lock, backup, reset" to "অ্যাপ লক, ব্যাকআপ, রিসেট", "What was sent, and when" to "কী পাঠানো হয়েছে, কখন",
         "App blocker" to "অ্যাপ ব্লকার",
         "Study" to "পড়া", "Me" to "আমি",
+        "Evening reflection & mood" to "সন্ধ্যার ভাবনা ও মেজাজ",
         "Write this week's review" to "এই সপ্তাহের রিভিউ লিখুন", "Day-by-day grid" to "দিন অনুযায়ী গ্রিড",
         "Habits & routines" to "অভ্যাস ও রুটিন", "Daily habits" to "প্রতিদিনের অভ্যাস",
         "Switch off what you don't do. Tap a name to rename it — past ticks are kept." to "যেটা করেন না সেটা বন্ধ করুন। নাম বদলাতে নামে চাপুন — আগের টিক থেকে যাবে।",
