@@ -1,5 +1,6 @@
 package com.example.tracker.ui.today
 
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.material.icons.rounded.Insights
@@ -311,7 +312,7 @@ fun TodayScreen(
                 val c2 = LocalContext.current.container
                 val logged by remember(s.date) { c2.db.sleepDao().observeAll() }.collectAsStateWithLifecycle(null)
                 if (logged != null && logged!!.none { it.night == s.date.minusDays(1) }) {
-                    FoldedRow(Icons.Rounded.Bedtime, "Log last night's sleep", "+", onOpen = onLogSleep)
+                    FoldedRow(Icons.Rounded.Bedtime, "Log last night's sleep", "", action = true, onOpen = onLogSleep)
                 }
             }
         }
@@ -428,7 +429,7 @@ private fun NextActionBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 12.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
@@ -569,7 +570,7 @@ private fun GlanceTile(
             .then(if (onClick != null) Modifier.clickable(role = androidx.compose.ui.semantics.Role.Button, onClick = onClick) else Modifier)
             .semantics(mergeDescendants = true) { contentDescription = "$label $value" },
     ) {
-        Column(Modifier.padding(14.dp)) {
+        Column(Modifier.padding(16.dp)) {
             Icon(icon, null, Modifier.size(20.dp), tint = tint)
             Spacer(Modifier.height(8.dp))
             Text(value, style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -586,15 +587,20 @@ private fun GlanceTile(
 
 /** A closed section you open with one tap (keeps Home short). */
 @Composable
-private fun FoldedRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, badge: String, onOpen: () -> Unit) {
-    Surface(onClick = onOpen, shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceContainerLow,
+private fun FoldedRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, badge: String, action: Boolean = false, onOpen: () -> Unit) {
+    val cs = MaterialTheme.colorScheme
+    Surface(onClick = onOpen, shape = RoundedCornerShape(16.dp), color = if (action) cs.primaryContainer else cs.surfaceContainerLow,
         modifier = Modifier.fillMaxWidth()) {
-        Row(Modifier.padding(horizontal = 16.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(icon, null, Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary)
-            Text(title, Modifier.weight(1f).padding(start = 12.dp), style = MaterialTheme.typography.titleSmall)
-            Pill(badge)
-            Icon(Icons.Rounded.ExpandMore, contentDescription = com.example.tracker.ui.i18n.tr("Show"), tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(start = 8.dp))
+        Row(Modifier.heightIn(min = 56.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(icon, null, Modifier.size(20.dp), tint = if (action) cs.onPrimaryContainer else cs.primary)
+            Text(title, Modifier.weight(1f).padding(start = 12.dp), style = MaterialTheme.typography.titleSmall,
+                color = if (action) cs.onPrimaryContainer else cs.onSurface)
+            if (action) Icon(Icons.Rounded.Add, contentDescription = null, tint = cs.onPrimaryContainer)
+            else {
+                if (badge.isNotBlank() && badge != "+") Pill(badge)
+                Icon(Icons.Rounded.ExpandMore, contentDescription = com.example.tracker.ui.i18n.tr("Show"), tint = cs.onSurfaceVariant,
+                    modifier = Modifier.padding(start = 8.dp))
+            }
         }
     }
 }
@@ -711,8 +717,20 @@ private fun ChecklistCard(
                 }
             }
 
-            // Completion Banner
-            AnimatedVisibility(expected.isNotEmpty() && doneCount == expected.size) {
+            // Completion: confirm haptic + a short pop, only when it changes to "all done" while you watch.
+            val allDone = expected.isNotEmpty() && doneCount == expected.size
+            val haptics = LocalHapticFeedback.current
+            var wasDone by remember { mutableStateOf(allDone) }
+            val pop = remember { androidx.compose.animation.core.Animatable(1f) }
+            val calm = com.example.tracker.ui.theme.Motion.reduced()
+            LaunchedEffect(allDone) {
+                if (allDone && !wasDone) {
+                    haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+                    if (!calm) { pop.snapTo(0.92f); pop.animateTo(1f, androidx.compose.animation.core.spring(dampingRatio = 0.45f)) }
+                }
+                wasDone = allDone
+            }
+            AnimatedVisibility(allDone, modifier = Modifier.graphicsLayer { scaleX = pop.value; scaleY = pop.value }) {
                 Surface(
                     shape = RoundedCornerShape(12.dp),
                     color = Income.copy(alpha = 0.12f),
