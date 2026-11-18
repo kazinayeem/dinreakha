@@ -628,7 +628,12 @@ private fun NavHostController.openDeepLink(route: String) {
             popUpTo(graph.findStartDestination().id)
             launchSingleTop = true
         }
-        else -> navigate(route) { launchSingleTop = true }
+        else -> {
+            // Same page already open with other arguments (e.g. Progress on "Today", link asks for "Week"):
+            // replace it, because a single-top navigate would keep the old arguments.
+            if (currentDestination?.route?.substringBefore('?') == base) popBackStack()
+            navigate(route) { launchSingleTop = true }
+        }
     }
 }
 

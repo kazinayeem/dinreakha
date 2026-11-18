@@ -34,7 +34,7 @@ fun ProgressScreen(
     week: Int,
     nav: (String) -> Unit,
 ) {
-    var tab by rememberSaveable { mutableStateOf(initialTab) }
+    var tab by rememberSaveable(initialTab) { mutableStateOf(initialTab) } // a new link to another tab switches to it
     Column(Modifier.fillMaxSize()) {
         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
             ProgressTab.entries.forEachIndexed { i, t ->
