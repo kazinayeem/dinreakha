@@ -20,3 +20,8 @@ local.properties
 *.aab
 *.jks
 *.keystore
+
+promo/node_modules/
+promo/out/
+promo/public/
+promo/output/*.mp4
