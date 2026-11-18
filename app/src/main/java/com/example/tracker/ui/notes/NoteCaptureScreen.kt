@@ -339,11 +339,11 @@ fun NoteCaptureScreen(
             onClick = {
                 val course = selectedCourse
                 if (course == null) {
-                    Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Please select a course"), Toast.LENGTH_SHORT).show()
+                    com.example.tracker.ui.components.showMessage(ctx, "Please select a course")
                     return@Button
                 }
                 if (text.isBlank() && title.isBlank() && capturedUris.isEmpty()) {
-                    Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Add at least a photo or some notes"), Toast.LENGTH_SHORT).show()
+                    com.example.tracker.ui.components.showMessage(ctx, "Add at least a photo or some notes")
                     return@Button
                 }
 
@@ -361,12 +361,12 @@ fun NoteCaptureScreen(
                     val result = runCatching { c.notes.saveNote(noteEntity, capturedUris.toList(), course.code) }
                     withContext(Dispatchers.Main) {
                         if (result.isSuccess) {
-                            Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Note saved with ${capturedUris.size} photos"), Toast.LENGTH_SHORT).show()
+                            com.example.tracker.ui.components.showMessage(ctx, "Note saved with ${capturedUris.size} photos")
                             onSaved()
                         } else {
                             // Leave the screen usable so the note can be saved again.
                             isSaving = false
-                            Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Couldn't save the note") + ": ${result.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
+                            com.example.tracker.ui.components.showMessage(ctx, com.example.tracker.ui.i18n.tr("Couldn't save the note") + ": ${result.exceptionOrNull()?.message}", long = true)
                         }
                     }
                 }
@@ -457,7 +457,7 @@ private fun PhotoThumbnailItem(
                 .size(22.dp)
                 .clip(CircleShape)
                 .background(Color.Black.copy(alpha = 0.65f))
-                .clickable { onRemove() },
+                .clickable(role = androidx.compose.ui.semantics.Role.Button) { onRemove() },
             contentAlignment = Alignment.Center,
         ) {
             Icon(Icons.Rounded.Close, contentDescription = "Remove", tint = Color.White, modifier = Modifier.size(14.dp))

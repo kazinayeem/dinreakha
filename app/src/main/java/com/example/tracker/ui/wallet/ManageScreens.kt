@@ -147,7 +147,7 @@ fun RecurringScreen(vm: WalletViewModel) {
                             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                     Text(Money.format(r.amountPaisa), fontWeight = FontWeight.SemiBold)
-                    if (r.active && !confirmed) TextButton(onClick = { vm.confirmRecurring(r.id) }) { Text("Add ✓") }
+                    if (r.active && !confirmed) TextButton(onClick = { vm.confirmRecurring(r.id) }) { Text("Add") }
                 }
             }
         }
@@ -296,7 +296,7 @@ fun AccountsScreen(vm: WalletViewModel, onCategories: () -> Unit) {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         ACCOUNT_COLORS.forEach { col ->
                             Box(Modifier.size(if (color == col) 34.dp else 28.dp).clip(CircleShape).background(Color(col))
-                                .clickable { color = col })
+                                .clickable(role = androidx.compose.ui.semantics.Role.Button) { color = col })
                         }
                     }
                     if (a.id != 0L) Row(verticalAlignment = Alignment.CenterVertically) {
@@ -315,7 +315,7 @@ fun AccountsScreen(vm: WalletViewModel, onCategories: () -> Unit) {
                 Row {
                     if (a.id != 0L) TextButton(onClick = {
                         vm.archiveOrDelete(a) { deleted ->
-                            Toast.makeText(ctx, com.example.tracker.ui.i18n.tr(if (deleted) "Deleted" else "Has transactions — archived instead"), Toast.LENGTH_SHORT).show()
+                            com.example.tracker.ui.components.showMessage(ctx, if (deleted) "Deleted" else "Has transactions — archived instead")
                         }
                         editing = null
                     }) { Text("Delete", color = Expense) }
@@ -390,7 +390,7 @@ fun CategoriesScreen(vm: WalletViewModel) {
             dismissButton = {
                 Row {
                     if (c.id != 0L) TextButton(onClick = {
-                        vm.deleteCategory(c) { ok -> if (!ok) Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("In use by transactions — kept"), Toast.LENGTH_SHORT).show() }
+                        vm.deleteCategory(c) { ok -> if (!ok) com.example.tracker.ui.components.showMessage(ctx, "In use by transactions — kept") }
                         editing = null
                     }) { Text("Delete", color = Expense) }
                     TextButton(onClick = { editing = null }) { Text("Cancel") }

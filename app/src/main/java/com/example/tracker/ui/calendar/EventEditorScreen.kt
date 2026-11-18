@@ -252,7 +252,7 @@ fun EventEditorScreen(eventId: Long?, date: LocalDate?, hour: Int?, minute: Int?
                                     .clip(CircleShape)
                                     .background(Color(col))
                                     .then(if (sel) Modifier.border(3.dp, MaterialTheme.colorScheme.primary, CircleShape) else Modifier)
-                                    .clickable { color = col }
+                                    .clickable(role = androidx.compose.ui.semantics.Role.Button) { color = col }
                                     .semantics { role = Role.RadioButton; selected = sel; contentDescription = "Colour ${i + 1}" },
                                 contentAlignment = Alignment.Center,
                             ) {

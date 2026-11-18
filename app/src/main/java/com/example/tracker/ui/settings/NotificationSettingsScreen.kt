@@ -164,7 +164,7 @@ fun NotificationSettingsScreen(onOpenLog: () -> Unit = {}) {
         change { c.settings.setPref(cat, p) }; editing = null
     }, onTest = {
         scope.launch { c.settings.setPref(cat, it); c.scheduler.rescheduleAll(); c.scheduler.scheduleTest(cat) }
-        Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Test arrives in ~5 s"), Toast.LENGTH_SHORT).show()
+        com.example.tracker.ui.components.showMessage(ctx, "Test arrives in ~5 s")
     }) }
 
     pickQuiet?.let { which ->

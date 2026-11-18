@@ -119,11 +119,9 @@ fun AnimatedSplash(
         modifier = Modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(listOf(BrandNight, BrandIndigo, BrandTeal)))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
+            .clickable(role = androidx.compose.ui.semantics.Role.Button, interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onClick = finishOnce,
-            ),
+                onClick = finishOnce,),
         contentAlignment = Alignment.Center,
     ) {
         Column(

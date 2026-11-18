@@ -1,5 +1,6 @@
 package com.example.tracker.ui.review
 
+import androidx.compose.material.icons.rounded.AutoAwesome
 import com.example.tracker.ui.theme.readable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -186,7 +187,8 @@ fun ReviewScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("✨", fontSize = 22.sp)
+                            androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Rounded.AutoAwesome, contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(24.dp))
                             Spacer(Modifier.width(10.dp))
                             Column {
                                 Text(

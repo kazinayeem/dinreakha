@@ -179,7 +179,7 @@ private fun SleepTab(sleep: List<SleepLogEntity>, today: LocalDate, onEdit: (Loc
                         Row(verticalAlignment = Alignment.Bottom) {
                             Text(SleepMath.formatDuration(lastNight.minutes),
                                 style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold), modifier = Modifier.weight(1f))
-                            Box(Modifier.size(48.dp).clip(CircleShape).clickable { onEdit(lastNightDate) }
+                            Box(Modifier.size(48.dp).clip(CircleShape).clickable(role = androidx.compose.ui.semantics.Role.Button) { onEdit(lastNightDate) }
                                 .semantics { contentDescription = "Edit last night" }, contentAlignment = Alignment.Center) {
                                 Icon(Icons.Rounded.Edit, null, tint = cs.onSurfaceVariant)
                             }
@@ -273,7 +273,7 @@ private fun SleepBars(sleep: List<SleepLogEntity>, today: LocalDate, onTap: (Loc
         Spacer(Modifier.height(6.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             nights.forEach { n ->
-                Text(n.dayOfWeek.name.take(1), Modifier.weight(1f).clickable { onTap(n) }, textAlign = TextAlign.Center,
+                Text(n.dayOfWeek.name.take(1), Modifier.weight(1f).clickable(role = androidx.compose.ui.semantics.Role.Button) { onTap(n) }, textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
@@ -457,7 +457,7 @@ private fun MoodHeatmap(logs: List<DayLog>, today: LocalDate, onTap: (LocalDate)
                     Box(
                         Modifier.fillMaxWidth().aspectRatio(1f).clip(RoundedCornerShape(4.dp))
                             .background(if (date.isAfter(today)) Color.Transparent else moodColor(mood))
-                            .then(if (date.isAfter(today)) Modifier else Modifier.clickable { onTap(date) })
+                            .then(if (date.isAfter(today)) Modifier else Modifier.clickable(role = androidx.compose.ui.semantics.Role.Button) { onTap(date) })
                             .semantics { contentDescription = "${DAY.format(date)}: ${mood?.let { MOOD_FACES[it - 1].second } ?: "no mood"}" },
                     )
                 }

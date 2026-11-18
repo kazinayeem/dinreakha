@@ -314,7 +314,7 @@ fun AddAccountCard(width: Dp = 140.dp, onClick: () -> Unit) {
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
                 shape = RoundedCornerShape(20.dp),
             )
-            .clickable(onClick = onClick),
+            .clickable(role = androidx.compose.ui.semantics.Role.Button, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
         Column(

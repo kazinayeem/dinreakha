@@ -91,7 +91,7 @@ fun ValueRow(label: String, value: String, supporting: String? = null, onClick: 
             .fillMaxWidth()
             .heightIn(min = 52.dp)
             .clip(RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick)
+            .clickable(role = androidx.compose.ui.semantics.Role.Button, onClick = onClick)
             .padding(horizontal = 4.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -112,7 +112,7 @@ fun SwitchRow(title: String, subtitle: String?, checked: Boolean, enabled: Boole
             .fillMaxWidth()
             .heightIn(min = 54.dp)
             .clip(RoundedCornerShape(12.dp))
-            .clickable(enabled = enabled) {
+            .clickable(role = androidx.compose.ui.semantics.Role.Button, enabled = enabled) {
                 haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
                 onChange(!checked)
             }

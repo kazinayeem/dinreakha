@@ -168,6 +168,10 @@ fun AppNav(
     val isTab = TABS.any { it.route == route }
     val snackbar = remember { SnackbarHostState() }
     val feedback = remember { Feedback(snackbar, scope) }
+    androidx.compose.runtime.DisposableEffect(feedback) {
+        com.example.tracker.ui.components.AppFeedback.host = feedback
+        onDispose { if (com.example.tracker.ui.components.AppFeedback.host === feedback) com.example.tracker.ui.components.AppFeedback.host = null }
+    }
 
     // Photos shared into the app wait here until the capture screen has taken them.
     var pendingShare by remember { mutableStateOf<List<Uri>>(emptyList()) }

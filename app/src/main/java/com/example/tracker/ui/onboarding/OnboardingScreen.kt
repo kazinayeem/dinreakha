@@ -203,7 +203,7 @@ fun OnboardingScreen(onDone: () -> Unit) {
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { showTips = !showTips },
+                    .clickable(role = androidx.compose.ui.semantics.Role.Button) { showTips = !showTips },
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(

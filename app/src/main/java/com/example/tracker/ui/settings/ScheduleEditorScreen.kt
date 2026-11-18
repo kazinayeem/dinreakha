@@ -1,5 +1,6 @@
 package com.example.tracker.ui.settings
 
+import androidx.compose.material.icons.rounded.Close
 import android.widget.Toast
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -211,7 +212,9 @@ fun ScheduleEditorScreen() {
                     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text("${SHORT_DATE.format(d)} ${d.year}", Modifier.weight(0.45f), fontWeight = FontWeight.SemiBold)
                         Text(name, Modifier.weight(0.45f))
-                        TextButton(onClick = { change { c.schedule.deleteHoliday(d) } }) { Text("✕") }
+                        androidx.compose.material3.IconButton(onClick = { change { c.schedule.deleteHoliday(d) } }) {
+                            androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Rounded.Close, contentDescription = "Remove holiday")
+                        }
                     }
                 }
             }
@@ -379,7 +382,7 @@ fun ScheduleEditorScreen() {
             TextButton(onClick = {
                 confirmReset = false
                 change { c.schedule.resetToDefaults() }
-                Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Schedule reset"), Toast.LENGTH_SHORT).show()
+                com.example.tracker.ui.components.showMessage(ctx, "Schedule reset")
             }) { Text("Reset", color = Expense) }
         },
         dismissButton = { TextButton(onClick = { confirmReset = false }) { Text("Cancel") } },

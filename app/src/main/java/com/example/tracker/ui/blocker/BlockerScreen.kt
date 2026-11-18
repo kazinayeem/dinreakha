@@ -269,7 +269,7 @@ fun BlockerScreen(
                     onResetToday = {
                         scope.launch {
                             c.blocker.resetReelsUsage(today)
-                            Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Reels count reset for today"), Toast.LENGTH_SHORT).show()
+                            com.example.tracker.ui.components.showMessage(ctx, "Reels count reset for today")
                         }
                     },
                 )
@@ -327,7 +327,7 @@ fun BlockerScreen(
                             Surface(
                                 shape = RoundedCornerShape(18.dp),
                                 color = MaterialTheme.colorScheme.surfaceContainerLow,
-                                modifier = Modifier.width(160.dp).clickable { onOpenRule(rule.id) },
+                                modifier = Modifier.width(160.dp).clickable(role = androidx.compose.ui.semantics.Role.Button) { onOpenRule(rule.id) },
                             ) {
                                 Column(modifier = Modifier.padding(14.dp)) {
                                     Text(
@@ -385,7 +385,7 @@ fun BlockerScreen(
                         scope.launch {
                             val isStrictActive = c.blocker.isStrictModeActive(rule)
                             if (isStrictActive && !enabled) {
-                                Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Anti-cheat strict mode is active. Cannot disable this rule right now."), Toast.LENGTH_LONG).show()
+                                com.example.tracker.ui.components.showMessage(ctx, "Anti-cheat strict mode is active. Cannot disable this rule right now.", long = true)
                             } else {
                                 c.blocker.setRuleEnabled(rule.id, enabled)
                             }

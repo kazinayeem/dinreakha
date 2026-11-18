@@ -276,7 +276,7 @@ fun ShareCardStudioScreen(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(14.dp),
                     ) {
-                        Text("🔵  Share to Facebook Story", fontWeight = FontWeight.Bold)
+                        Text("Share to Facebook story", fontWeight = FontWeight.Bold)
                     }
                 }
             }

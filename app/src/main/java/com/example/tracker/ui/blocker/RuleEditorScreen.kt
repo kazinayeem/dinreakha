@@ -226,15 +226,15 @@ fun RuleEditorScreen(
                     Button(
                         onClick = {
                             if (isStrictLocked) {
-                                Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Anti-cheat strict mode is active. This rule cannot be changed until tomorrow."), Toast.LENGTH_LONG).show()
+                                com.example.tracker.ui.components.showMessage(ctx, "Anti-cheat strict mode is active. This rule cannot be changed until tomorrow.", long = true)
                                 return@Button
                             }
                             if (name.isBlank()) {
-                                Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Please give this rule a name"), Toast.LENGTH_SHORT).show()
+                                com.example.tracker.ui.components.showMessage(ctx, "Please give this rule a name")
                                 return@Button
                             }
                             if (selectedPackages.isEmpty()) {
-                                Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Please select at least one app to restrict"), Toast.LENGTH_SHORT).show()
+                                com.example.tracker.ui.components.showMessage(ctx, "Please select at least one app to restrict")
                                 return@Button
                             }
                             if (submitted) return@Button
@@ -257,7 +257,7 @@ fun RuleEditorScreen(
                                     enabled = true,
                                 )
                                 c.blocker.saveRule(rule)
-                                Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Rule saved"), Toast.LENGTH_SHORT).show()
+                                com.example.tracker.ui.components.showMessage(ctx, "Rule saved")
                                 onDone()
                             }
                         },
@@ -378,7 +378,7 @@ fun RuleEditorScreen(
                                             Icon(
                                                 Icons.Rounded.Close,
                                                 contentDescription = "Remove",
-                                                modifier = Modifier.size(16.dp).clickable { selectedPackages.remove(pkg) },
+                                                modifier = Modifier.size(16.dp).clickable(role = androidx.compose.ui.semantics.Role.Button) { selectedPackages.remove(pkg) },
                                             )
                                         }
                                     }
@@ -494,7 +494,7 @@ fun RuleEditorScreen(
                             Surface(
                                 shape = RoundedCornerShape(14.dp),
                                 color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                                modifier = Modifier.weight(1f).clickable(enabled = !isStrictLocked) { showStartTimePicker = true },
+                                modifier = Modifier.weight(1f).clickable(role = androidx.compose.ui.semantics.Role.Button, enabled = !isStrictLocked) { showStartTimePicker = true },
                             ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
                                     Text("From", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -505,7 +505,7 @@ fun RuleEditorScreen(
                             Surface(
                                 shape = RoundedCornerShape(14.dp),
                                 color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                                modifier = Modifier.weight(1f).clickable(enabled = !isStrictLocked) { showEndTimePicker = true },
+                                modifier = Modifier.weight(1f).clickable(role = androidx.compose.ui.semantics.Role.Button, enabled = !isStrictLocked) { showEndTimePicker = true },
                             ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
                                     Text("Until", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -535,7 +535,7 @@ fun RuleEditorScreen(
                                     color = if (sel) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHigh,
                                     modifier = Modifier
                                         .size(38.dp)
-                                        .clickable(enabled = !isStrictLocked) {
+                                        .clickable(role = androidx.compose.ui.semantics.Role.Button, enabled = !isStrictLocked) {
                                             if (sel) selectedDays.remove(dow.value) else selectedDays.add(dow.value)
                                         },
                                 ) {
@@ -622,7 +622,7 @@ fun RuleEditorScreen(
                                 color = if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f) else Color.Transparent,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable {
+                                    .clickable(role = androidx.compose.ui.semantics.Role.Button) {
                                         if (isSelected) selectedPackages.remove(app.packageName) else selectedPackages.add(app.packageName)
                                     },
                             ) {

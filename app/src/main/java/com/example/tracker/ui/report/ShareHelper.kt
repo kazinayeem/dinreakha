@@ -44,11 +44,11 @@ object ShareHelper {
                 values.put(MediaStore.Images.Media.IS_PENDING, 0)
                 resolver.update(uri, values, null, null)
             }
-            Toast.makeText(context, com.example.tracker.ui.i18n.tr("Saved to Pictures/Dinrekha"), Toast.LENGTH_SHORT).show()
+            com.example.tracker.ui.components.showMessage(context, "Saved to Pictures/Dinrekha")
             uri
         }.getOrElse {
             resolver.delete(uri, null, null)
-            Toast.makeText(context, com.example.tracker.ui.i18n.tr("Failed to save image"), Toast.LENGTH_SHORT).show()
+            com.example.tracker.ui.components.showMessage(context, "Failed to save image")
             null
         }
     }

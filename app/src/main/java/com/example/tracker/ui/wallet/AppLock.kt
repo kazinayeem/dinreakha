@@ -1,5 +1,6 @@
 package com.example.tracker.ui.wallet
 
+import androidx.compose.material.icons.rounded.Lock
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import com.example.tracker.ui.i18n.Text
@@ -109,7 +111,8 @@ private fun LockPanel(scope: LockScope) {
     LaunchedEffect(AppLock.ready) { if (AppLock.ready) prompt() }
     Column(Modifier.fillMaxSize().padding(32.dp), verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("🔒", style = MaterialTheme.typography.displayMedium)
+        androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Rounded.Lock, contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(56.dp))
         Text("${scope.label} is locked", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         message?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 8.dp)) }
         Button(onClick = ::prompt, modifier = Modifier.padding(top = 20.dp).heightIn(min = 52.dp)) { Text("Unlock") }

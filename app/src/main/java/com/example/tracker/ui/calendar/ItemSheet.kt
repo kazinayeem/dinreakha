@@ -179,7 +179,7 @@ fun ItemSheet(item: CalItem, vm: CalendarViewModel, nav: (String) -> Unit, onClo
                                             modifier = Modifier
                                                 .size(68.dp)
                                                 .clip(RoundedCornerShape(10.dp))
-                                                .clickable {
+                                                .clickable(role = androidx.compose.ui.semantics.Role.Button) {
                                                     onClose()
                                                     nav("notes/viewer/${n.id}/$idx")
                                                 },

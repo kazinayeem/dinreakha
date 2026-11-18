@@ -359,7 +359,7 @@ fun NoteImageViewerScreen(
                             color = Color(0xFF26262B),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { showOcrSheet = !showOcrSheet },
+                                .clickable(role = androidx.compose.ui.semantics.Role.Button) { showOcrSheet = !showOcrSheet },
                         ) {
                             Column(modifier = Modifier.padding(10.dp)) {
                                 Row(
@@ -387,7 +387,7 @@ fun NoteImageViewerScreen(
                                                 val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                                 cm.setPrimaryClip(ClipData.newPlainText("Text from photo", ocr))
                                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                                Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Text copied to clipboard"), Toast.LENGTH_SHORT).show()
+                                                com.example.tracker.ui.components.showMessage(ctx, "Text copied to clipboard")
                                             },
                                             modifier = Modifier.size(28.dp),
                                         ) {

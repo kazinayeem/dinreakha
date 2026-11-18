@@ -1,7 +1,6 @@
 package com.example.tracker.ui.settings
 
 import android.Manifest
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -113,7 +112,7 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
     var confirmReset by remember { mutableStateOf(false) }
 
     fun change(block: suspend () -> Unit) = scope.launch { block(); c.scheduler.rescheduleAll() }
-    fun toast(msg: String) = Toast.makeText(ctx, com.example.tracker.ui.i18n.tr(msg), Toast.LENGTH_LONG).show()
+    fun toast(msg: String) = com.example.tracker.ui.components.showMessage(ctx, msg, long = true)
 
     val exportJson = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         uri ?: return@rememberLauncherForActivityResult

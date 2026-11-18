@@ -138,8 +138,8 @@ fun CalendarScreen(nav: (String) -> Unit) {
             runCatching {
                 val text = c.calendar.exportIcs()
                 withContext(Dispatchers.IO) { ctx.contentResolver.openOutputStream(uri)!!.use { it.write(text.toByteArray()) } }
-            }.onSuccess { Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Calendar exported"), Toast.LENGTH_SHORT).show() }
-                .onFailure { Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Export failed: ${it.message}"), Toast.LENGTH_LONG).show() }
+            }.onSuccess { com.example.tracker.ui.components.showMessage(ctx, "Calendar exported") }
+                .onFailure { com.example.tracker.ui.components.showMessage(ctx, "Export failed: ${it.message}", long = true) }
         }
     }
     val importIcs = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -148,8 +148,8 @@ fun CalendarScreen(nav: (String) -> Unit) {
             runCatching {
                 val text = withContext(Dispatchers.IO) { ctx.contentResolver.openInputStream(uri)!!.bufferedReader().readText() }
                 c.calendar.importIcs(text).also { c.scheduler.rescheduleAll() }
-            }.onSuccess { n -> Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Added $n event${if (n == 1) "" else "s"}"), Toast.LENGTH_SHORT).show() }
-                .onFailure { Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Couldn't read that file: ${it.message}"), Toast.LENGTH_LONG).show() }
+            }.onSuccess { n -> com.example.tracker.ui.components.showMessage(ctx, "Added $n event${if (n == 1) "" else "s"}") }
+                .onFailure { com.example.tracker.ui.components.showMessage(ctx, "Couldn't read that file: ${it.message}", long = true) }
         }
     }
 
@@ -193,7 +193,7 @@ fun CalendarScreen(nav: (String) -> Unit) {
                 Text(
                     title,
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(8.dp)).clickable { goTo(today) }.padding(vertical = 4.dp),
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(8.dp)).clickable(role = androidx.compose.ui.semantics.Role.Button) { goTo(today) }.padding(vertical = 4.dp),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -268,7 +268,7 @@ fun CalendarScreen(nav: (String) -> Unit) {
         text = {
             Column {
                 Layer.entries.forEach { l ->
-                    Row(Modifier.fillMaxWidth().heightIn(min = Space.touch).clickable { vm.toggleLayer(l) }, verticalAlignment = Alignment.CenterVertically) {
+                    Row(Modifier.fillMaxWidth().heightIn(min = Space.touch).clickable(role = androidx.compose.ui.semantics.Role.Button) { vm.toggleLayer(l) }, verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(l in s.layers, { vm.toggleLayer(l) })
                         Text(l.label)
                     }
@@ -356,7 +356,7 @@ private fun TimeGrid(vm: CalendarViewModel, s: CalState, days: List<LocalDate>, 
     Column(Modifier.fillMaxSize()) {
         if (days.size > 1) Row(Modifier.fillMaxWidth().padding(start = GUTTER)) {
             days.forEach { d ->
-                Column(Modifier.weight(1f).clickable { onDayHeader(d) }.padding(vertical = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(Modifier.weight(1f).clickable(role = androidx.compose.ui.semantics.Role.Button) { onDayHeader(d) }.padding(vertical = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(d.dayOfWeek.short(), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text("${d.dayOfMonth}", style = MaterialTheme.typography.titleMedium,
                         color = if (d == today) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
@@ -500,7 +500,7 @@ private fun Agenda(vm: CalendarViewModel, s: CalState, from: LocalDate, onItem: 
                     modifier = Modifier.padding(top = Space.lg, bottom = Space.xs))
             }
             if (note != null) item(key = "n_$d") {
-                Row(Modifier.fillMaxWidth().heightIn(min = Space.touch).clickable { onNote(d) }, verticalAlignment = Alignment.CenterVertically) {
+                Row(Modifier.fillMaxWidth().heightIn(min = Space.touch).clickable(role = androidx.compose.ui.semantics.Role.Button) { onNote(d) }, verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.AutoMirrored.Rounded.StickyNote2, null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(note, Modifier.padding(start = Space.sm), style = MaterialTheme.typography.bodyMedium, maxLines = 2)
                 }
@@ -522,7 +522,7 @@ private fun viewIcon(v: CalView) = when (v) {
 
 @Composable
 private fun AgendaRow(it: CalItem, onClick: () -> Unit) {
-    Row(Modifier.fillMaxWidth().heightIn(min = 52.dp).clip(RoundedCornerShape(10.dp)).clickable(onClick = onClick)
+    Row(Modifier.fillMaxWidth().heightIn(min = 52.dp).clip(RoundedCornerShape(10.dp)).clickable(role = androidx.compose.ui.semantics.Role.Button, onClick = onClick)
         .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
         Text(if (it.allDay) "All day" else HM.format(it.start), Modifier.width(72.dp), style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -564,7 +564,7 @@ private fun SelectedDayList(
             if (note != null) item(key = "note") {
                 Text(note, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 3, overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).clickable(onClick = onNote).padding(vertical = 6.dp))
+                    modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).clickable(role = androidx.compose.ui.semantics.Role.Button, onClick = onNote).padding(vertical = 6.dp))
             }
             if (items.isEmpty() && note == null) item(key = "empty") {
                 Row(Modifier.padding(vertical = Space.md), verticalAlignment = Alignment.CenterVertically) {

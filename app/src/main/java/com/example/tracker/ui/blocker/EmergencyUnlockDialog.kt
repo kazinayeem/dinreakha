@@ -191,7 +191,7 @@ fun EmergencyUnlockDialog(
                         scope.launch {
                             val ok = c.blocker.performEmergencyUnlock()
                             if (ok) {
-                                Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Emergency unlock active for 5 minutes"), Toast.LENGTH_LONG).show()
+                                com.example.tracker.ui.components.showMessage(ctx, "Emergency unlock active for 5 minutes", long = true)
                                 onUnlocked()
                             }
                         }

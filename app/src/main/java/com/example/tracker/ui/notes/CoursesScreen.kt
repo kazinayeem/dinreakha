@@ -213,10 +213,7 @@ fun CoursesScreen(
                         scope.launch {
                             val newArchived = !item.course.archived
                             c.notes.setCourseArchived(item.course.id, newArchived)
-                            Toast.makeText(
-                                ctx,com.example.tracker.ui.i18n.tr(if (newArchived) "${item.course.code} archived" else "${item.course.code} unarchived"),
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                            com.example.tracker.ui.components.showMessage(ctx, if (newArchived) "${item.course.code} archived" else "${item.course.code} unarchived")
                         }
                     },
                     onDeleteCourse = { courseToDelete = item },
@@ -301,7 +298,7 @@ fun CoursesScreen(
                 isAddingCourse = false
                 scope.launch {
                     c.notes.saveCourse(newCourse)
-                    Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Course '${newCourse.code}' added"), Toast.LENGTH_SHORT).show()
+                    com.example.tracker.ui.components.showMessage(ctx, "Course '${newCourse.code}' added")
                 }
             },
         )
@@ -316,7 +313,7 @@ fun CoursesScreen(
                 courseToEdit = null
                 scope.launch {
                     c.notes.saveCourse(updatedCourse)
-                    Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Course '${updatedCourse.code}' updated"), Toast.LENGTH_SHORT).show()
+                    com.example.tracker.ui.components.showMessage(ctx, "Course '${updatedCourse.code}' updated")
                 }
             },
         )
@@ -353,7 +350,7 @@ fun CoursesScreen(
                         courseToDelete = null
                         scope.launch {
                             c.notes.deleteCourse(id)
-                            Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("Course '$code' and its notes deleted"), Toast.LENGTH_SHORT).show()
+                            com.example.tracker.ui.components.showMessage(ctx, "Course '$code' and its notes deleted")
                         }
                     },
                     colors = ButtonDefaults.textButtonColors(
@@ -659,7 +656,7 @@ private fun CourseEditorDialog(
                                 .size(36.dp)
                                 .clip(CircleShape)
                                 .background(color)
-                                .clickable { selectedColor = colorVal },
+                                .clickable(role = androidx.compose.ui.semantics.Role.Button) { selectedColor = colorVal },
                             contentAlignment = Alignment.Center,
                         ) {
                             if (isSelected) {

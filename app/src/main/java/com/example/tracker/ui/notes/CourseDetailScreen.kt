@@ -166,7 +166,7 @@ fun CourseDetailScreen(
                                 TextButton(
                                     onClick = {
                                         if (allNotes.isEmpty()) {
-                                            Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("No notes to export"), Toast.LENGTH_SHORT).show()
+                                            com.example.tracker.ui.components.showMessage(ctx, "No notes to export")
                                             return@TextButton
                                         }
                                         isExportingPdf = true
@@ -184,7 +184,7 @@ fun CourseDetailScreen(
                                                 }
                                             }.onFailure {
                                                 withContext(Dispatchers.Main) {
-                                                    Toast.makeText(ctx, com.example.tracker.ui.i18n.tr("PDF export failed: ${it.message}"), Toast.LENGTH_SHORT).show()
+                                                    com.example.tracker.ui.components.showMessage(ctx, "PDF export failed: ${it.message}")
                                                 }
                                             }
                                             isExportingPdf = false
@@ -470,7 +470,7 @@ private fun PhotoGrid(
                     .weight(1f)
                     .height(80.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .clickable { onOpenPhoto(idx) },
+                    .clickable(role = androidx.compose.ui.semantics.Role.Button) { onOpenPhoto(idx) },
             ) {
                 LocalImagePreview(path = img.thumbPath.ifBlank { img.filePath })
 

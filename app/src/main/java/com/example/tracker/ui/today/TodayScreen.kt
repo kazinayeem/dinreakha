@@ -386,7 +386,7 @@ private fun DayHeader(s: TodayUi, onOpenReview: (Int) -> Unit, onOpenPlan: () ->
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
-                .clickable(onClick = onOpenPlan)
+                .clickable(role = androidx.compose.ui.semantics.Role.Button, onClick = onOpenPlan)
                 .padding(vertical = 2.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,

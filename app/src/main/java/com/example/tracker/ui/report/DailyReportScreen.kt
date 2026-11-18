@@ -29,6 +29,8 @@ import androidx.compose.material.icons.rounded.Mood
 import androidx.compose.material.icons.rounded.NightsStay
 import androidx.compose.material.icons.rounded.PhoneAndroid
 import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material.icons.rounded.Event
+import androidx.compose.material.icons.rounded.PhotoCamera
 import androidx.compose.material.icons.rounded.Shield
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Timer
@@ -242,7 +244,7 @@ private fun DailyScoreHeroCard(
                     text = "Edit weights",
                     style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable { onOpenWeights() },
+                    modifier = Modifier.clickable(role = androidx.compose.ui.semantics.Role.Button) { onOpenWeights() },
                 )
             }
 
@@ -564,10 +566,10 @@ private fun DailyAcademicsCard(report: DailyReport) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 if (report.classNotesCaptured > 0) {
-                    Text("📷 ${report.classNotesCaptured} class notes captured", style = MaterialTheme.typography.bodyMedium)
+                    IconLine(Icons.Rounded.PhotoCamera, "${report.classNotesCaptured} class notes captured")
                 }
                 if (report.deadlinesDone > 0) {
-                    Text("📌 ${report.deadlinesDone} events scheduled", style = MaterialTheme.typography.bodyMedium)
+                    IconLine(Icons.Rounded.Event, "${report.deadlinesDone} events scheduled")
                 }
             }
         }
@@ -691,3 +693,13 @@ private fun WeightSliderItem(
     }
 }
 
+
+/** A short fact with a leading icon (instead of an emoji). */
+@Composable
+private fun IconLine(icon: androidx.compose.ui.graphics.vector.ImageVector, text: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+        Spacer(Modifier.width(6.dp))
+        Text(text, style = MaterialTheme.typography.bodyMedium)
+    }
+}
