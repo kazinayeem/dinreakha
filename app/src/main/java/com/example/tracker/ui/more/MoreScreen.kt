@@ -70,7 +70,6 @@ fun MoreScreen(nav: (String) -> Unit) {
     val c = LocalContext.current.container
     val today by remember { currentDateFlow() }.collectAsStateWithLifecycle(LocalDate.now(Schedule.ZONE))
     val days by remember { c.habits.observePlan() }.collectAsStateWithLifecycle(emptyMap())
-    val courses by remember { c.notes.observeCoursesWithStats() }.collectAsStateWithLifecycle(emptyList())
     val blocks by remember(today) { c.blocker.observeBlockCountToday(today) }.collectAsStateWithLifecycle(0)
     val reels by remember(today) { c.blocker.observeTotalReelsCount(today) }.collectAsStateWithLifecycle(0)
     val sleep by remember { c.db.sleepDao().observeAll() }.collectAsStateWithLifecycle(emptyList())
@@ -84,7 +83,6 @@ fun MoreScreen(nav: (String) -> Unit) {
         Tile(Icons.Rounded.Insights, Color(0xFFF2A93B), "Progress", "$streak-day streak", "progress?tab=DAY"),
         Tile(Icons.Rounded.Bedtime, Color(0xFF818CF8), "Sleep & mood",
             lastNight?.let { "${it.minutes / 60}h ${it.minutes % 60}m slept" } ?: "Log last night", "sleep?log=false"),
-        Tile(Icons.Rounded.School, Color(0xFF4285F4), "Class notes", "${courses.sumOf { it.noteCount }} notes", "courses"),
         Tile(Icons.Rounded.Shield, Color(0xFFE5534B), "App limits", "$reels reels, $blocks blocks", "blocker"),
     )
 
@@ -92,7 +90,7 @@ fun MoreScreen(nav: (String) -> Unit) {
         contentPadding = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 28.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        item { Text("More", style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)) }
+        item { Text("Me", style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)) }
 
         // Plan progress — the one number you check most
         item {

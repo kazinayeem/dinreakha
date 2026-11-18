@@ -158,7 +158,6 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
                 val off = s.prefs.count { !it.value.enabled }
                 NavRow(Icons.Rounded.NotificationsActive, "Notifications",
                     if (!s.masterEnabled) "All reminders are OFF" else if (off == 0) "All on" else "$off types off") { nav("settings/notifications") }
-                NavRow(Icons.Rounded.Shield, "App blocker", "Limits and blocked apps") { nav("blocker") }
                 NavRow(Icons.Rounded.Palette, "Look & language", "Theme, language, quotes, weather, time") { nav("settings/look") }
                 NavRow(Icons.Rounded.Lock, "Privacy & data", "App lock, backup, reset") { nav("settings/privacy") }
                 NavRow(Icons.Rounded.Info, "About", null) { nav("about") }

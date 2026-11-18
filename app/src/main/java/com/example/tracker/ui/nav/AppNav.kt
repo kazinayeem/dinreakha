@@ -20,12 +20,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material.icons.rounded.AccountBalanceWallet
 import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Timer
 import androidx.compose.material.icons.rounded.Today
 import androidx.compose.material3.SnackbarHost
@@ -110,9 +110,9 @@ private data class Tab(val route: String, val label: String, val selected: Image
 private val TABS = listOf(
     Tab("today", "Today", Icons.Rounded.Today, Icons.Outlined.Today),
     Tab("calendar", "Calendar", Icons.Rounded.CalendarMonth, Icons.Outlined.CalendarMonth),
-    Tab("focus", "Focus", Icons.Rounded.Timer, Icons.Outlined.Timer),
+    Tab("focus", "Study", Icons.Rounded.Timer, Icons.Outlined.Timer),
     Tab("wallet", "Wallet", Icons.Rounded.AccountBalanceWallet, Icons.Outlined.AccountBalanceWallet),
-    Tab("more", "More", Icons.Rounded.Menu, Icons.Outlined.Menu),
+    Tab("more", "Me", Icons.Rounded.Person, Icons.Outlined.Person),
 )
 
 private fun titleFor(route: String?, args: android.os.Bundle?): String? = when {
@@ -141,7 +141,7 @@ private fun titleFor(route: String?, args: android.os.Bundle?): String? = when {
     route == "progress" -> "Progress"
     route == "settings" -> "Settings"
     route.startsWith("calendar/edit") -> if ((args?.getLong("id") ?: 0L) > 0) "Edit event" else "New event"
-    route == "courses" -> "Course Library"
+    route == "courses" -> "Class notes"
     route.startsWith("course/") -> "Course Notes"
     route.startsWith("notes/capture") -> "Capture Class Note"
     // These screens draw their own top bar (with share / stats / save actions) — no second bar here.
@@ -284,7 +284,7 @@ fun AppNav(
                         onCaptureNote = { cid ->
                             nav.navigate(if (cid != null) "notes/capture?courseId=$cid" else "notes/capture")
                         },
-                        onOpenCourses = { nav.navigate("courses") },
+                        onOpenCourses = { nav.openDeepLink("focus?sub=NOTES") },
                         onOpenBlocker = { nav.navigate("blocker") },
                         onOpenDailyReport = { d -> nav.navigate("progress?tab=DAY&date=$d") },
                         onLogSleep = { nav.navigate("sleep?log=true") },
@@ -303,7 +303,7 @@ fun AppNav(
                         onCaptureNote = { cid ->
                             nav.navigate(if (cid != null) "notes/capture?courseId=$cid" else "notes/capture")
                         },
-                        onOpenCourses = { nav.navigate("courses") },
+                        onOpenCourses = { nav.openDeepLink("focus?sub=NOTES") },
                         onOpenBlocker = { nav.navigate("blocker") },
                         onOpenDailyReport = { d -> nav.navigate("progress?tab=DAY&date=$d") },
                     )
@@ -344,7 +344,8 @@ fun AppNav(
                 }
                 composable("stats") { StatsScreen(onOpenPlan = { nav.navigate("plan") }) }
                 composable("more") { com.example.tracker.ui.more.MoreScreen { nav.navigate(it) } }
-                composable("focus?note={note}&type={type}&min={min}", listOf(
+                composable("focus?note={note}&type={type}&min={min}&sub={sub}", listOf(
+                    navArgument("sub") { type = NavType.StringType; nullable = true; defaultValue = null },
                     navArgument("note") { type = NavType.LongType; defaultValue = 0L },
                     navArgument("type") { type = NavType.StringType; nullable = true; defaultValue = null },
                     navArgument("min") { type = NavType.IntType; defaultValue = 0 },
@@ -352,7 +353,15 @@ fun AppNav(
                     val a = e.arguments!!
                     val preset = a.getString("type")?.let { t -> runCatching { com.example.tracker.data.focus.FocusType.valueOf(t) }.getOrNull() }
                         ?.let { it to a.getInt("min").takeIf { m -> m > 0 }.let { m -> m ?: 45 } }
-                    com.example.tracker.ui.focus.FocusScreen(a.getLong("note").takeIf { it > 0 }, preset)
+                    val note = a.getLong("note").takeIf { it > 0 }
+                    com.example.tracker.ui.focus.StudyScreen(
+                        initialTab = if (a.getString("sub") == "NOTES" && note == null && preset == null)
+                            com.example.tracker.ui.focus.StudyTab.NOTES else com.example.tracker.ui.focus.StudyTab.FOCUS,
+                        noteForSession = note,
+                        preset = preset,
+                        onOpenCourse = { nav.navigate("course/$it") },
+                        onCaptureNote = { cid -> nav.navigate(if (cid != null) "notes/capture?courseId=$cid" else "notes/capture") },
+                    )
                 }
                 composable("calendar") { com.example.tracker.ui.calendar.CalendarScreen { nav.navigate(it) } }
                 composable(
@@ -414,6 +423,7 @@ fun AppNav(
                 // Notes & Courses
                 composable("courses") {
                     CoursesScreen(
+                        showTitle = false,
                         onOpenCourse = { nav.navigate("course/$it") },
                         onCaptureNote = { cid ->
                             nav.navigate(if (cid != null) "notes/capture?courseId=$cid" else "notes/capture")

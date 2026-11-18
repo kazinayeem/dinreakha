@@ -90,6 +90,7 @@ fun CoursesScreen(
     onOpenCourse: (Long) -> Unit,
     onCaptureNote: (Long?) -> Unit,
     onBack: () -> Unit,
+    showTitle: Boolean = true,
 ) {
     val ctx = LocalContext.current
     val c = ctx.container
@@ -137,7 +138,7 @@ fun CoursesScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(
+                            if (showTitle) Text(
                                 text = "Course Library",
                                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                             )
