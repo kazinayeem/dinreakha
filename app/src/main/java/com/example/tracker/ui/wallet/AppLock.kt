@@ -37,6 +37,8 @@ object AppLock {
     var unlocked by mutableStateOf(false)
     /** One prompt at a time: an app-wide and a wallet lock panel can both be on screen now. */
     internal var prompting = false
+    /** False while the start-up intro is on screen: the unlock prompt waits for it. */
+    var ready by mutableStateOf(false)
     fun lock() { unlocked = false }
 }
 
@@ -104,7 +106,7 @@ private fun LockPanel(scope: LockScope) {
         )
     }
 
-    LaunchedEffect(Unit) { prompt() }
+    LaunchedEffect(AppLock.ready) { if (AppLock.ready) prompt() }
     Column(Modifier.fillMaxSize().padding(32.dp), verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
         Text("🔒", style = MaterialTheme.typography.displayMedium)

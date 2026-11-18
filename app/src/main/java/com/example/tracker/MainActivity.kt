@@ -6,14 +6,14 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
@@ -39,7 +39,11 @@ class MainActivity : FragmentActivity() {
     private var sharedUris by mutableStateOf<List<Uri>>(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen() // system splash (brand colour + mark), then the animated Compose intro
+        // System splash (brand colour + mark), then the animated Compose intro. Fade the system mark out
+        // instead of letting it vanish in one frame.
+        installSplashScreen().setOnExitAnimationListener { p ->
+            p.view.animate().alpha(0f).setDuration(180L).withEndAction { p.remove() }.start()
+        }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val coldStart = savedInstanceState == null
@@ -58,45 +62,57 @@ class MainActivity : FragmentActivity() {
                 ThemeMode.LIGHT -> false
                 ThemeMode.DARK -> true
             }
-            // Status/navigation bar icons follow the APP theme (not the phone's), so they stay visible.
-            androidx.compose.runtime.LaunchedEffect(dark) {
+            var showIntro by rememberSaveable { mutableStateOf(coldStart) }
+            var introGone by remember { mutableStateOf(!showIntro) }
+            // Status/navigation bar icons follow the APP theme (not the phone's), so they stay visible —
+            // and stay light while the dark intro is on screen.
+            val barsDark = dark || !introGone
+            androidx.compose.runtime.LaunchedEffect(barsDark) {
                 val t = android.graphics.Color.TRANSPARENT
                 enableEdgeToEdge(
-                    statusBarStyle = if (dark) androidx.activity.SystemBarStyle.dark(t) else androidx.activity.SystemBarStyle.light(t, t),
-                    navigationBarStyle = if (dark) androidx.activity.SystemBarStyle.dark(t) else androidx.activity.SystemBarStyle.light(t, t),
+                    statusBarStyle = if (barsDark) androidx.activity.SystemBarStyle.dark(t) else androidx.activity.SystemBarStyle.light(t, t),
+                    navigationBarStyle = if (barsDark) androidx.activity.SystemBarStyle.dark(t) else androidx.activity.SystemBarStyle.light(t, t),
                 )
             }
             TrackerTheme(
                 themeMode = mode,
                 paletteKey = settings?.palette ?: "dinrekha",
             ) {
-                var showIntro by rememberSaveable { mutableStateOf(coldStart) }
+                // The app is composed UNDER the intro from the first frame, so by the time the intro
+                // leaves, Today is loaded and laid out. The intro then fades (and drifts up a little)
+                // to reveal it — no cross-fade of two half-drawn screens, no content popping in after.
+                val introAlpha = remember { Animatable(if (showIntro) 1f else 0f) }
+                androidx.compose.runtime.LaunchedEffect(showIntro) {
+                    if (!showIntro) {
+                        AppLock.ready = true // unlock prompt only once the intro is out of the way
+                        introAlpha.animateTo(0f, tween(360, easing = FastOutSlowInEasing))
+                        introGone = true
+                    }
+                }
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    AnimatedContent(
-                        targetState = showIntro,
-                        transitionSpec = {
-                            (fadeIn(tween(400, easing = FastOutSlowInEasing)) + scaleIn(initialScale = 0.98f, animationSpec = tween(400, easing = FastOutSlowInEasing)))
-                                .togetherWith(
-                                    fadeOut(tween(320, easing = FastOutSlowInEasing)) + scaleOut(targetScale = 1.02f, animationSpec = tween(320, easing = FastOutSlowInEasing))
-                                )
-                        },
-                        label = "intro",
-                    ) { intro ->
-                        if (intro) {
-                            AnimatedSplash(
-                                category = settings?.quoteCategory ?: QuoteCategory.ALL,
-                                language = settings?.quoteLanguage ?: QuoteLanguage.BOTH,
-                                onFinished = { showIntro = false },
-                            )
-                        } else {
-                            AppNav(
-                                pendingRoute = pendingRoute,
-                                sharedUris = sharedUris,
-                                onRouteHandled = {
-                                    pendingRoute = null
-                                    sharedUris = emptyList()
+                    Box(Modifier.fillMaxSize()) {
+                        AppNav(
+                            pendingRoute = pendingRoute,
+                            sharedUris = sharedUris,
+                            onRouteHandled = {
+                                pendingRoute = null
+                                sharedUris = emptyList()
+                            },
+                        )
+                        if (!introGone) {
+                            Box(
+                                Modifier.fillMaxSize().graphicsLayer {
+                                    alpha = introAlpha.value
+                                    val k = 1f + (1f - introAlpha.value) * 0.04f
+                                    scaleX = k; scaleY = k
                                 },
-                            )
+                            ) {
+                                AnimatedSplash(
+                                    category = settings?.quoteCategory ?: QuoteCategory.ALL,
+                                    language = settings?.quoteLanguage ?: QuoteLanguage.BOTH,
+                                    onFinished = { showIntro = false },
+                                )
+                            }
                         }
                     }
                 }
