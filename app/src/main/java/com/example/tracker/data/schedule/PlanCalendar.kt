@@ -172,10 +172,10 @@ object PlanCalendar {
                     habitKey = Habits.classKey(c.start))
             }
             config.busOn(dow, Schedule.BusDirection.TO_CAMPUS)?.let {
-                events += PlanEvent(EventType.BUS_TO_CAMPUS, "Bus to campus", Schedule.BUS_ROUTE, date.atTime(it))
+                events += PlanEvent(EventType.BUS_TO_CAMPUS, "Bus to campus", config.busRoute, date.atTime(it))
             }
             config.busOn(dow, Schedule.BusDirection.HOME)?.let {
-                events += PlanEvent(EventType.BUS_HOME, "Bus home", Schedule.BUS_ROUTE, date.atTime(it))
+                events += PlanEvent(EventType.BUS_HOME, "Bus home", config.busRoute, date.atTime(it))
             }
         }
 

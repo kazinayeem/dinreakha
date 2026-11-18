@@ -76,6 +76,7 @@ class ScheduleRepository(private val db: AppDatabase) {
                     ?.let { Schedule.Block(it, b.start, b.end, b.place, b.dayOfWeek, b.id) }
             },
             screensOffLeadMin = m["screens_off_lead"]?.toLongOrNull() ?: d.screensOffLeadMin,
+            busRoute = m["bus_route"]?.takeIf { it.isNotBlank() } ?: Schedule.BUS_ROUTE,
             routines = p.routines.map { r ->
                 Schedule.Routine(
                     id = r.id, title = r.title, icon = r.icon,
@@ -106,6 +107,7 @@ class ScheduleRepository(private val db: AppDatabase) {
     // ---- plan ----
     suspend fun setPlanStart(d: LocalDate) = settings.put(Setting("plan_start", d.toString()))
     suspend fun setPlanDays(n: Int) = settings.put(Setting("plan_days", n.coerceIn(1, 366).toString()))
+    suspend fun setBusRoute(name: String) = settings.put(Setting("bus_route", name.trim()))
     suspend fun setScreensOffLead(min: Long) = settings.put(Setting("screens_off_lead", min.coerceIn(0, 240).toString()))
 
     suspend fun savePhase(p: Schedule.Phase) = dao.upsertPhase(PlanPhaseEntity(p.number, p.days.first, p.days.last,

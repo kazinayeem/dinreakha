@@ -196,7 +196,7 @@ object ReminderPlanner {
         if (!holiday) {
             cfg.busOn(dow, Schedule.BusDirection.TO_CAMPUS)?.let { bus ->
                 add(Reminder(SLOT_BUS, ReminderCategory.BUS, date.atTime(bus).minusMinutes(before(ReminderCategory.BUS)),
-                    "Leave now for the ${HM.format(bus)} bus", Schedule.BUS_ROUTE, date))
+                    "Leave now for the ${HM.format(bus)} bus", cfg.busRoute, date))
             }
             cfg.classesOn(dow).forEach { c ->
                 add(Reminder(SLOT_CLASS, ReminderCategory.CLASS, date.atTime(c.start).minusMinutes(before(ReminderCategory.CLASS)),

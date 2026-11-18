@@ -174,6 +174,8 @@ data class ScheduleConfig(
     val hiddenHabits: Set<String> = emptySet(),
     /** User's own names for built-in habits, by key. Keys never change, so old checks still count. */
     val habitNames: Map<String, String> = emptyMap(),
+    /** Name of your bus route, shown on bus reminders and the timeline. */
+    val busRoute: String = Schedule.BUS_ROUTE,
 ) {
     val planEnd: LocalDate get() = planStart.plusDays((planDays - 1).toLong())
 

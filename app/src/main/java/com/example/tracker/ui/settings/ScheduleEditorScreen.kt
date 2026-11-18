@@ -1,5 +1,31 @@
 package com.example.tracker.ui.settings
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Bedtime
+import androidx.compose.material.icons.rounded.DirectionsBus
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.School
+import androidx.compose.material.icons.rounded.Timer
+import androidx.compose.material.icons.rounded.WbSunny
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.rounded.Close
 import android.widget.Toast
 import androidx.compose.foundation.horizontalScroll
@@ -89,142 +115,86 @@ fun ScheduleEditorScreen() {
     /** Save, then reschedule every alarm immediately. */
     fun change(block: suspend () -> Unit) = scope.launch { block(); c.scheduler.rescheduleAll() }
 
-    LazyColumn(contentPadding = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 28.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        item {
-        }
+    var tab by rememberSaveable { mutableStateOf(0) }
+    var day by rememberSaveable { mutableStateOf(LocalDate.now(Schedule.ZONE).dayOfWeek) }
+    var addMenu by remember { mutableStateOf(false) }
+    var editRoute by remember { mutableStateOf(false) }
 
-        item {
-            SectionCard("Plan") {
-                ValueRow("Start (Day 1)", SHORT_DATE.format(cfg.planStart) + " ${cfg.planStart.year}") { pickStart = true }
-                Stepper("Length", "${cfg.planDays} days", onMinus = { change { c.schedule.setPlanDays(cfg.planDays - 1) } },
-                    onPlus = { change { c.schedule.setPlanDays(cfg.planDays + 1) } })
-                Stepper("Screens off", "${cfg.screensOffLeadMin} min before bed",
-                    onMinus = { change { c.schedule.setScreensOffLead(cfg.screensOffLeadMin - 15) } },
-                    onPlus = { change { c.schedule.setScreensOffLead(cfg.screensOffLeadMin + 15) } })
-                Text("Ends ${SHORT_DATE.format(cfg.planEnd)} ${cfg.planEnd.year}", style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Column(Modifier.fillMaxSize()) {
+        // Three short pages instead of one long scroll of eight cards.
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
+            listOf("Week", "Sleep & plan", "Prayers & holidays").forEachIndexed { i, label ->
+                SegmentedButton(selected = tab == i, onClick = { tab = i },
+                    shape = SegmentedButtonDefaults.itemShape(i, 3)) { Text(label, maxLines = 1) }
             }
         }
-
-        item {
-            SectionCard("Sleep phases & goals", trailing = {
-                TextButton(onClick = {
-                    val last = cfg.phases.maxByOrNull { it.number }
-                    val startDay = (last?.days?.last ?: 0) + 1
-                    editPhase = Phase((last?.number ?: 0) + 1, startDay..(startDay + 6), last?.wake ?: LocalTime.of(7, 0),
-                        last?.bed ?: LocalTime.of(23, 0), last?.prayers ?: setOf(Prayer.MAGHRIB), last?.expectedFocusBlocks ?: 1)
-                }) { Text("+ Phase") }
-            }) {
-                cfg.phases.sortedBy { it.number }.forEachIndexed { i, p ->
-                    if (i > 0) HorizontalDivider()
-                    ValueRow("Phase ${p.number}, days ${p.days.first}–${p.days.last}",
-                        "☀ ${HM.format(p.wake)}  🌙 ${HM.format(p.bed)}",
-                        supporting = "${p.expectedFocusBlocks} focus block(s); prayers: ${p.prayers.sortedBy { it.ordinal }.joinToString { it.label }}") {
-                        editPhase = p
-                    }
-                }
+        LazyColumn(
+            Modifier.weight(1f),
+            contentPadding = PaddingValues(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 96.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            when (tab) {
+                0 -> weekPage(
+                    cfg = cfg, first = first, day = day, onDay = { day = it },
+                    onWake = {
+                        val t = cfg.wakeOverrides[day]
+                        timeAsk = TimeAsk("${day.long()} wake-up", t ?: LocalTime.of(7, 0)) { nt -> change { c.schedule.setWakeOverride(day, nt) } }
+                    },
+                    onClearWake = { change { c.schedule.setWakeOverride(day, null) } },
+                    onClass = { editClass = it }, onBus = { editBus = it }, onBlock = { editBlock = it },
+                    onRoute = { editRoute = true },
+                )
+                1 -> sleepPage(
+                    cfg = cfg,
+                    onStart = { pickStart = true },
+                    onDays = { n -> change { c.schedule.setPlanDays(n) } },
+                    onScreensOff = { n -> change { c.schedule.setScreensOffLead(n) } },
+                    onPhase = { editPhase = it },
+                    onNewPhase = {
+                        val last = cfg.phases.maxByOrNull { it.number }
+                        val startDay = (last?.days?.last ?: 0) + 1
+                        editPhase = Phase((last?.number ?: 0) + 1, startDay..(startDay + 6), last?.wake ?: LocalTime.of(7, 0),
+                            last?.bed ?: LocalTime.of(23, 0), last?.prayers ?: setOf(Prayer.MAGHRIB), last?.expectedFocusBlocks ?: 1)
+                    },
+                    onReset = { confirmReset = true },
+                )
+                else -> prayersPage(
+                    prayerTime = { p -> s.prayerTimes[p] ?: p.defaultTime },
+                    holidays = cfg.holidays,
+                    onPrayer = { p -> timeAsk = TimeAsk("${p.label} time", s.prayerTimes[p] ?: p.defaultTime) { t -> change { c.settings.setPrayerTime(p, t) } } },
+                    onAddHoliday = { addHoliday = true },
+                    onDeleteHoliday = { d -> change { c.schedule.deleteHoliday(d) } },
+                )
             }
         }
+    }
 
-        item {
-            SectionCard("Class-day wake overrides") {
-                weekFrom(first).forEach { d ->
-                    val t = cfg.wakeOverrides[d]
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f)) {
-                            ValueRow(d.long(), t?.let { HM.format(it) } ?: "—") {
-                                timeAsk = TimeAsk("${d.long()} wake", t ?: LocalTime.of(7, 0)) { nt -> change { c.schedule.setWakeOverride(d, nt) } }
-                            }
-                        }
-                        if (t != null) TextButton(onClick = { change { c.schedule.setWakeOverride(d, null) } }) { Text("Clear") }
-                    }
-                }
-            }
+    // "Add" on the Week page: one button, then pick what to add — prefilled with the selected day.
+    if (tab == 0) Box(Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.BottomEnd) {
+        ExtendedFloatingActionButton(
+            onClick = { addMenu = true },
+            icon = { Icon(Icons.Rounded.Add, contentDescription = null) },
+            text = { Text("Add to ${day.long()}") },
+        )
+        DropdownMenu(addMenu, { addMenu = false }) {
+            DropdownMenuItem({ Text("Class") }, { addMenu = false; editClass = ClassSession(day, LocalTime.of(10, 0), LocalTime.of(11, 30), "", "") },
+                leadingIcon = { Icon(Icons.Rounded.School, null) })
+            DropdownMenuItem({ Text("Bus") }, { addMenu = false; editBus = Bus(day, BusDirection.TO_CAMPUS, LocalTime.of(8, 0)) },
+                leadingIcon = { Icon(Icons.Rounded.DirectionsBus, null) })
+            DropdownMenuItem({ Text("Study / research / code block") }, { addMenu = false; editBlock = Block(BlockType.STUDY, LocalTime.of(16, 0), LocalTime.of(17, 30), day = day) },
+                leadingIcon = { Icon(Icons.Rounded.Timer, null) })
         }
+    }
 
-        item {
-            SectionCard("Classes", trailing = {
-                TextButton(onClick = { editClass = ClassSession(first, LocalTime.of(10, 0), LocalTime.of(11, 30), "", "") }) { Text("+ Class") }
-            }) {
-                weekFrom(first).forEach { d ->
-                    val list = cfg.classesOn(d)
-                    if (list.isNotEmpty()) {
-                        Text(d.long(), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(top = 8.dp))
-                        list.forEach { cl ->
-                            ValueRow(cl.title, "${HM.format(cl.start)}–${HM.format(cl.end)}", supporting = cl.room.ifBlank { null }) { editClass = cl }
-                        }
-                    }
-                }
-                if (cfg.classes.isEmpty()) Text("No classes. Tap + Class.")
-            }
-        }
-
-        item {
-            SectionCard("Bus (${Schedule.BUS_ROUTE})", trailing = {
-                TextButton(onClick = { editBus = Bus(first, BusDirection.TO_CAMPUS, LocalTime.of(8, 0)) }) { Text("+ Bus") }
-            }) {
-                weekFrom(first).forEach { d ->
-                    val list = cfg.buses.filter { it.day == d }.sortedBy { it.time }
-                    if (list.isNotEmpty()) Row(Modifier.fillMaxWidth().padding(vertical = 2.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(d.short(), Modifier.padding(end = 12.dp), fontWeight = FontWeight.SemiBold)
-                        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            list.forEach { b ->
-                                FilterChip(false, { editBus = b }, { Text("${if (b.direction == BusDirection.TO_CAMPUS) "→ campus" else "→ home"} ${HM.format(b.time)}") })
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        item {
-            SectionCard("Study / research / code blocks", trailing = {
-                TextButton(onClick = { editBlock = Block(BlockType.RESEARCH, LocalTime.of(9, 0), LocalTime.of(10, 30), day = first) }) { Text("+ Block") }
-            }) {
-                BlockType.entries.forEach { type ->
-                    val list = cfg.blocks.filter { it.type == type }.sortedBy { it.day?.let { d -> weekFrom(first).indexOf(d) } ?: -1 }
-                    if (list.isNotEmpty()) {
-                        Text(type.label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(top = 8.dp))
-                        list.forEach { b ->
-                            ValueRow(b.day?.long() ?: "Every day", "${HM.format(b.start)}–${HM.format(b.end)}",
-                                supporting = b.place.ifBlank { null }) { editBlock = b }
-                        }
-                    }
-                }
-            }
-        }
-
-        item {
-            SectionCard("Prayer times") {
-                Prayer.entries.forEach { p ->
-                    ValueRow(p.label, HM.format(s.prayerTimes[p] ?: p.defaultTime)) {
-                        timeAsk = TimeAsk("${p.label} time", s.prayerTimes[p] ?: p.defaultTime) { t -> change { c.settings.setPrayerTime(p, t) } }
-                    }
-                }
-            }
-        }
-
-        item {
-            SectionCard("Holidays", trailing = { TextButton(onClick = { addHoliday = true }) { Text("+ Holiday") } }) {
-                cfg.holidays.toSortedMap().forEach { (d, name) ->
-                    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text("${SHORT_DATE.format(d)} ${d.year}", Modifier.weight(0.45f), fontWeight = FontWeight.SemiBold)
-                        Text(name, Modifier.weight(0.45f))
-                        androidx.compose.material3.IconButton(onClick = { change { c.schedule.deleteHoliday(d) } }) {
-                            androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Rounded.Close, contentDescription = com.example.tracker.ui.i18n.tr("Remove holiday"))
-                        }
-                    }
-                }
-            }
-        }
-
-        item {
-            OutlinedButton(onClick = { confirmReset = true }, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
-                Text("Reset schedule to my original plan", color = Expense)
-            }
-        }
+    if (editRoute) {
+        var name by remember { mutableStateOf(cfg.busRoute) }
+        AlertDialog(
+            onDismissRequest = { editRoute = false },
+            title = { Text("Bus route") },
+            text = { OutlinedTextField(name, { name = it }, label = { Text("Route name") }, singleLine = true) },
+            confirmButton = { TextButton(enabled = name.isNotBlank(), onClick = { change { c.schedule.setBusRoute(name) }; editRoute = false }) { Text("Save") } },
+            dismissButton = { TextButton(onClick = { editRoute = false }) { Text("Cancel") } },
+        )
     }
 
     // ---------------- dialogs ----------------
@@ -414,7 +384,7 @@ fun Stepper(label: String, value: String, onMinus: () -> Unit, onPlus: () -> Uni
                 },
                 shape = RoundedCornerShape(10.dp),
                 contentPadding = PaddingValues(0.dp),
-                modifier = Modifier.size(38.dp),
+                modifier = Modifier.size(48.dp),
             ) {
                 Text("−", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             }
@@ -430,7 +400,7 @@ fun Stepper(label: String, value: String, onMinus: () -> Unit, onPlus: () -> Uni
                 },
                 shape = RoundedCornerShape(10.dp),
                 contentPadding = PaddingValues(0.dp),
-                modifier = Modifier.size(38.dp),
+                modifier = Modifier.size(48.dp),
             ) {
                 Text("+", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             }
@@ -438,3 +408,169 @@ fun Stepper(label: String, value: String, onMinus: () -> Unit, onPlus: () -> Uni
     }
 }
 
+
+// ---------------- pages ----------------
+
+/** One entry on the selected day's timeline. */
+private data class DayItem(val time: LocalTime, val end: LocalTime?, val icon: ImageVector, val title: String, val detail: String?, val onClick: () -> Unit)
+
+private fun androidx.compose.foundation.lazy.LazyListScope.weekPage(
+    cfg: com.example.tracker.data.schedule.ScheduleConfig, first: java.time.DayOfWeek, day: java.time.DayOfWeek,
+    onDay: (java.time.DayOfWeek) -> Unit, onWake: () -> Unit, onClearWake: () -> Unit,
+    onClass: (ClassSession) -> Unit, onBus: (Bus) -> Unit, onBlock: (Block) -> Unit, onRoute: () -> Unit,
+) {
+    item("days") {
+        // Day picker: a dot under days that have classes, so the week's shape shows at a glance.
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            weekFrom(first).forEach { d ->
+                val sel = d == day
+                val busy = cfg.classesOn(d).isNotEmpty()
+                Surface(
+                    onClick = { onDay(d) }, shape = RoundedCornerShape(14.dp),
+                    color = if (sel) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainer,
+                    modifier = Modifier.weight(1f).heightIn(min = 56.dp),
+                ) {
+                    Column(Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                        Text(d.short(), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold,
+                            color = if (sel) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface)
+                        Box(Modifier.padding(top = 4.dp).size(6.dp).background(
+                            if (busy) (if (sel) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary) else Color.Transparent,
+                            CircleShape))
+                    }
+                }
+            }
+        }
+    }
+    item("wake") {
+        val t = cfg.wakeOverrides[day]
+        SectionCard {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    ValueRow("Wake-up on ${day.long()}", t?.let { HM.format(it) } ?: "From sleep plan",
+                        supporting = if (t != null) "Earlier than usual, for this weekday only" else "Tap to set an earlier time for this day",
+                        onClick = onWake)
+                }
+                if (t != null) TextButton(onClick = onClearWake) { Text("Clear") }
+            }
+        }
+    }
+    val items = buildList {
+        cfg.buses.filter { it.day == day }.forEach { b ->
+            add(DayItem(b.time, null, Icons.Rounded.DirectionsBus, if (b.direction == BusDirection.TO_CAMPUS) "Bus to campus" else "Bus home", cfg.busRoute) { onBus(b) })
+        }
+        cfg.classesOn(day).forEach { cl -> add(DayItem(cl.start, cl.end, Icons.Rounded.School, cl.title, cl.room.ifBlank { null }) { onClass(cl) }) }
+        BlockType.entries.forEach { type ->
+            cfg.blockOn(day, type)?.let { b ->
+                add(DayItem(b.start, b.end, Icons.Rounded.Timer, type.label,
+                    listOfNotNull(if (b.day == null) "Every day" else null, b.place.ifBlank { null }).joinToString(", ").ifBlank { null }) { onBlock(b) })
+            }
+        }
+    }.sortedBy { it.time }
+    item("timeline") {
+        SectionCard(day.long()) {
+            if (items.isEmpty()) {
+                Text("Nothing planned on ${day.long()}. Use Add to put a class, bus or study block here.",
+                    style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(vertical = 8.dp))
+            }
+            items.forEachIndexed { i, it ->
+                if (i > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
+                Surface(onClick = it.onClick, color = Color.Transparent, shape = RoundedCornerShape(12.dp)) {
+                    Row(Modifier.fillMaxWidth().heightIn(min = 60.dp).padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.width(76.dp)) {
+                            Text(HM.format(it.time), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                            it.end?.let { e -> Text(HM.format(e), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                        }
+                        Icon(it.icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
+                        Column(Modifier.weight(1f).padding(start = 12.dp)) {
+                            Text(it.title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                            it.detail?.let { d -> Text(d, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                        }
+                        Icon(Icons.Rounded.Edit, contentDescription = com.example.tracker.ui.i18n.tr("Edit"),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
+                    }
+                }
+            }
+        }
+    }
+    item("route") {
+        SectionCard {
+            ValueRow("Bus route", cfg.busRoute, supporting = "Shown on bus reminders", onClick = onRoute)
+        }
+    }
+}
+
+private fun androidx.compose.foundation.lazy.LazyListScope.sleepPage(
+    cfg: com.example.tracker.data.schedule.ScheduleConfig,
+    onStart: () -> Unit, onDays: (Int) -> Unit, onScreensOff: (Long) -> Unit,
+    onPhase: (Phase) -> Unit, onNewPhase: () -> Unit, onReset: () -> Unit,
+) {
+    item("plan") {
+        SectionCard("Plan") {
+            ValueRow("Starts (day 1)", SHORT_DATE.format(cfg.planStart) + " ${cfg.planStart.year}",
+                supporting = "Ends ${SHORT_DATE.format(cfg.planEnd)} ${cfg.planEnd.year}", onClick = onStart)
+            Stepper("Length", "${cfg.planDays} days", onMinus = { onDays(cfg.planDays - 1) }, onPlus = { onDays(cfg.planDays + 1) })
+            Stepper("Screens off", "${cfg.screensOffLeadMin} min before bed",
+                onMinus = { onScreensOff(cfg.screensOffLeadMin - 15) }, onPlus = { onScreensOff(cfg.screensOffLeadMin + 15) })
+        }
+    }
+    item("phases") {
+        SectionCard("Sleep phases", trailing = { TextButton(onClick = onNewPhase) { Text("Add phase") } }) {
+            Text("Each phase sets your wake-up and bedtime for a run of plan days.", style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
+            cfg.phases.sortedBy { it.number }.forEachIndexed { i, p ->
+                if (i > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
+                Surface(onClick = { onPhase(p) }, color = Color.Transparent, shape = RoundedCornerShape(12.dp)) {
+                    Column(Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(vertical = 8.dp)) {
+                        Text("Days ${p.days.first}–${p.days.last}", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                        Row(Modifier.padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Rounded.WbSunny, null, Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                            Text(" ${HM.format(p.wake)}", style = MaterialTheme.typography.bodyMedium)
+                            Spacer(Modifier.width(16.dp))
+                            Icon(Icons.Rounded.Bedtime, null, Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                            Text(" ${HM.format(p.bed)}", style = MaterialTheme.typography.bodyMedium)
+                        }
+                        Text("${p.expectedFocusBlocks} focus ${if (p.expectedFocusBlocks == 1) "block" else "blocks"} a day, prayer goal: " +
+                            p.prayers.sortedBy { it.ordinal }.joinToString { it.label }.ifBlank { "none" },
+                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+            }
+        }
+    }
+    item("reset") {
+        OutlinedButton(onClick = onReset, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
+            Text("Reset schedule to my original plan", color = Expense)
+        }
+    }
+}
+
+private fun androidx.compose.foundation.lazy.LazyListScope.prayersPage(
+    prayerTime: (Prayer) -> LocalTime, holidays: Map<LocalDate, String>,
+    onPrayer: (Prayer) -> Unit, onAddHoliday: () -> Unit, onDeleteHoliday: (LocalDate) -> Unit,
+) {
+    item("prayers") {
+        SectionCard("Prayer times") {
+            Prayer.entries.forEach { p -> ValueRow(p.label, HM.format(prayerTime(p))) { onPrayer(p) } }
+        }
+    }
+    item("holidays") {
+        SectionCard("Holidays", trailing = { TextButton(onClick = onAddHoliday) { Text("Add holiday") } }) {
+            Text("No classes or buses on these days.", style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
+            if (holidays.isEmpty()) Text("No holidays added.", style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+            holidays.toSortedMap().forEach { (d, name) ->
+                Row(Modifier.fillMaxWidth().heightIn(min = 52.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text(name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                        Text("${SHORT_DATE.format(d)} ${d.year}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    IconButton(onClick = { onDeleteHoliday(d) }) {
+                        Icon(Icons.Rounded.Close, contentDescription = com.example.tracker.ui.i18n.tr("Remove holiday"))
+                    }
+                }
+            }
+        }
+    }
+}

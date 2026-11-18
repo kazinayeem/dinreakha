@@ -1,5 +1,17 @@
 package com.example.tracker.ui.settings
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.DeleteOutline
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.draw.alpha
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -66,6 +78,20 @@ private val TEMPLATES = listOf(
     Routine(title = "Plan next week", icon = "🗒️", repeat = Repeat.WEEKLY, days = setOf(java.time.DayOfWeek.FRIDAY), time = LocalTime.of(21, 0), remind = true),
 )
 
+private val ICONS = listOf("✅", "📖", "🏃", "💧", "🧘", "🙏", "📞", "🧹", "🧺", "💪", "🥗", "💊", "📝", "💸")
+
+/** One row on this page: dimmed when switched off. */
+@Composable
+private fun ItemCard(active: Boolean, onClick: (() -> Unit)? = null, content: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit) {
+    val color = MaterialTheme.colorScheme.surfaceContainer
+    val row: @Composable () -> Unit = {
+        Row(Modifier.fillMaxWidth().heightIn(min = 68.dp).padding(start = 14.dp, end = 6.dp)
+            .then(if (active) Modifier else Modifier.alpha(0.6f)), verticalAlignment = Alignment.CenterVertically, content = content)
+    }
+    if (onClick != null) Surface(onClick = onClick, shape = MaterialTheme.shapes.medium, color = color) { row() }
+    else Surface(shape = MaterialTheme.shapes.medium, color = color) { row() }
+}
+
 @Composable
 fun RoutinesScreen() {
     val ctx = LocalContext.current
@@ -79,60 +105,99 @@ fun RoutinesScreen() {
 
     fun change(block: suspend () -> Unit) = scope.launch { block(); c.scheduler.rescheduleAll() }
 
-    LazyColumn(contentPadding = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 28.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        item {
-            SectionCard("Daily habits") {
-                Text("Switch off what you don't do. Tap a name to rename it — past ticks are kept.",
-                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Gap(4.dp)
-                Habits.BUILT_IN.forEach { key ->
+    val feedback = com.example.tracker.ui.components.LocalFeedback.current
+    var tab by rememberSaveable { mutableStateOf(0) }
+    var confirmDelete by remember { mutableStateOf<Routine?>(null) }
+
+    fun delete(r: Routine) {
+        c.scheduler.forgetRoutine(r.id)
+        change { c.schedule.deleteRoutine(r.id) }
+        // Same id on undo, so its past ticks still count.
+        feedback?.show("Deleted ${r.title}", "Undo") { change { c.schedule.saveRoutine(r) } }
+    }
+
+    Column(Modifier.fillMaxSize()) {
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
+            listOf("Daily habits", "My routines").forEachIndexed { i, label ->
+                SegmentedButton(selected = tab == i, onClick = { tab = i }, shape = SegmentedButtonDefaults.itemShape(i, 2)) { Text(label) }
+            }
+        }
+        LazyColumn(
+            Modifier.weight(1f),
+            contentPadding = PaddingValues(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 96.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            if (tab == 0) {
+                item {
+                    Text("These are on your checklist every day. Turn off what you don't do; rename any of them. Past ticks are kept.",
+                        style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                items(Habits.BUILT_IN, key = { it }) { key ->
                     val shown = key !in cfg.hiddenHabits
-                    Row(Modifier.fillMaxWidth().heightIn(min = 52.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Icon(habitIcon(key), contentDescription = null, modifier = Modifier.size(22.dp),
+                    val renamed = cfg.habitNames[key]
+                    ItemCard(active = shown) {
+                        Icon(habitIcon(key), contentDescription = null, modifier = Modifier.size(24.dp),
                             tint = if (shown) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
-                        Surface(onClick = { renaming = key }, color = Color.Transparent, shape = MaterialTheme.shapes.small,
-                            modifier = Modifier.weight(1f).padding(horizontal = 6.dp)) {
-                            Column(Modifier.heightIn(min = 48.dp).padding(horizontal = 6.dp), verticalArrangement = Arrangement.Center) {
-                                Text(cfg.habitNames[key] ?: Habits.defaultLabel(key), style = MaterialTheme.typography.bodyLarge,
-                                    color = if (shown) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
-                                if (cfg.habitNames[key] != null) Text("Was: ${Habits.defaultLabel(key)}",
-                                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            }
+                        Column(Modifier.weight(1f).padding(start = 14.dp)) {
+                            Text(renamed ?: Habits.defaultLabel(key), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                            Text(if (!shown) "Off" else if (renamed != null) "Renamed from ${Habits.defaultLabel(key)}" else "Every day",
+                                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        IconButton(onClick = { renaming = key }) {
+                            Icon(Icons.Rounded.Edit, contentDescription = com.example.tracker.ui.i18n.tr("Rename"))
                         }
                         Switch(shown, { on -> change { c.schedule.setHabitHidden(key, !on) } })
                     }
                 }
-            }
-        }
-        item {
-            Text("Your own habits & routines", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 8.dp))
-        }
-        item {
-            Button(onClick = { editing = Routine(title = "") }, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
-                Text("+ New habit or routine", fontWeight = FontWeight.SemiBold)
-            }
-        }
-        if (cfg.routines.isEmpty()) item {
-            SectionCard("Quick start") {
-                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TEMPLATES.forEach { t -> FilterChip(false, { editing = t }, { Text("${t.icon} ${t.title}") }, modifier = Modifier.heightIn(min = 44.dp)) }
+            } else {
+                item {
+                    Text("Your own habits: daily, on chosen weekdays, or once a month, with an optional reminder.",
+                        style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-            }
-        }
-        items(cfg.routines, key = { it.id }) { r ->
-            Surface(onClick = { editing = r }, shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.surfaceContainer) {
-                Row(Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(horizontal = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Text(r.icon, style = MaterialTheme.typography.headlineSmall) }
-                    Column(Modifier.weight(1f).padding(start = 10.dp)) {
-                        Text(r.title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
-                        Text(r.describe { HM.format(it) }, style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                items(cfg.routines, key = { it.id }) { r ->
+                    ItemCard(active = r.active, onClick = { editing = r }) {
+                        Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Text(r.icon, style = MaterialTheme.typography.headlineSmall) }
+                        Column(Modifier.weight(1f).padding(start = 10.dp)) {
+                            Text(r.title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                            Text(if (r.active) r.describe { HM.format(it) } else "Off", style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        IconButton(onClick = { editing = r }) { Icon(Icons.Rounded.Edit, contentDescription = com.example.tracker.ui.i18n.tr("Edit")) }
+                        IconButton(onClick = { confirmDelete = r }) {
+                            Icon(Icons.Rounded.DeleteOutline, contentDescription = com.example.tracker.ui.i18n.tr("Delete"), tint = Expense)
+                        }
+                        Switch(r.active, { on -> change { c.schedule.saveRoutine(r.copy(active = on)) } })
                     }
-                    Switch(r.active, { on -> change { c.schedule.saveRoutine(r.copy(active = on)) } })
+                }
+                if (cfg.routines.size < 4) item {
+                    // Ideas stay visible until the list has a few entries; one tap fills the form.
+                    SectionCard("Ideas") {
+                        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            TEMPLATES.filter { t -> cfg.routines.none { it.title == t.title } }.forEach { t ->
+                                FilterChip(false, { editing = t }, { Text("${t.icon} ${t.title}") }, modifier = Modifier.heightIn(min = 48.dp))
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+    if (tab == 1) Box(Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.BottomEnd) {
+        ExtendedFloatingActionButton(
+            onClick = { editing = Routine(title = "") },
+            icon = { Icon(Icons.Rounded.Add, contentDescription = null) },
+            text = { Text("New routine") },
+        )
+    }
+
+    confirmDelete?.let { r ->
+        AlertDialog(
+            onDismissRequest = { confirmDelete = null },
+            title = { Text("Delete ${r.title}?") },
+            text = { Text("It leaves your checklist and its reminder stops. You can undo right after.") },
+            confirmButton = { TextButton(onClick = { confirmDelete = null; delete(r) }) { Text("Delete", color = Expense) } },
+            dismissButton = { TextButton(onClick = { confirmDelete = null }) { Text("Cancel") } },
+        )
     }
 
     renaming?.let { key ->
@@ -176,6 +241,13 @@ fun RoutinesScreen() {
                         OutlinedTextField(r.title, { r = r.copy(title = it) }, label = { Text("Name") }, singleLine = true,
                             modifier = Modifier.weight(0.7f))
                     }
+                    // Quick icon picks — typing your own emoji in the box still works.
+                    Row(Modifier.horizontalScroll(rememberScrollState()).padding(top = 6.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        ICONS.forEach { e ->
+                            FilterChip(r.icon == e, { r = r.copy(icon = e) }, { Text(e, style = MaterialTheme.typography.titleMedium) },
+                                modifier = Modifier.heightIn(min = 48.dp))
+                        }
+                    }
                     Gap(8.dp)
                     Text("Repeats", style = MaterialTheme.typography.labelLarge)
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -204,9 +276,7 @@ fun RoutinesScreen() {
             confirmButton = { TextButton(enabled = valid, onClick = { change { c.schedule.saveRoutine(r) }; editing = null }) { Text("Save") } },
             dismissButton = {
                 Row {
-                    if (r0.id != 0L) TextButton(onClick = {
-                        c.scheduler.forgetRoutine(r0.id); change { c.schedule.deleteRoutine(r0.id) }; editing = null
-                    }) { Text("Delete", color = Expense) }
+                    if (r0.id != 0L) TextButton(onClick = { editing = null; delete(r0) }) { Text("Delete", color = Expense) }
                     TextButton(onClick = { editing = null }) { Text("Cancel") }
                 }
             },
