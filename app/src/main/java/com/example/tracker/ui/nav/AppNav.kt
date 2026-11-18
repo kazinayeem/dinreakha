@@ -130,6 +130,8 @@ private fun titleFor(route: String?, args: android.os.Bundle?): String? = when {
     route == "settings/schedule" -> "Schedule"
     route == "settings/routines" -> "Habits & routines"
     route == "settings/log" -> "Notification log"
+    route == "settings/look" -> "Look & language"
+    route == "settings/privacy" -> "Privacy & data"
     route == "about" -> "About"
     route == "privacy" -> "Privacy"
     route == "terms" -> "Terms"
@@ -355,7 +357,9 @@ fun AppNav(
                     )
                 }
                 composable("settings") { LockedSection(LockScope.SETTINGS) { SettingsScreen { nav.navigate(it) } } }
-                composable("settings/notifications") { LockedSection(LockScope.SETTINGS) { NotificationSettingsScreen() } }
+                composable("settings/notifications") { LockedSection(LockScope.SETTINGS) { NotificationSettingsScreen { nav.navigate("settings/log") } } }
+                composable("settings/look") { LockedSection(LockScope.SETTINGS) { SettingsScreen(com.example.tracker.ui.settings.SettingsPage.LOOK) { nav.navigate(it) } } }
+                composable("settings/privacy") { LockedSection(LockScope.SETTINGS) { SettingsScreen(com.example.tracker.ui.settings.SettingsPage.PRIVACY) { nav.navigate(it) } } }
                 composable("settings/schedule") { LockedSection(LockScope.SETTINGS) { ScheduleEditorScreen() } }
                 composable("settings/routines") { LockedSection(LockScope.SETTINGS) { RoutinesScreen() } }
                 composable("settings/log") { LockedSection(LockScope.SETTINGS) { NotificationLogScreen() } }

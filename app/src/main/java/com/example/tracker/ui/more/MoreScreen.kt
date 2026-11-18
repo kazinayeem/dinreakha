@@ -70,7 +70,6 @@ fun MoreScreen(nav: (String) -> Unit) {
     val c = LocalContext.current.container
     val today by remember { currentDateFlow() }.collectAsStateWithLifecycle(LocalDate.now(Schedule.ZONE))
     val days by remember { c.habits.observePlan() }.collectAsStateWithLifecycle(emptyMap())
-    val cfg by c.scheduleState.collectAsStateWithLifecycle()
     val courses by remember { c.notes.observeCoursesWithStats() }.collectAsStateWithLifecycle(emptyList())
     val blocks by remember(today) { c.blocker.observeBlockCountToday(today) }.collectAsStateWithLifecycle(0)
     val reels by remember(today) { c.blocker.observeTotalReelsCount(today) }.collectAsStateWithLifecycle(0)
@@ -86,7 +85,6 @@ fun MoreScreen(nav: (String) -> Unit) {
         Tile(Icons.Rounded.Bedtime, Color(0xFF818CF8), "Sleep & mood",
             lastNight?.let { "${it.minutes / 60}h ${it.minutes % 60}m slept" } ?: "Log last night", "sleep?log=false"),
         Tile(Icons.Rounded.EditNote, cs.secondary, "Weekly review", "Week ${PlanCalendar.weekNumber(today)}", "review"),
-        Tile(Icons.Rounded.TaskAlt, cs.tertiary, "Routines", "${cfg.routines.size} set", "settings/routines"),
         Tile(Icons.Rounded.School, Color(0xFF4285F4), "Class notes", "${courses.sumOf { it.noteCount }} notes", "courses"),
         Tile(Icons.Rounded.Shield, Color(0xFFE5534B), "App limits", "$reels reels, $blocks blocks", "blocker"),
         Tile(Icons.Rounded.Share, Color(0xFF6366F1), "Reports", "Today's score", "reports/daily"),
@@ -156,10 +154,8 @@ fun MoreScreen(nav: (String) -> Unit) {
             Surface(shape = RoundedCornerShape(20.dp), color = cs.surfaceContainerLow) {
                 Column {
                     val rows = listOf(
-                        Triple(Icons.Rounded.NotificationsActive, "Notifications", "settings/notifications"),
-                        Triple(Icons.Rounded.Schedule, "Schedule & classes", "settings/schedule"),
-                        Triple(Icons.Rounded.Palette, "Look & feel", "settings"),
-                        Triple(Icons.Rounded.Settings, "Backup, lock & more", "settings"),
+                        // One row per destination: Settings itself is a short list of pages.
+                        Triple(Icons.Rounded.Settings, "Settings", "settings"),
                         Triple(Icons.Rounded.Info, "About", "about"),
                     )
                     rows.forEachIndexed { i, (icon, title, route) ->

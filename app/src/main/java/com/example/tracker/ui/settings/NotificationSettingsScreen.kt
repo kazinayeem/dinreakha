@@ -1,5 +1,8 @@
 package com.example.tracker.ui.settings
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.History
+
 import android.app.Activity
 import android.content.Intent
 import android.media.RingtoneManager
@@ -64,7 +67,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @Composable
-fun NotificationSettingsScreen() {
+fun NotificationSettingsScreen(onOpenLog: () -> Unit = {}) {
     val ctx = LocalContext.current
     val c = ctx.container
     val settings by c.settings.settings.collectAsStateWithLifecycle(null)
@@ -147,6 +150,12 @@ fun NotificationSettingsScreen() {
                         change { c.settings.setPref(cat, s.pref(cat).copy(enabled = on)) }
                     }
                 }
+            }
+        }
+        // The log belongs with the reminders it records (it used to be a separate Settings row).
+        item {
+            SectionCard {
+                NavRow(Icons.Rounded.History, "Notification log", "What was sent, and when") { onOpenLog() }
             }
         }
     }
