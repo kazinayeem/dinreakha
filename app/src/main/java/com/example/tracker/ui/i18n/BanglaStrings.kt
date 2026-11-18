@@ -349,6 +349,8 @@ object BanglaStrings {
         "Wake & sleep" to "ওঠা ও ঘুম",
         "Reset schedule" to "সময়সূচি রিসেট",
         "Route" to "রুট",
+        "Open plan" to "প্ল্যান খুলুন",
+        "All done for today" to "আজকের সব কাজ শেষ",
         "Tap anywhere to skip" to "যেকোনো জায়গায় স্পর্শ করে এগিয়ে যান",
 
         // ---------------- Reports & cards
@@ -540,6 +542,10 @@ object BanglaStrings {
 
     /** Sentences that carry numbers or names. `$1`, `$2` are the captured parts (translated if known). */
     val PATTERNS: List<Pair<Regex, String>> = listOf(
+        "Now, (.+)" to "এখন, \$1",
+        "In (\\d.*), (.+)" to "\$1 পরে, \$2",
+        "Week (\\d+) review is ready" to "সপ্তাহ \$1-এর রিভিউ তৈরি",
+        "Starts in (\\d+) days" to "\$1 দিন পরে শুরু",
         "(\\d+) min early" to "\$1 মিনিট আগে",
         "Add to (.+)" to "\$1-এ যোগ করুন",
         "Wake-up on (.+)" to "\$1-এ ঘুম থেকে ওঠা",

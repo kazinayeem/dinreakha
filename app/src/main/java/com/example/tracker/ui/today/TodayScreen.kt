@@ -1,5 +1,6 @@
 package com.example.tracker.ui.today
 
+import androidx.compose.material.icons.rounded.Insights
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -328,128 +329,77 @@ fun TodayScreen(
     }
 }
 
-/** Clean, open greeting and milestone header. */
+/**
+ * Header: the date, then one big line ("Day 3 of 30") with a thin progress bar under it. Tapping the
+ * title opens the plan; one labelled icon opens today's summary. Holiday / fresh-start show as small
+ * tags only when they apply.
+ */
 @Composable
 private fun DayHeader(s: TodayUi, onOpenReview: (Int) -> Unit, onOpenPlan: () -> Unit, onOpenReport: () -> Unit) {
     val day = PlanCalendar.dayNumber(s.date)
     val week = PlanCalendar.weekNumber(s.date)
+    val inPlan = day in 1..PlanCalendar.planDays
 
-    Column(modifier = Modifier.fillMaxWidth().padding(top = 2.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = DAY_TITLE.format(s.date),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                androidx.compose.material3.IconButton(onClick = onOpenReport) {
-                    Icon(Icons.Rounded.AutoAwesome, contentDescription = com.example.tracker.ui.i18n.tr("Daily summary and share card"), tint = MaterialTheme.colorScheme.primary)
-                }
-                PlanCalendar.holidayName(s.date)?.let { holiday ->
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
-                            .background(MaterialTheme.colorScheme.tertiaryContainer)
-                            .padding(horizontal = 8.dp, vertical = 2.dp),
-                    ) {
-                        Text(
-                            text = holiday,
-                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
-                            color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        )
-                    }
-                }
-                if (s.startAgain) {
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
-                            .background(MaterialTheme.colorScheme.primaryContainer)
-                            .padding(horizontal = 8.dp, vertical = 2.dp),
-                    ) {
-                        Text(
-                            text = "Fresh start",
-                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    }
-                }
-            }
-        }
-
-        Spacer(Modifier.height(4.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(12.dp))
-                .clickable(role = androidx.compose.ui.semantics.Role.Button, onClick = onOpenPlan)
-                .padding(vertical = 2.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = when {
-                    day in 1..PlanCalendar.planDays -> "Day $day of ${PlanCalendar.planDays}"
-                    day == 0 -> "Starts tomorrow"
-                    day < 0 && day >= -7 -> "Starts in ${-day + 1} days"
-                    day > PlanCalendar.planDays -> "Plan Completed 🏁"
-                    else -> "Today's Rhythm"
-                },
-                style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            if (day in 1..PlanCalendar.planDays) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.surfaceContainerHighest)
-                        .padding(horizontal = 10.dp, vertical = 4.dp),
-                ) {
-                    Text(
-                        text = "${day * 100 / PlanCalendar.planDays}% done ➔",
-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.primary,
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(
+                Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable(role = androidx.compose.ui.semantics.Role.Button, onClickLabel = com.example.tracker.ui.i18n.tr("Open plan"), onClick = onOpenPlan)
+                    .padding(vertical = 4.dp),
+            ) {
+                Text(DAY_TITLE.format(s.date), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    text = when {
+                        inPlan -> "Day $day of ${PlanCalendar.planDays}"
+                        day == 0 -> "Starts tomorrow"
+                        day < 0 && day >= -7 -> "Starts in ${-day + 1} days"
+                        day > PlanCalendar.planDays -> "Plan complete"
+                        else -> "Today"
+                    },
+                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                if (inPlan) {
+                    LinearProgressIndicator(
+                        progress = { day.toFloat() / PlanCalendar.planDays },
+                        modifier = Modifier.padding(top = 6.dp).fillMaxWidth(0.6f).height(4.dp).clip(RoundedCornerShape(50)),
+                        drawStopIndicator = {},
                     )
                 }
             }
+            androidx.compose.material3.FilledTonalIconButton(onClick = onOpenReport, modifier = Modifier.size(48.dp)) {
+                Icon(Icons.Rounded.Insights, contentDescription = com.example.tracker.ui.i18n.tr("Today's summary"))
+            }
         }
 
-        // Review alert banner if applicable
+        val tags = listOfNotNull(PlanCalendar.holidayName(s.date), if (s.startAgain) "Fresh start" else null)
+        if (tags.isNotEmpty()) Row(Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            tags.forEach { t ->
+                Box(
+                    Modifier.clip(RoundedCornerShape(8.dp)).background(MaterialTheme.colorScheme.tertiaryContainer)
+                        .padding(horizontal = 10.dp, vertical = 4.dp),
+                ) {
+                    Text(t, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                }
+            }
+        }
+
         if (PlanCalendar.isReviewDay(s.date)) {
             Spacer(Modifier.height(10.dp))
             Surface(
                 onClick = { onOpenReview(week) },
                 shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+                color = MaterialTheme.colorScheme.secondaryContainer,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.EditNote,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Text(
-                        text = "Week $week Review is ready",
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        modifier = Modifier.weight(1f),
-                    )
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.size(16.dp),
-                    )
+                Row(Modifier.heightIn(min = 48.dp).padding(horizontal = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Rounded.EditNote, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(20.dp))
+                    Spacer(Modifier.width(10.dp))
+                    Text("Week $week review is ready", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.weight(1f))
+                    Icon(Icons.AutoMirrored.Rounded.ArrowForward, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(18.dp))
                 }
             }
         }
@@ -497,19 +447,11 @@ private fun NextActionBar(
             Spacer(Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = if (isHappeningNow) "NOW" else "IN ${formatMins(mins)}",
-                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                        color = if (isHappeningNow) Income else MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(Modifier.width(6.dp))
-                    Text(
-                        text = "• ${HM.format(e.start)}",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                Text(
+                    text = if (isHappeningNow) "Now, ${HM.format(e.start)}" else "In ${formatMins(mins)}, ${HM.format(e.start)}",
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                    color = if (isHappeningNow) com.example.tracker.ui.theme.StatusColors.good else MaterialTheme.colorScheme.primary,
+                )
                 Text(
                     text = e.title,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
@@ -780,7 +722,7 @@ private fun ChecklistCard(
                         Icon(Icons.Rounded.CheckCircle, null, tint = Income, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
                         Text(
-                            text = "All checklist items completed! 👏",
+                            text = "All done for today",
                             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                             color = Income,
                         )
