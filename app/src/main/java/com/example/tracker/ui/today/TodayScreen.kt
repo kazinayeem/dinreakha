@@ -525,10 +525,11 @@ private fun GlanceTiles(
     val habitFrac = if (totalExpected > 0) doneCount.toFloat() / totalExpected else 0f
 
     Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        GlanceTile(Icons.Rounded.TaskAlt, MaterialTheme.colorScheme.primary, "$doneCount/$totalExpected", "habits",
-            progress = habitFrac, onClick = null, modifier = Modifier.weight(1f))
+        // The habit count lives on the checklist; these three are money in, money out, and screen time.
         GlanceTile(Icons.Rounded.AccountBalanceWallet, if (spentToday > 0) Expense else MaterialTheme.colorScheme.secondary,
-            Money.format(spentToday), "spent", progress = null, onClick = onOpenWallet, onLongClick = onAddExpense, modifier = Modifier.weight(1f))
+            Money.format(spentToday), "spent today", progress = null, onClick = onOpenWallet, modifier = Modifier.weight(1f))
+        GlanceTile(Icons.Rounded.Add, MaterialTheme.colorScheme.primary, "Add", "expense", progress = null,
+            onClick = onAddExpense, modifier = Modifier.weight(1f))
         when {
             worst != null -> {
                 val (name, used, limit) = worst
@@ -563,7 +564,7 @@ private fun GlanceTile(
         color = MaterialTheme.colorScheme.surfaceContainerLow,
         modifier = modifier.fillMaxHeight()
             .clip(RoundedCornerShape(20.dp))
-            .then(if (onClick != null) Modifier.combinedClickable(onClick = onClick, onLongClick = onLongClick) else Modifier)
+            .then(if (onClick != null) Modifier.clickable(role = androidx.compose.ui.semantics.Role.Button, onClick = onClick) else Modifier)
             .semantics(mergeDescendants = true) { contentDescription = "$label $value" },
     ) {
         Column(Modifier.padding(14.dp)) {
@@ -642,67 +643,69 @@ private fun ChecklistCard(
 
             Spacer(Modifier.height(10.dp))
 
-            // Category filter chips
-            val categories = listOf("All", "Habits", "Prayers", "Classes", "Routines")
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
+            // Filter chips: only parts that have something today, each with done/total.
+            val visible = s.checklist.filter { it.expected || !it.key.startsWith("prayer_") || it.key in s.day.doneKeys }
+            fun inCat(cat: String, key: String) = when (cat) {
+                "Habits" -> !key.startsWith("prayer_") && !key.startsWith("class_") && !key.startsWith("routine_")
+                "Prayers" -> key.startsWith("prayer_")
+                "Classes" -> key.startsWith("class_")
+                "Routines" -> key.startsWith("routine_")
+                else -> true
+            }
+            val categories = listOf("All", "Habits", "Prayers", "Classes", "Routines").filter { c -> c == "All" || visible.any { inCat(c, it.key) } }
+            if (selectedCategory !in categories) selectedCategory = "All"
+            if (categories.size > 2) Row(
+                modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 categories.forEach { cat ->
+                    val items = visible.filter { it.expected && inCat(cat, it.key) }
+                    val done = items.count { it.key in s.day.doneKeys }
                     FilterChip(
                         selected = selectedCategory == cat,
                         onClick = { selectedCategory = cat },
-                        label = { Text(cat, style = MaterialTheme.typography.labelSmall) },
-                        shape = RoundedCornerShape(10.dp),
+                        label = { Text(if (items.isEmpty()) cat else "$cat $done/${items.size}", maxLines = 1) },
+                        modifier = Modifier.heightIn(min = 40.dp),
                     )
                 }
             }
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
+            val filtered = visible.filter { inCat(selectedCategory, it.key) }
+            val required = filtered.filter { it.expected }
+            val optional = filtered.filter { !it.expected }
 
-            // Filter items based on selected category
-            val visible = s.checklist.filter { it.expected || !it.key.startsWith("prayer_") || it.key in s.day.doneKeys }
-            val filtered = when (selectedCategory) {
-                "Habits" -> visible.filter { !it.key.startsWith("prayer_") && !it.key.startsWith("class_") && !it.key.startsWith("routine_") }
-                "Prayers" -> visible.filter { it.key.startsWith("prayer_") }
-                "Classes" -> visible.filter { it.key.startsWith("class_") }
-                "Routines" -> visible.filter { it.key.startsWith("routine_") }
-                else -> visible
+            @Composable
+            fun rows(list: List<PlanCalendar.ChecklistItem>) = Column {
+                list.forEachIndexed { i, item ->
+                    CheckRow(
+                        label = item.label,
+                        checked = item.key in s.day.doneKeys,
+                        onChange = { vm.toggle(s.date, item.key, it) },
+                        trailing = s.day.done[item.key]?.let { HM.format(it) },
+                        optional = !item.expected,
+                        leading = com.example.tracker.ui.components.habitIcon(item.key),
+                    )
+                    if (i < list.lastIndex) HorizontalDivider(
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+                        modifier = Modifier.padding(start = 48.dp),
+                    )
+                }
             }
 
             if (filtered.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = if (visible.isEmpty()) "No checklist items for today." else "No items in this category.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                Text(
+                    text = "Nothing on the checklist today",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                )
             } else {
-                Column {
-                    filtered.sortedBy { !it.expected }.forEachIndexed { i, item ->
-                        CheckRow(
-                            label = item.label,
-                            checked = item.key in s.day.doneKeys,
-                            onChange = { vm.toggle(s.date, item.key, it) },
-                            trailing = s.day.done[item.key]?.let { HM.format(it) },
-                            optional = !item.expected,
-                            leading = com.example.tracker.ui.components.habitIcon(item.key),
-                        )
-                        if (i < filtered.lastIndex) {
-                            HorizontalDivider(
-                                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
-                                modifier = Modifier.padding(start = 48.dp),
-                            )
-                        }
-                    }
+                rows(required)
+                if (optional.isNotEmpty()) {
+                    Text("Optional", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 12.dp, bottom = 2.dp))
+                    rows(optional)
                 }
             }
 

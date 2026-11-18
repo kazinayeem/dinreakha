@@ -351,6 +351,10 @@ object BanglaStrings {
         "Route" to "রুট",
         "Open plan" to "প্ল্যান খুলুন",
         "All done for today" to "আজকের সব কাজ শেষ",
+        "spent today" to "আজ খরচ",
+        "expense" to "খরচ",
+        "Optional" to "ঐচ্ছিক",
+        "Nothing on the checklist today" to "আজ চেকলিস্টে কিছু নেই",
         "Tap anywhere to skip" to "যেকোনো জায়গায় স্পর্শ করে এগিয়ে যান",
 
         // ---------------- Reports & cards
@@ -542,6 +546,7 @@ object BanglaStrings {
 
     /** Sentences that carry numbers or names. `$1`, `$2` are the captured parts (translated if known). */
     val PATTERNS: List<Pair<Regex, String>> = listOf(
+        "(All|Habits|Prayers|Classes|Routines) (\\d+)/(\\d+)" to "\$1 \$2/\$3",
         "Now, (.+)" to "এখন, \$1",
         "In (\\d.*), (.+)" to "\$1 পরে, \$2",
         "Week (\\d+) review is ready" to "সপ্তাহ \$1-এর রিভিউ তৈরি",
