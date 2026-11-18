@@ -119,7 +119,7 @@ fun RoutinesScreen() {
     Column(Modifier.fillMaxSize()) {
         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
             listOf("Daily habits", "My routines").forEachIndexed { i, label ->
-                SegmentedButton(selected = tab == i, onClick = { tab = i }, shape = SegmentedButtonDefaults.itemShape(i, 2)) { Text(label) }
+                SegmentedButton(selected = tab == i, onClick = { tab = i }, shape = SegmentedButtonDefaults.itemShape(i, 2)) { Text(label, maxLines = 1) }
             }
         }
         LazyColumn(
@@ -244,14 +244,14 @@ fun RoutinesScreen() {
                     // Quick icon picks — typing your own emoji in the box still works.
                     Row(Modifier.horizontalScroll(rememberScrollState()).padding(top = 6.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         ICONS.forEach { e ->
-                            FilterChip(r.icon == e, { r = r.copy(icon = e) }, { Text(e, style = MaterialTheme.typography.titleMedium) },
+                            FilterChip(r.icon == e, { r = r.copy(icon = e) }, { Text(e, style = MaterialTheme.typography.titleMedium, maxLines = 1) },
                                 modifier = Modifier.heightIn(min = 48.dp))
                         }
                     }
                     Gap(8.dp)
                     Text("Repeats", style = MaterialTheme.typography.labelLarge)
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Repeat.entries.forEach { rep -> FilterChip(r.repeat == rep, { r = r.copy(repeat = rep) }, { Text(rep.label) }) }
+                    androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Repeat.entries.forEach { rep -> FilterChip(r.repeat == rep, { r = r.copy(repeat = rep) }, { Text(rep.label, maxLines = 1) }) }
                     }
                     when (r.repeat) {
                         Repeat.WEEKLY -> Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {

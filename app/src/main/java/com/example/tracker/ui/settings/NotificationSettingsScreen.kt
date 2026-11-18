@@ -110,9 +110,9 @@ fun NotificationSettingsScreen(onOpenLog: () -> Unit = {}) {
 
         item {
             SectionCard("Quiet hours") {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(vertical = 6.dp)) {
+                androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(vertical = 6.dp)) {
                     QuietMode.entries.forEach { m ->
-                        FilterChip(s.quiet.mode == m, { change { c.settings.setQuiet(s.quiet.copy(mode = m)) } }, { Text(m.label) },
+                        FilterChip(s.quiet.mode == m, { change { c.settings.setQuiet(s.quiet.copy(mode = m)) } }, { Text(m.label, maxLines = 1) },
                             modifier = Modifier.heightIn(min = 44.dp))
                     }
                 }
@@ -126,14 +126,14 @@ fun NotificationSettingsScreen(onOpenLog: () -> Unit = {}) {
         item {
             SectionCard("Wake-up snooze") {
                 Text("Snooze length", style = MaterialTheme.typography.labelLarge)
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     listOf(5, 10, 15).forEach { m ->
-                        FilterChip(s.snoozeMin == m, { change { c.settings.setSnooze(m, s.snoozeMax) } }, { Text("$m min") },
+                        FilterChip(s.snoozeMin == m, { change { c.settings.setSnooze(m, s.snoozeMax) } }, { Text("$m min", maxLines = 1) },
                             modifier = Modifier.heightIn(min = 44.dp))
                     }
                 }
                 Text("Max snoozes per morning", style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(top = 8.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     listOf(0, 1, 2, 3, 5).forEach { n ->
                         FilterChip(s.snoozeMax == n, { change { c.settings.setSnooze(s.snoozeMin, n) } }, { Text(if (n == 0) "None" else "$n") },
                             modifier = Modifier.heightIn(min = 44.dp))
@@ -250,8 +250,8 @@ private fun CategoryDialog(
                 }
                 Gap(8.dp)
                 Text("Sound", style = MaterialTheme.typography.labelLarge)
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    SoundMode.entries.forEach { m -> FilterChip(p.sound == m, { p = p.copy(sound = m) }, { Text(m.label) }) }
+                androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    SoundMode.entries.forEach { m -> FilterChip(p.sound == m, { p = p.copy(sound = m) }, { Text(m.label, maxLines = 1) }) }
                 }
                 if (p.sound == SoundMode.SOUND) {
                     ValueRow("Ringtone", ringtoneName) {

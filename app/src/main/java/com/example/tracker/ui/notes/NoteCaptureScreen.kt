@@ -261,7 +261,7 @@ fun NoteCaptureScreen(
                 ) {
                     Icon(Icons.Rounded.CameraAlt, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("Take photo")
+                    Text("Take photo", maxLines = 1)
                 }
                 OutlinedButton(
                     onClick = { pickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
@@ -269,7 +269,7 @@ fun NoteCaptureScreen(
                 ) {
                     Icon(Icons.Rounded.PhotoLibrary, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("From gallery")
+                    Text("From gallery", maxLines = 1)
                 }
             }
 

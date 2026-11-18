@@ -221,7 +221,7 @@ fun TodayScreen(
                             ) {
                                 Icon(Icons.Rounded.CameraAlt, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(Modifier.width(6.dp))
-                                Text("Capture note", fontWeight = FontWeight.Bold)
+                                Text("Capture note", fontWeight = FontWeight.Bold, maxLines = 1)
                             }
                         }
                     }

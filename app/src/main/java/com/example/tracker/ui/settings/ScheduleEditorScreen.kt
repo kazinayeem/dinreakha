@@ -123,7 +123,7 @@ fun ScheduleEditorScreen() {
     Column(Modifier.fillMaxSize()) {
         // Three short pages instead of one long scroll of eight cards.
         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
-            listOf("Week", "Sleep & plan", "Prayers & holidays").forEachIndexed { i, label ->
+            listOf("Week", "Sleep", "Prayers").forEachIndexed { i, label ->
                 SegmentedButton(selected = tab == i, onClick = { tab = i },
                     shape = SegmentedButtonDefaults.itemShape(i, 3)) { Text(label, maxLines = 1) }
             }
@@ -221,13 +221,13 @@ fun ScheduleEditorScreen() {
                         timeAsk = TimeAsk("Bedtime", p.bed) { t -> p = p.copy(bed = t) }
                     }
                     Text("Focus blocks expected", style = MaterialTheme.typography.labelLarge)
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        (0..3).forEach { n -> FilterChip(p.expectedFocusBlocks == n, { p = p.copy(expectedFocusBlocks = n) }, { Text("$n") }) }
+                    androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        (0..3).forEach { n -> FilterChip(p.expectedFocusBlocks == n, { p = p.copy(expectedFocusBlocks = n) }, { Text("$n", maxLines = 1) }) }
                     }
                     Text("Prayer goal (reminded)", style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(top = 6.dp))
                     Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Prayer.entries.forEach { pr ->
-                            FilterChip(pr in p.prayers, { p = p.copy(prayers = if (pr in p.prayers) p.prayers - pr else p.prayers + pr) }, { Text(pr.label) })
+                            FilterChip(pr in p.prayers, { p = p.copy(prayers = if (pr in p.prayers) p.prayers - pr else p.prayers + pr) }, { Text(pr.label, maxLines = 1) })
                         }
                     }
                 }
@@ -279,8 +279,8 @@ fun ScheduleEditorScreen() {
             title = { Text(if (b0.id == 0L) "New bus" else "Edit bus") },
             text = {
                 Column {
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        BusDirection.entries.forEach { d -> FilterChip(b.direction == d, { b = b.copy(direction = d) }, { Text(d.label) }) }
+                    androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        BusDirection.entries.forEach { d -> FilterChip(b.direction == d, { b = b.copy(direction = d) }, { Text(d.label, maxLines = 1) }) }
                     }
                     DayChips(b.day, { b = b.copy(day = it) }, first)
                     ValueRow("Departs", HM.format(b.time)) { timeAsk = TimeAsk("Bus time", b.time) { t -> b = b.copy(time = t) } }
@@ -303,8 +303,8 @@ fun ScheduleEditorScreen() {
             title = { Text(if (b0.id == 0L) "New block" else "Edit block") },
             text = {
                 Column(Modifier.verticalScroll(rememberScrollState())) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        BlockType.entries.forEach { t -> FilterChip(b.type == t, { b = b.copy(type = t) }, { Text(t.label) }) }
+                    androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        BlockType.entries.forEach { t -> FilterChip(b.type == t, { b = b.copy(type = t) }, { Text(t.label, maxLines = 1) }) }
                     }
                     DayChips(b.day, { b = b.copy(day = it) }, first, includeEveryDay = true, onEveryDay = { b = b.copy(day = null) })
                     ValueRow("Starts", HM.format(b.start)) { timeAsk = TimeAsk("Block starts", b.start) { t -> b = b.copy(start = t) } }

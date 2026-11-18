@@ -169,14 +169,14 @@ fun CoursesScreen(
                             onClick = { selectedTab = 0 },
                             shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
                         ) {
-                            Text("Active (${activeCourses.size})")
+                            Text("Active (${activeCourses.size})", maxLines = 1)
                         }
                         SegmentedButton(
                             selected = selectedTab == 1,
                             onClick = { selectedTab = 1 },
                             shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
                         ) {
-                            Text("Archived (${archivedCourses.size})")
+                            Text("Archived (${archivedCourses.size})", maxLines = 1)
                         }
                     }
 

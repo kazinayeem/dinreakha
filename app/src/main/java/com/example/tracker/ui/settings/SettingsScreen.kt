@@ -179,7 +179,7 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
         if (page == SettingsPage.LOOK) {
             item {
                 SectionCard("Language", icon = Icons.Rounded.Translate) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         com.example.tracker.ui.i18n.AppLanguage.entries.forEach { l ->
                             FilterChip(
                                 selected = s.language == l,
@@ -200,9 +200,9 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
             item {
                 SectionCard("Appearance", icon = Icons.Rounded.Palette) {
                     Text("Theme", style = MaterialTheme.typography.labelLarge)
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         ThemeMode.entries.forEach { m ->
-                            FilterChip(s.themeMode == m, { scope.launch { c.settings.setThemeMode(m) } }, { Text(m.label) },
+                            FilterChip(s.themeMode == m, { scope.launch { c.settings.setThemeMode(m) } }, { Text(m.label, maxLines = 1) },
                                 modifier = Modifier.heightIn(min = 44.dp))
                         }
                     }
@@ -240,7 +240,7 @@ fun SettingsScreen(page: SettingsPage = SettingsPage.HUB, nav: (String) -> Unit)
                     }
                     Gap(8.dp)
                     Text("Language", style = MaterialTheme.typography.labelLarge)
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    androidx.compose.foundation.layout.FlowRow(verticalArrangement = Arrangement.spacedBy(4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         QuoteLanguage.entries.forEach { lang ->
                             FilterChip(
                                 selected = s.quoteLanguage == lang,

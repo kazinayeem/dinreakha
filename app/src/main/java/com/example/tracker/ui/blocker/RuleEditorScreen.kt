@@ -221,7 +221,7 @@ fun RuleEditorScreen(
                         onClick = onBack,
                         modifier = Modifier.weight(1f),
                     ) {
-                        Text("Cancel")
+                        Text("Cancel", maxLines = 1)
                     }
                     Button(
                         onClick = {

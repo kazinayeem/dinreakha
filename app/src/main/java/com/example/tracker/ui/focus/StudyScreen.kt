@@ -46,7 +46,7 @@ fun StudyScreen(
                     selected = tab == t,
                     onClick = { tab = t },
                     shape = SegmentedButtonDefaults.itemShape(i, StudyTab.entries.size),
-                ) { Text(t.label) }
+                ) { Text(t.label, maxLines = 1) }
             }
         }
         Box(Modifier.weight(1f)) {
