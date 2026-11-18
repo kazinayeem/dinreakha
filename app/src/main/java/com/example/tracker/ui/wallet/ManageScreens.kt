@@ -179,7 +179,7 @@ fun RecurringScreen(vm: WalletViewModel) {
                         }
                     }
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        d.activeAccounts.forEach { a -> FilterChip(acc == a.id, { acc = a.id }, { Text(a.name) }) }
+                        d.activeAccounts.forEach { a -> FilterChip(acc == a.id, { acc = a.id }, { Text(a.name, maxLines = 1) }) }
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) { Text("Active", Modifier.weight(1f)); Switch(active, { active = it }) }
                 }

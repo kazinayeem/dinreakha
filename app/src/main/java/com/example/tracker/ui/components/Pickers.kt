@@ -78,7 +78,7 @@ fun weekFrom(first: DayOfWeek): List<DayOfWeek> = (0L..6L).map { first.plus(it) 
 fun DayChips(selected: DayOfWeek?, onSelect: (DayOfWeek) -> Unit, first: DayOfWeek = DayOfWeek.SATURDAY,
              includeEveryDay: Boolean = false, onEveryDay: () -> Unit = {}) {
     Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        if (includeEveryDay) FilterChip(selected == null, onEveryDay, { Text("Every day") })
+        if (includeEveryDay) FilterChip(selected == null, onEveryDay, { Text("Every day", maxLines = 1) })
         weekFrom(first).forEach { d -> FilterChip(selected == d, { onSelect(d) }, { Text(d.short()) }) }
     }
 }

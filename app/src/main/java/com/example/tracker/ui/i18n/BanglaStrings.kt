@@ -344,6 +344,11 @@ object BanglaStrings {
         "Your own habits: daily, on chosen weekdays, or once a month, with an optional reminder." to "আপনার নিজের অভ্যাস: প্রতিদিন, নির্দিষ্ট বারে বা মাসে একবার, চাইলে রিমাইন্ডারসহ।",
         "Ideas" to "আইডিয়া",
         "It leaves your checklist and its reminder stops. You can undo right after." to "এটা চেকলিস্ট থেকে সরে যাবে আর রিমাইন্ডার বন্ধ হবে। সাথে সাথে ফেরত নিতে পারবেন।",
+        "Set wake-up" to "ওঠার সময় দিন",
+        "Clear wake-up" to "ওঠার সময় মুছুন",
+        "Wake & sleep" to "ওঠা ও ঘুম",
+        "Reset schedule" to "সময়সূচি রিসেট",
+        "Route" to "রুট",
         "Tap anywhere to skip" to "যেকোনো জায়গায় স্পর্শ করে এগিয়ে যান",
 
         // ---------------- Reports & cards
@@ -535,6 +540,7 @@ object BanglaStrings {
 
     /** Sentences that carry numbers or names. `$1`, `$2` are the captured parts (translated if known). */
     val PATTERNS: List<Pair<Regex, String>> = listOf(
+        "(\\d+) min early" to "\$1 মিনিট আগে",
         "Add to (.+)" to "\$1-এ যোগ করুন",
         "Wake-up on (.+)" to "\$1-এ ঘুম থেকে ওঠা",
         "(.+) wake-up" to "\$1-এ ওঠার সময়",

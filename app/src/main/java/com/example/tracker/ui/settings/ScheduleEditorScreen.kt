@@ -284,6 +284,8 @@ fun ScheduleEditorScreen() {
                     }
                     DayChips(b.day, { b = b.copy(day = it) }, first)
                     ValueRow("Departs", HM.format(b.time)) { timeAsk = TimeAsk("Bus time", b.time) { t -> b = b.copy(time = t) } }
+                    // The route name is shared by every bus, so it's edited here rather than on the page.
+                    ValueRow("Route", cfg.busRoute) { editRoute = true }
                 }
             },
             confirmButton = { TextButton(onClick = { change { c.schedule.saveBus(b) }; editBus = null }) { Text("Save") } },
@@ -441,37 +443,28 @@ private fun androidx.compose.foundation.lazy.LazyListScope.weekPage(
             }
         }
     }
-    item("wake") {
-        val t = cfg.wakeOverrides[day]
-        SectionCard {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    ValueRow("Wake-up on ${day.long()}", t?.let { HM.format(it) } ?: "From sleep plan",
-                        supporting = if (t != null) "Earlier than usual, for this weekday only" else "Tap to set an earlier time for this day",
-                        onClick = onWake)
-                }
-                if (t != null) TextButton(onClick = onClearWake) { Text("Clear") }
-            }
-        }
-    }
+    val wake = cfg.wakeOverrides[day]
     val items = buildList {
+        // Wake-up only shows when this weekday has its own earlier time; otherwise the sleep plan applies.
+        if (wake != null) add(DayItem(wake, null, Icons.Rounded.WbSunny, "Wake-up", null) { onWake() })
         cfg.buses.filter { it.day == day }.forEach { b ->
-            add(DayItem(b.time, null, Icons.Rounded.DirectionsBus, if (b.direction == BusDirection.TO_CAMPUS) "Bus to campus" else "Bus home", cfg.busRoute) { onBus(b) })
+            add(DayItem(b.time, null, Icons.Rounded.DirectionsBus, if (b.direction == BusDirection.TO_CAMPUS) "Bus to campus" else "Bus home", null) { onBus(b) })
         }
         cfg.classesOn(day).forEach { cl -> add(DayItem(cl.start, cl.end, Icons.Rounded.School, cl.title, cl.room.ifBlank { null }) { onClass(cl) }) }
         BlockType.entries.forEach { type ->
             cfg.blockOn(day, type)?.let { b ->
-                add(DayItem(b.start, b.end, Icons.Rounded.Timer, type.label,
-                    listOfNotNull(if (b.day == null) "Every day" else null, b.place.ifBlank { null }).joinToString(", ").ifBlank { null }) { onBlock(b) })
+                add(DayItem(b.start, b.end, Icons.Rounded.Timer, type.label, b.place.ifBlank { null }) { onBlock(b) })
             }
         }
     }.sortedBy { it.time }
     item("timeline") {
-        SectionCard(day.long()) {
+        SectionCard(day.long(), trailing = {
+            if (wake == null) TextButton(onClick = onWake) { Text("Set wake-up") }
+            else TextButton(onClick = onClearWake) { Text("Clear wake-up") }
+        }) {
             if (items.isEmpty()) {
-                Text("Nothing planned on ${day.long()}. Use Add to put a class, bus or study block here.",
-                    style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(vertical = 8.dp))
+                Text("Free day", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(vertical = 12.dp))
             }
             items.forEachIndexed { i, it ->
                 if (i > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
@@ -486,16 +479,9 @@ private fun androidx.compose.foundation.lazy.LazyListScope.weekPage(
                             Text(it.title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
                             it.detail?.let { d -> Text(d, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                         }
-                        Icon(Icons.Rounded.Edit, contentDescription = com.example.tracker.ui.i18n.tr("Edit"),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
                     }
                 }
             }
-        }
-    }
-    item("route") {
-        SectionCard {
-            ValueRow("Bus route", cfg.busRoute, supporting = "Shown on bus reminders", onClick = onRoute)
         }
     }
 }
@@ -507,32 +493,26 @@ private fun androidx.compose.foundation.lazy.LazyListScope.sleepPage(
 ) {
     item("plan") {
         SectionCard("Plan") {
-            ValueRow("Starts (day 1)", SHORT_DATE.format(cfg.planStart) + " ${cfg.planStart.year}",
-                supporting = "Ends ${SHORT_DATE.format(cfg.planEnd)} ${cfg.planEnd.year}", onClick = onStart)
+            ValueRow("Starts", SHORT_DATE.format(cfg.planStart) + " ${cfg.planStart.year}", onClick = onStart)
             Stepper("Length", "${cfg.planDays} days", onMinus = { onDays(cfg.planDays - 1) }, onPlus = { onDays(cfg.planDays + 1) })
-            Stepper("Screens off", "${cfg.screensOffLeadMin} min before bed",
+            Stepper("Screens off", "${cfg.screensOffLeadMin} min early",
                 onMinus = { onScreensOff(cfg.screensOffLeadMin - 15) }, onPlus = { onScreensOff(cfg.screensOffLeadMin + 15) })
         }
     }
     item("phases") {
-        SectionCard("Sleep phases", trailing = { TextButton(onClick = onNewPhase) { Text("Add phase") } }) {
-            Text("Each phase sets your wake-up and bedtime for a run of plan days.", style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
+        SectionCard("Wake & sleep", trailing = { TextButton(onClick = onNewPhase) { Text("Add") } }) {
             cfg.phases.sortedBy { it.number }.forEachIndexed { i, p ->
                 if (i > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
                 Surface(onClick = { onPhase(p) }, color = Color.Transparent, shape = RoundedCornerShape(12.dp)) {
-                    Column(Modifier.fillMaxWidth().heightIn(min = 64.dp).padding(vertical = 8.dp)) {
-                        Text("Days ${p.days.first}–${p.days.last}", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
-                        Row(Modifier.padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Row(Modifier.fillMaxWidth().heightIn(min = 56.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text("Days ${p.days.first}–${p.days.last}", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Rounded.WbSunny, null, Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                             Text(" ${HM.format(p.wake)}", style = MaterialTheme.typography.bodyMedium)
                             Spacer(Modifier.width(16.dp))
                             Icon(Icons.Rounded.Bedtime, null, Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                             Text(" ${HM.format(p.bed)}", style = MaterialTheme.typography.bodyMedium)
                         }
-                        Text("${p.expectedFocusBlocks} focus ${if (p.expectedFocusBlocks == 1) "block" else "blocks"} a day, prayer goal: " +
-                            p.prayers.sortedBy { it.ordinal }.joinToString { it.label }.ifBlank { "none" },
-                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -540,7 +520,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.sleepPage(
     }
     item("reset") {
         OutlinedButton(onClick = onReset, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
-            Text("Reset schedule to my original plan", color = Expense)
+            Text("Reset schedule", color = Expense)
         }
     }
 }
@@ -555,10 +535,8 @@ private fun androidx.compose.foundation.lazy.LazyListScope.prayersPage(
         }
     }
     item("holidays") {
-        SectionCard("Holidays", trailing = { TextButton(onClick = onAddHoliday) { Text("Add holiday") } }) {
-            Text("No classes or buses on these days.", style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
-            if (holidays.isEmpty()) Text("No holidays added.", style = MaterialTheme.typography.bodyMedium,
+        SectionCard("Holidays", trailing = { TextButton(onClick = onAddHoliday) { Text("Add") } }) {
+            if (holidays.isEmpty()) Text("None", style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant)
             holidays.toSortedMap().forEach { (d, name) ->
                 Row(Modifier.fillMaxWidth().heightIn(min = 52.dp), verticalAlignment = Alignment.CenterVertically) {
